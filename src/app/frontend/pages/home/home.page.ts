@@ -25,6 +25,8 @@ export class homepage implements OnInit, OnDestroy, AfterViewInit {
   private mouse = { x: -1000, y: -1000 };
   private dpr = 1;
   private ticking = false;
+  private sessionId = crypto.randomUUID();
+  private apiUrl = `${environment.apiUrl}/chat/stream`;
 
   readonly cv = cv;
   firstName = cv.basics.name.split(' ')[0];
@@ -110,94 +112,129 @@ export class homepage implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  async onChatSubmit(overrideCommand?: string) {
-    const rawQuery = overrideCommand || this.userQuery;
-    if (!rawQuery.trim() || this.isProcessing) return;
+async initNeuralCore() {
+  try {
+    await fetch(this.apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-API-KEY': environment.apiKey
+      },
+      body: JSON.stringify({
+        action: 'init',
+        session_id: this.sessionId
+      })
+    });
+    console.log("WALTER_AI: NEURAL_CORE_ESTABLISHED");
+  } catch (e) {
+    console.error("WALTER_AI: CORE_OFFLINE");
+  }
+}
 
-    this.isProcessing = true;
-    const query = rawQuery.trim().toLowerCase();
-    this.userQuery = '';
-    
-    if (this.chatResponseEl) this.chatResponseEl.nativeElement.textContent = "[WALTER_AI]: PROCESSING_COMMAND...";
+async onChatSubmit(overrideCommand?: string) {
+  const rawQuery = overrideCommand || this.userQuery;
+  if (!rawQuery.trim() || this.isProcessing) return;
 
-    if (query === 'cv' || query === 'resume' || query === 'exec_cv') {
-      this.scramble("COMMAND_ACCEPTED: REDIRECTING TO CV MODULE...", this.chatResponseEl);
-      setTimeout(() => {
-        this.router.navigate(['/cv']);
-        this.isProcessing = false;
-      }, 1000);
+  this.isProcessing = true;
+  const query = rawQuery.trim().toLowerCase();
+  this.userQuery = '';
+  
+  if (this.chatResponseEl) {
+    this.chatResponseEl.nativeElement.textContent = "[WALTER_AI]: PROCESSING_COMMAND...";
+  }
+
+  if (query === 'cv' || query === 'resume' || query === 'exec_cv') {
+    this.scramble("COMMAND_ACCEPTED: REDIRECTING TO CV MODULE...", this.chatResponseEl);
+    setTimeout(() => {
+      this.router.navigate(['/cv']);
+      this.isProcessing = false;
+    }, 1000);
+    return;
+  }
+
+  if (query === 'projects' || query === 'view_projects' || query === 'show projects') {
+    this.scramble("COMMAND_ACCEPTED: OPENING PROJECTS VIEW...", this.chatResponseEl);
+    setTimeout(() => {
+      this.router.navigate(['/cv'], { fragment: 'PROJECTS' });
+      this.isProcessing = false;
+    }, 1000);
+    return;
+  }
+
+  if (this.chatResponseEl) {
+    this.chatResponseEl.nativeElement.textContent = "[WALTER_AI]: THINKING...";
+  }
+
+  try {    
+    const response = await fetch(this.apiUrl, {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json',
+        'X-API-KEY': environment.apiKey
+      },
+      body: JSON.stringify({ 
+        query: rawQuery,
+        session_id: this.sessionId, 
+        action: 'chat'
+      })
+    });
+
+    if (response.status === 429) {
+      this.scramble("SYSTEM_OVERLOAD: TOO_MANY_REQUESTS. SLOW_DOWN.", this.chatResponseEl);
       return;
     }
 
-    if (query === 'projects' || query === 'view_projects' || query === 'show projects') {
-      this.scramble("COMMAND_ACCEPTED: OPENING PROJECTS VIEW...", this.chatResponseEl);
-      setTimeout(() => {
-        this.router.navigate(['/cv'], { fragment: 'PROJECTS' });
-        this.isProcessing = false;
-      }, 1000);
-      return;
-    }
+    if (!response.ok) throw new Error('API_UNAVAILABLE');
 
-    if (this.chatResponseEl) this.chatResponseEl.nativeElement.textContent = "[WALTER_AI]: THINKING...";
+    const reader = response.body?.getReader();
+    const decoder = new TextDecoder();
+    let fullText = "";
 
-    try {
-      const API_URL = `${environment.apiUrl}/chat/stream`; 
-      const response = await fetch(API_URL, {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'X-API-KEY': environment.apiKey
-        },
-        body: JSON.stringify({ 
-          query: rawQuery,
-          history: this.chatHistory
-        })
-      });
+    if (this.chatResponseEl) this.chatResponseEl.nativeElement.textContent = "";
 
-      if (!response.ok) throw new Error('API_UNAVAILABLE');
-
-      const reader = response.body?.getReader();
-      const decoder = new TextDecoder();
-      let fullText = "";
-
-      if (this.chatResponseEl) this.chatResponseEl.nativeElement.textContent = "";
-
-      while (true) {
-        const { done, value } = await reader!.read();
-        if (done) break;
-        const chunk = decoder.decode(value);
-        const lines = chunk.split('\n');
-        for (const line of lines) {
-          if (line.startsWith('data: ')) {
-            const content = line.replace('data: ', '');
-            fullText += content;
-            if (this.chatResponseEl) {
-              this.chatResponseEl.nativeElement.textContent = fullText + "_";
-              await new Promise(resolve => setTimeout(resolve, 20)); 
-            }
+    while (true) {
+      const { done, value } = await reader!.read();
+      if (done) break;
+      
+      const chunk = decoder.decode(value);
+      const lines = chunk.split('\n');
+      
+      for (const line of lines) {
+        if (line.startsWith('data: ')) {
+          const content = line.replace('data: ', '');
+          fullText += content;
+          if (this.chatResponseEl) {
+            this.chatResponseEl.nativeElement.textContent = fullText + "_";
+            // Efecto de scroll automático si es necesario
+            await new Promise(resolve => setTimeout(resolve, 15)); 
           }
         }
       }
-
-      if (this.chatResponseEl) this.chatResponseEl.nativeElement.textContent = fullText;
-
-      this.chatHistory.push({ role: 'user', content: rawQuery });
-      this.chatHistory.push({ role: 'assistant', content: fullText });
-      if (this.chatHistory.length > 6) this.chatHistory.shift();
-
-      if (fullText.includes('[NAV:CV]')) {
-        setTimeout(() => this.router.navigate(['/cv']), 3000);
-      } 
-      else if (fullText.includes('[NAV:PROJECTS]')) {
-        setTimeout(() => this.router.navigate(['/cv'], { fragment: 'PROJECTS' }), 3000);
-      }
-
-    } catch (error) {
-      this.scramble("CONNECTION_ERROR: UNABLE_TO_REACH_NEURAL_CORE.", this.chatResponseEl);
-    } finally {
-      this.isProcessing = false;
     }
+
+    if (this.chatResponseEl) this.chatResponseEl.nativeElement.textContent = fullText;
+
+    // Actualizamos historial local (opcional, para visualización persistente en UI)
+    this.chatHistory.push({ role: 'user', content: rawQuery });
+    this.chatHistory.push({ role: 'assistant', content: fullText });
+    if (this.chatHistory.length > 10) this.chatHistory.shift();
+
+    // --- LOGICA DE NAVEGACION DINÁMICA (AI Triggered) ---
+    if (fullText.includes('[NAV:CV]')) {
+      setTimeout(() => this.router.navigate(['/cv']), 2500);
+    } 
+    else if (fullText.includes('[NAV:PROJECTS]')) {
+      setTimeout(() => this.router.navigate(['/cv'], { fragment: 'PROJECTS' }), 2500);
+    }
+
+  } catch (error) {
+    this.scramble("CONNECTION_ERROR: UNABLE_TO_REACH_NEURAL_CORE.", this.chatResponseEl);
+    console.error("Neural Core Error:", error);
+  } finally {
+    this.isProcessing = false;
   }
+}
+
 
   private scramble(newText: string, elementRef?: ElementRef<HTMLElement>) {
     let frame = 0;
