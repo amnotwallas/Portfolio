@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef, AfterViewInit, NgZone, ChangeDetectionStrategy, inject } from "@angular/core";
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, AfterViewInit, NgZone, ChangeDetectionStrategy, inject, ChangeDetectorRef } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { Router } from "@angular/router";
@@ -34,6 +34,7 @@ export class homepage implements OnInit, OnDestroy, AfterViewInit {
 
   userQuery = '';
   isProcessing = false;
+  systemMood: 'idle' | 'processing' | 'success' | 'error' = 'idle';
   private chatHistory: {role: string, content: string}[] = [];
   private activeTitleStr = '';
   
@@ -56,7 +57,7 @@ export class homepage implements OnInit, OnDestroy, AfterViewInit {
   ];
   private currentLogs = ["INITIALIZING_MODULES...", "CONNECTING_TO_LLM_GATEWAY... [OK]", "DATA_STREAM_STABLE"];
 
-  constructor(private ngZone: NgZone, private router: Router) {}
+  constructor(private ngZone: NgZone, private router: Router, private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
     this.titleInterval = setInterval(() => {
@@ -136,27 +137,37 @@ async onChatSubmit(overrideCommand?: string) {
   if (!rawQuery.trim() || this.isProcessing) return;
 
   this.isProcessing = true;
+  this.systemMood = 'processing';
   const query = rawQuery.trim().toLowerCase();
   this.userQuery = '';
+  this.cdr.markForCheck();
   
   if (this.chatResponseEl) {
     this.chatResponseEl.nativeElement.textContent = "[WALTER_AI]: PROCESSING_COMMAND...";
   }
 
   if (query === 'cv' || query === 'resume' || query === 'exec_cv') {
+    this.systemMood = 'success';
     this.scramble("COMMAND_ACCEPTED: REDIRECTING TO CV MODULE...", this.chatResponseEl);
+    this.cdr.markForCheck();
     setTimeout(() => {
       this.router.navigate(['/cv']);
       this.isProcessing = false;
+      this.systemMood = 'idle';
+      this.cdr.markForCheck();
     }, 1000);
     return;
   }
 
   if (query === 'projects' || query === 'view_projects' || query === 'show projects') {
+    this.systemMood = 'success';
     this.scramble("COMMAND_ACCEPTED: OPENING PROJECTS VIEW...", this.chatResponseEl);
+    this.cdr.markForCheck();
     setTimeout(() => {
       this.router.navigate(['/cv'], { fragment: 'PROJECTS' });
       this.isProcessing = false;
+      this.systemMood = 'idle';
+      this.cdr.markForCheck();
     }, 1000);
     return;
   }
@@ -180,7 +191,9 @@ async onChatSubmit(overrideCommand?: string) {
     });
 
     if (response.status === 429) {
+      this.systemMood = 'error';
       this.scramble("SYSTEM_OVERLOAD: TOO_MANY_REQUESTS. SLOW_DOWN.", this.chatResponseEl);
+      this.cdr.markForCheck();
       return;
     }
 
@@ -213,6 +226,8 @@ async onChatSubmit(overrideCommand?: string) {
     }
 
     if (this.chatResponseEl) this.chatResponseEl.nativeElement.textContent = fullText;
+    this.systemMood = 'idle';
+    this.cdr.markForCheck();
 
     // Actualizamos historial local (opcional, para visualización persistente en UI)
     this.chatHistory.push({ role: 'user', content: rawQuery });
@@ -221,17 +236,24 @@ async onChatSubmit(overrideCommand?: string) {
 
     // --- LOGICA DE NAVEGACION DINÁMICA (AI Triggered) ---
     if (fullText.includes('[NAV:CV]')) {
+      this.systemMood = 'success';
+      this.cdr.markForCheck();
       setTimeout(() => this.router.navigate(['/cv']), 2500);
     } 
     else if (fullText.includes('[NAV:PROJECTS]')) {
+      this.systemMood = 'success';
+      this.cdr.markForCheck();
       setTimeout(() => this.router.navigate(['/cv'], { fragment: 'PROJECTS' }), 2500);
     }
 
   } catch (error) {
+    this.systemMood = 'error';
     this.scramble("CONNECTION_ERROR: UNABLE_TO_REACH_NEURAL_CORE.", this.chatResponseEl);
+    this.cdr.markForCheck();
     console.error("Neural Core Error:", error);
   } finally {
     this.isProcessing = false;
+    this.cdr.markForCheck();
   }
 }
 

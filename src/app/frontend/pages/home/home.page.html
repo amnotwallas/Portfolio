@@ -2,8 +2,8 @@
   
   <!-- Optimized Hardware-Accelerated Glow -->
   <div class="pointer-events-none fixed z-0 opacity-100 will-change-transform"
-       style="background: radial-gradient(circle at center, rgba(250, 204, 21, 0.04), transparent 75%); 
-              width: 500px; height: 500px; border-radius: 50%;
+       [ngClass]="'glow-' + systemMood"
+       style="width: 500px; height: 500px; border-radius: 50%;
               left: -250px; top: -250px;
               transform: translate3d(var(--x, -500px), var(--y, -500px), 0);
               backface-visibility: hidden;">
