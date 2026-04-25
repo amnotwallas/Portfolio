@@ -28,7 +28,7 @@ jobs:
           sed -i "s/WALTER_AI_KEY_PLACEHOLDER/${{ secrets.WALTER_AI_API_KEY }}/g" src/environments/environment.prod.ts
 
       - name: Build
-        run: npm run build -- --base-href /portfolio/
+        run: npm run build -- --base-href /Portfolio/
 
       - name: Fix for 404 on refresh
         run: cp dist/bookman/browser/index.html dist/bookman/browser/404.html
