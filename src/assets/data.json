@@ -77,28 +77,30 @@
         "MLflow",
         "JWT",
         "RBAC",
-        "GitHub Actions"
+        "GitHub Actions",
+        "OPEN AI API",
+        "SQL Server"
       ]
     }
   ],
   "projects": [
     {
       "name": "AI-Powered Interactive Portfolio",
-      "description": "A high-performance interactive portfolio featuring a retro-terminal aesthetic, real-time LLM integration (WALTER_AI), and GPU-accelerated visual effects. Optimized for ultra-low CPU usage across all devices.",
-      "website": "https://github.com/amnotwallas/portfolio",
+      "description": "AI-powered interactive portfolio with a retro-terminal interface and an integrated LLM assistant (WALTER_AI) capable of navigating the site and retrieving structured data. Features real-time interaction, GPU-optimized visual effects, and ultra-low CPU usage. Built with Angular 21, Tailwind CSS, and FastAPI.",
+      "website": "https://github.com/amnotwallas/Portfolio",
       "startDate": "2026-04",
       "highlights": [
         "Angular",
         "TailwindCSS",
-        "Vercel Serverless",
+        "Vercel Serverless Functions",
         "LLM (Groq)",
         "GPU-Acceleration"
       ]
     },
     {
-      "name": "WALTER_AI Neural Core API",
-      "description": "Enterprise-grade Backend orchestrating LLM intelligence with real-time SSE streaming. Built using Clean Architecture and FastAPI, featuring asynchronous task handling, strict security protocols (X-API-KEY), and comprehensive unit testing.",
-      "website": "https://github.com/amnotwallas/walter-ai-api",
+      "name": "WALTER_AI Neural Core",
+      "description": "Production-grade Multi-Agent orchestration engine for AI-powered interactions. Features a Master Orchestrator that dynamically executes tools (Function Calling) to retrieve structured portfolio data, with real-time SSE streaming and execution logs under a Clean Architecture. Built with FastAPI & Llama 3.1.",
+      "website": "https://github.com/amnotwallas/walter-ai-neural-core",
       "startDate": "2026-04",
       "highlights": [
         "FastAPI",
