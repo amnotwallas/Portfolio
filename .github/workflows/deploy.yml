@@ -3,7 +3,10 @@ name: Deploy Portfolio to GitHub Pages
 on:
   push:
     branches:
-      - main  # Asegúrate de que este sea el nombre de tu rama principal
+      - main
+
+permissions:
+  contents: write
 
 jobs:
   build-and-deploy:
@@ -15,7 +18,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20' # Versión de Node compatible con tu proyecto
+          node-version: '20' 
 
       - name: Install dependencies
         run: npm install
