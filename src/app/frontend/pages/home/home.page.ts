@@ -58,7 +58,12 @@ export class homepage implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     this.titleInterval = setInterval(() => {
-      const titles = ['Backend & AI Engineer', 'LLM Orchestration Expert', 'System Architect', 'Python Specialist'];
+      const titles = [
+        'AI & Backend Engineer',
+        'Building with LLMs & Python',
+        'System Architecture & APIs',
+        'Crafting Intelligent Solutions'
+      ];
       const next = titles[(titles.indexOf(this.activeTitleStr) + 1) % titles.length];
       this.scramble(next || titles[0], this.titleEl);
     }, 4000);
@@ -199,7 +204,7 @@ export class homepage implements OnInit, OnDestroy, AfterViewInit {
     const targetEl = elementRef?.nativeElement;
     const oldText = targetEl?.textContent || '';
     const length = Math.max(oldText.length, newText.length);
-    const chars = '!<>-_\\/[]{}—=+*^?#________';
+    const chars = '!@$%&<>-_\\/[]{}—=+*^?#________';
 
     const anim = () => {
       let output = '';

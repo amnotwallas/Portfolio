@@ -20,7 +20,7 @@ import { CommonModule } from "@angular/common";
     CommonModule
   ],
   template: `
-    <footer class="FOOTER_APP fixed bottom-8 right-8 flex gap-6 items-center px-6 py-3 bg-[var(--color-footer-bg)]/80 backdrop-blur-md rounded-full shadow-2xl print:hidden text-retro-bright z-50 border border-white/5">
+    <footer class="FOOTER_APP fixed bottom-4 right-4 md:bottom-8 md:right-8 flex gap-4 md:gap-6 items-center px-4 py-2 md:px-6 md:py-3 bg-[var(--color-footer-bg)]/80 backdrop-blur-md rounded-full shadow-2xl print:hidden text-retro-bright z-50 border border-white/5">
 
       <a href="cv.pdf" target="_blank" rel="noopener" class="flex gap-2 items-center text-xs font-medium hover:text-retro-yellow transition-colors whitespace-nowrap">
         <ng-icon [svg]="icons.tablerCloudDownload" size="18" strokeWidth="2.5" />
