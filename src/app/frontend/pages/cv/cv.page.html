@@ -1,0 +1,177 @@
+<main #mainCont class="relative flex flex-col min-h-screen py-8 md:py-12 px-6 md:px-8 lg:px-24 font-['IBM_Plex_Sans'] text-gray-300 max-w-6xl mx-auto overflow-hidden">
+  
+  <!-- Optimized Hardware-Accelerated Glow (Universal Support) -->
+  <div class="pointer-events-none fixed z-0 opacity-100 will-change-transform"
+       style="background: radial-gradient(circle at center, rgba(250, 204, 21, 0.03), transparent 75%); 
+              width: 400px; height: 400px; border-radius: 50%;
+              left: -200px; top: -200px;
+              transform: translate3d(var(--x, -400px), var(--y, -400px), 0);
+              backface-visibility: hidden;
+              -webkit-backface-visibility: hidden;">
+  </div>
+
+  <!-- Header Section -->
+  <header class="mb-6 animate-fade-in-up relative z-10 will-change-transform transform-gpu">
+    <div class="flex flex-col gap-2">
+      <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-retro-bright tracking-tight">{{cv.basics.name}}</h1>
+      <div class="flex flex-col gap-3">
+        <p class="text-xl md:text-2xl font-medium text-retro-yellow/90 uppercase tracking-widest font-mono text-[14px] md:text-[18px] leading-tight">
+          > {{cv.basics.label}}
+        </p>
+        <div class="inline-flex items-center gap-1.5 pl-2 pr-3 h-6 rounded-full bg-retro-yellow/10 border border-retro-yellow/20 text-retro-yellow text-[10px] font-mono tracking-widest uppercase w-fit">
+          <span class="flex h-2 w-2 relative">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-retro-yellow opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-retro-yellow"></span>
+          </span>
+          <span class="translate-y-[0.5px] leading-none">Available for new projects</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-8 lg:gap-16 relative z-10">
+    
+    <!-- Left Column -->
+    <div class="md:col-span-7 lg:col-span-8 space-y-16">
+      
+      <section #ABOUTME class="group animate-fade-in-up delay-100 will-change-transform transform-gpu">
+        <div class="flex items-center gap-3 mb-6">
+          <ng-icon name="tablerUser" class="text-retro-bright text-xl"></ng-icon>
+          <h2 class="text-sm font-bold uppercase tracking-[0.2em] text-retro-bright font-mono">About Me</h2>
+          <div class="h-[1px] flex-grow bg-retro-muted group-hover:bg-retro-yellow/30 transition-colors"></div>
+        </div>
+        <div class="relative pl-4 border-l-2 border-retro-yellow/20">
+          <p class="font-light text-base leading-relaxed text-gray-400 text-left">
+            {{cv.basics.summary}}
+          </p>
+        </div>
+      </section>
+
+      <section #WORK_EXPERIENCE class="group animate-fade-in-up delay-200 will-change-transform transform-gpu">
+        <div class="flex items-center gap-3 mb-8">
+          <ng-icon name="tablerBriefcase" class="text-retro-bright text-xl"></ng-icon>
+          <h2 class="text-sm font-bold uppercase tracking-[0.2em] text-retro-bright font-mono">Experience</h2>
+          <div class="h-[1px] flex-grow bg-retro-muted group-hover:bg-retro-yellow/30 transition-colors"></div>
+        </div>
+
+        <div class="space-y-10 relative before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[1px] before:bg-retro-muted">
+          @for (item of cv.work; track $index) {
+          <div class="relative pl-10 group/item">
+            <div class="absolute left-0 top-1.5 w-6 h-6 rounded-full bg-retro-dark border border-retro-muted flex items-center justify-center z-10 group-hover/item:border-retro-yellow transition-colors overflow-hidden">
+              @if (item.image) {
+                <img [src]="item.image" class="w-full h-full object-cover opacity-80 group-hover/item:opacity-100 transition-opacity" [alt]="item.company">
+              } @else {
+                <div class="w-2 h-2 rounded-full bg-retro-yellow shadow-[0_0_8px_rgba(250,204,21,0.5)]"></div>
+              }
+            </div>
+            
+            <div class="flex flex-col lg:flex-row lg:items-baseline justify-between mb-2 gap-2">
+              <h3 class="text-lg font-bold text-gray-100">{{item.name}}</h3>
+              <span class="text-retro-yellow text-[10px] font-mono px-2 py-0.5 rounded bg-retro-yellow/10 border border-retro-yellow/20 self-start lg:self-auto uppercase">
+                {{item.startDate}} — {{item.endDate}}
+              </span>
+            </div>
+            <p class="text-retro-yellow/80 text-sm font-medium mb-3 uppercase tracking-wider font-mono">{{item.company}}</p>
+            <p class="font-light text-sm text-gray-400 leading-relaxed mb-4">{{item.summary}}</p>
+            
+            <div class="flex flex-wrap gap-2">
+              @for (tech of item.highlights; track $index) {
+                <span class="text-[10px] font-mono uppercase tracking-wider px-2 py-1 rounded bg-white/5 border border-white/10 text-gray-400 backdrop-blur-sm group-hover/item:border-retro-yellow/30 transition-colors">
+                  {{tech}}
+                </span>
+              }
+            </div>
+          </div>
+          }
+        </div>
+      </section>
+
+      <section id="PROJECTS" #PROJECTS class="group animate-fade-in-up delay-300 will-change-transform transform-gpu">
+        <div class="flex items-center gap-3 mb-8">
+          <ng-icon name="tablerRocket" class="text-retro-bright text-xl"></ng-icon>
+          <h2 class="text-sm font-bold uppercase tracking-[0.2em] text-retro-bright font-mono">Key Projects</h2>
+          <div class="h-[1px] flex-grow bg-retro-muted group-hover:bg-retro-yellow/30 transition-colors"></div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          @for (item of cv.projects; track $index) {
+          <div class="p-5 rounded-xl border border-white/5 bg-white/5 backdrop-blur-md hover-lift group/project shadow-xl will-change-transform relative overflow-hidden flex flex-col">
+            <div class="flex justify-between items-start mb-2 gap-4">
+              <h3 class="text-base font-bold text-gray-100 group-hover/project:text-retro-yellow transition-colors font-mono">{{item.name}}</h3>
+              @if (item.website) {
+                <a [href]="item.website" target="_blank" class="text-retro-bright/30 hover:text-retro-yellow transition-colors flex-shrink-0">
+                  <ng-icon name="tablerBrandGithub" size="18"></ng-icon>
+                </a>
+              }
+            </div>
+            <p class="font-light text-xs text-gray-400 leading-snug mb-4">{{item.description}}</p>
+            <div class="flex flex-wrap gap-1.5 mb-4">
+              @for (tech of item.highlights; track $index) {
+                <span class="text-[9px] font-mono text-retro-yellow/60 uppercase">{{tech}}</span>
+                @if (!$last) { <span class="text-[9px] text-gray-700 mx-1">•</span> }
+              }
+            </div>
+            
+            @if (item.website) {
+              <a [href]="item.website" target="_blank" class="inline-flex items-center gap-2 text-[9px] font-mono uppercase tracking-widest text-retro-yellow/40 hover:text-retro-yellow transition-colors mt-auto">
+                <span>View Repository</span>
+                <ng-icon name="tablerExternalLink" size="12"></ng-icon>
+              </a>
+            }
+          </div>
+          }
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Right Column -->
+    <aside class="md:col-span-5 lg:col-span-4 space-y-12">
+      
+      <section #SKILLS class="group animate-fade-in-up delay-500 will-change-transform transform-gpu">
+        <div class="flex items-center gap-3 mb-6">
+          <ng-icon name="tablerTools" class="text-retro-bright text-xl"></ng-icon>
+          <h2 class="text-sm font-bold uppercase tracking-[0.2em] text-retro-bright font-mono">Competencies</h2>
+          <div class="h-[1px] flex-grow bg-retro-muted group-hover:bg-retro-yellow/30 transition-colors"></div>
+        </div>
+        
+        <div class="space-y-6">
+          @for (item of cv.skills; track $index) {
+          <div>
+            <h3 class="text-[10px] font-bold text-gray-100 uppercase tracking-widest mb-3 flex items-center gap-2 font-mono">
+              <span class="w-1 h-1 bg-retro-yellow rounded-full"></span>
+              {{item.name}}
+            </h3>
+            <div class="flex flex-wrap gap-2">
+              @for (keyword of item.keywords; track $index) {
+                <span class="text-[10px] font-light px-3 py-1.5 rounded-lg bg-white/5 backdrop-blur-md border border-white/10 text-gray-300 hover:border-retro-yellow/40 hover:text-retro-yellow transition-all cursor-default font-mono">
+                  {{ keyword }}
+                </span>
+              }
+            </div>
+          </div>
+          }
+        </div>
+      </section>
+
+      <section #LANGUAGES class="group animate-fade-in-up delay-600 will-change-transform transform-gpu">
+        <div class="flex items-center gap-3 mb-6">
+          <ng-icon name="tablerLanguage" class="text-retro-bright text-xl"></ng-icon>
+          <h2 class="text-sm font-bold uppercase tracking-[0.2em] text-retro-bright font-mono">Languages</h2>
+          <div class="h-[1px] flex-grow bg-retro-muted group-hover:bg-retro-yellow/30 transition-colors"></div>
+        </div>
+        
+        <div class="grid grid-cols-1 gap-4">
+          @for (lang of cv.languages; track $index) {
+          <div class="flex items-center justify-between p-3 rounded-lg bg-white/5 border border-white/5 hover:border-retro-yellow/20 transition-colors">
+            <span class="text-xs font-medium text-gray-200 font-mono">{{lang.language}}</span>
+            <span class="text-[9px] font-mono text-retro-yellow uppercase tracking-tighter">{{lang.fluency}}</span>
+          </div>
+          }
+        </div>
+      </section>
+
+    </aside>
+
+  </div>
+</main>

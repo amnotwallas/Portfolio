@@ -1,0 +1,110 @@
+@import 'tailwindcss';
+@import "tailwindcss-primeui";
+
+:root {
+  --color-retro-dark: #0D0D0D;    /* Fondo negro profundo, estilo terminal */
+  --color-retro-muted: #1A1A1A;   /* Color para UI secundaria y thumb del scroll */
+  --color-retro-yellow: #FFB000;  /* Ámbar vibrante para acentos y estados hover */
+  --color-retro-bright: #FACC15;  /* Blanco puro para títulos de alto impacto */
+  --color-retro-font: #E0E0E0;    /* Gris muy claro para el cuerpo del texto (descansa la vista) */
+  --color-footer-bg: #1A1A1A;     /* Fondo de la píldora del footer */
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-retro-dark);
+  background-image: 
+    radial-gradient(circle at 2px 2px, rgba(255, 176, 0, 0.03) 1px, transparent 0);
+  background-size: 40px 40px;
+  color: var(--color-retro-font);
+  font-family: "Space Grotesk", sans-serif;
+}
+
+/* Elevación de tarjetas */
+.hover-lift {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.hover-lift:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px -10px rgba(250, 204, 21, 0.1);
+}
+
+/* Efectos de resplandor retro sutil */
+.text-glow {
+  /* Usamos un radio muy pequeño y baja opacidad para que no cambie el tono del texto */
+  text-shadow: 0 0 6px rgba(250, 204, 21, 0.3);
+}
+
+/* Animación de cursor parpadeante elegante */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.cursor-blink::after {
+  content: '|';
+  margin-left: 2px;
+  animation: blink 1s step-end infinite;
+  color: var(--color-retro-bright);
+  font-weight: 200;
+}
+
+/* Animación de revelado (typing) */
+@keyframes typeIn {
+  from { width: 0; }
+}
+
+.animate-typing {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  vertical-align: bottom;
+  animation-name: typeIn;
+  animation-duration: 2s;
+  animation-fill-mode: forwards;
+}
+
+/* Animaciones de entrada */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+  opacity: 0; /* Empieza invisible para la animación */
+}
+
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
+.delay-600 { animation-delay: 600ms; }
+.delay-700 { animation-delay: 700ms; }
+
+/* Subtítulos o detalles con el amarillo mostaza */
+h3, .text-accent {
+  color: var(--color-retro-yellow);
+}
+
+/* Scrollbar más discreta */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-retro-dark);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-retro-muted);
+  border-radius: 10px;
+}

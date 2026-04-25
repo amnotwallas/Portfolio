@@ -1,0 +1,230 @@
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, AfterViewInit, NgZone, ChangeDetectionStrategy, inject } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { FormsModule } from "@angular/forms";
+import { Router } from "@angular/router";
+import { environment } from "../../../../environments/environment";
+import cv from "../../../../assets/data.json";
+
+@Component({
+  standalone: true,
+  selector: 'homepage',
+  templateUrl: 'home.page.html',
+  imports: [CommonModule, FormsModule],
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class homepage implements OnInit, OnDestroy, AfterViewInit {
+  @ViewChild('uptimeEl') uptimeEl!: ElementRef<HTMLElement>;
+  @ViewChild('titleEl') titleEl!: ElementRef<HTMLElement>;
+  @ViewChild('chatResponseEl') chatResponseEl!: ElementRef<HTMLElement>;
+  @ViewChild('logEl1') logEl1!: ElementRef<HTMLElement>;
+  @ViewChild('logEl2') logEl2!: ElementRef<HTMLElement>;
+  @ViewChild('logEl3') logEl3!: ElementRef<HTMLElement>;
+  @ViewChild('mainCont') mainCont!: ElementRef<HTMLElement>;
+  @ViewChild('chatInput') chatInput!: ElementRef<HTMLInputElement>;
+  
+  private mouse = { x: -1000, y: -1000 };
+  private dpr = 1;
+  private ticking = false;
+
+  readonly cv = cv;
+  firstName = cv.basics.name.split(' ')[0];
+  firstNameLength = this.firstName.length;
+
+  userQuery = '';
+  isProcessing = false;
+  private chatHistory: {role: string, content: string}[] = [];
+  private activeTitleStr = '';
+  
+  private titleInterval: any;
+  private uptimeInterval: any;
+  private logInterval: any;
+  private startTime = Date.now();
+
+  private systemLogs = [
+    "LLM_ORCHESTRATOR_ACTIVE: [TASK_DELEGATION]",
+    "AGENT_NODE_REASONING... [DONE]",
+    "FASTAPI_WORKERS_ONLINE: [UVICORN]",
+    "VECTOR_DB_SYNC: [READY]",
+    "PROMPT_INJECTION_SHIELD: [ENABLED]",
+    "RAG_PIPELINE_LATENCY: 120ms",
+    "NEURAL_CONTEXT_WINDOW: 128K_TOKENS",
+    "STREAMING_SSE_CONNECTION: STABLE",
+    "MODEL_EVAL_METRICS: [98%_ACCURACY]",
+    "JWT_AUTH_TOKEN_VERIFIED: [RBAC_OK]"
+  ];
+  private currentLogs = ["INITIALIZING_MODULES...", "CONNECTING_TO_LLM_GATEWAY... [OK]", "DATA_STREAM_STABLE"];
+
+  constructor(private ngZone: NgZone, private router: Router) {}
+
+  ngOnInit() {
+    this.titleInterval = setInterval(() => {
+      const titles = ['Backend & AI Engineer', 'LLM Orchestration Expert', 'System Architect', 'Python Specialist'];
+      const next = titles[(titles.indexOf(this.activeTitleStr) + 1) % titles.length];
+      this.scramble(next || titles[0], this.titleEl);
+    }, 4000);
+
+    this.uptimeInterval = setInterval(() => {
+      const diff = Math.floor((Date.now() - this.startTime) / 1000);
+      const uptimeStr = `${Math.floor(diff/3600).toString().padStart(2,'0')}:${Math.floor((diff%3600)/60).toString().padStart(2,'0')}:${(diff%60).toString().padStart(2,'0')}`;
+      if (this.uptimeEl) this.uptimeEl.nativeElement.textContent = uptimeStr;
+    }, 1000);
+
+    this.logInterval = setInterval(() => {
+      let nextLog = this.systemLogs[Math.floor(Math.random() * this.systemLogs.length)];
+      while (this.currentLogs.includes(nextLog)) {
+        nextLog = this.systemLogs[Math.floor(Math.random() * this.systemLogs.length)];
+      }
+      this.currentLogs[0] = this.currentLogs[1];
+      this.currentLogs[1] = this.currentLogs[2];
+      this.currentLogs[2] = nextLog;
+      this.scramble(this.currentLogs[0], this.logEl1);
+      this.scramble(this.currentLogs[1], this.logEl2);
+      this.scramble(this.currentLogs[2], this.logEl3);
+    }, 6000);
+  }
+
+  ngAfterViewInit() {
+    this.dpr = window.devicePixelRatio || 1;
+    setTimeout(() => this.chatInput?.nativeElement?.focus(), 600);
+    this.ngZone.runOutsideAngular(() => {
+      window.addEventListener('mousemove', this.handleMouseMove, { passive: true });
+      this.scramble(cv.basics.label, this.titleEl);
+    });
+  }
+
+  private handleMouseMove = (e: MouseEvent) => {
+    if (!this.ticking) {
+      window.requestAnimationFrame(() => {
+        if (this.mainCont) {
+          this.mainCont.nativeElement.style.setProperty('--x', `${e.clientX}px`);
+          this.mainCont.nativeElement.style.setProperty('--y', `${e.clientY}px`);
+        }
+        this.ticking = false;
+      });
+      this.ticking = true;
+    }
+  }
+
+  async onChatSubmit(overrideCommand?: string) {
+    const rawQuery = overrideCommand || this.userQuery;
+    if (!rawQuery.trim() || this.isProcessing) return;
+
+    this.isProcessing = true;
+    const query = rawQuery.trim().toLowerCase();
+    this.userQuery = '';
+    
+    if (this.chatResponseEl) this.chatResponseEl.nativeElement.textContent = "[WALTER_AI]: PROCESSING_COMMAND...";
+
+    if (query === 'cv' || query === 'resume' || query === 'exec_cv') {
+      this.scramble("COMMAND_ACCEPTED: REDIRECTING TO CV MODULE...", this.chatResponseEl);
+      setTimeout(() => {
+        this.router.navigate(['/cv']);
+        this.isProcessing = false;
+      }, 1000);
+      return;
+    }
+
+    if (query === 'projects' || query === 'view_projects' || query === 'show projects') {
+      this.scramble("COMMAND_ACCEPTED: OPENING PROJECTS VIEW...", this.chatResponseEl);
+      setTimeout(() => {
+        this.router.navigate(['/cv'], { fragment: 'PROJECTS' });
+        this.isProcessing = false;
+      }, 1000);
+      return;
+    }
+
+    if (this.chatResponseEl) this.chatResponseEl.nativeElement.textContent = "[WALTER_AI]: THINKING...";
+
+    try {
+      const API_URL = `${environment.apiUrl}/chat/stream`; 
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'X-API-KEY': environment.apiKey
+        },
+        body: JSON.stringify({ 
+          query: rawQuery,
+          history: this.chatHistory
+        })
+      });
+
+      if (!response.ok) throw new Error('API_UNAVAILABLE');
+
+      const reader = response.body?.getReader();
+      const decoder = new TextDecoder();
+      let fullText = "";
+
+      if (this.chatResponseEl) this.chatResponseEl.nativeElement.textContent = "";
+
+      while (true) {
+        const { done, value } = await reader!.read();
+        if (done) break;
+        const chunk = decoder.decode(value);
+        const lines = chunk.split('\n');
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            const content = line.replace('data: ', '');
+            fullText += content;
+            if (this.chatResponseEl) {
+              this.chatResponseEl.nativeElement.textContent = fullText + "_";
+              await new Promise(resolve => setTimeout(resolve, 20)); 
+            }
+          }
+        }
+      }
+
+      if (this.chatResponseEl) this.chatResponseEl.nativeElement.textContent = fullText;
+
+      this.chatHistory.push({ role: 'user', content: rawQuery });
+      this.chatHistory.push({ role: 'assistant', content: fullText });
+      if (this.chatHistory.length > 6) this.chatHistory.shift();
+
+      if (fullText.includes('[NAV:CV]')) {
+        setTimeout(() => this.router.navigate(['/cv']), 3000);
+      } 
+      else if (fullText.includes('[NAV:PROJECTS]')) {
+        setTimeout(() => this.router.navigate(['/cv'], { fragment: 'PROJECTS' }), 3000);
+      }
+
+    } catch (error) {
+      this.scramble("CONNECTION_ERROR: UNABLE_TO_REACH_NEURAL_CORE.", this.chatResponseEl);
+    } finally {
+      this.isProcessing = false;
+    }
+  }
+
+  private scramble(newText: string, elementRef?: ElementRef<HTMLElement>) {
+    let frame = 0;
+    const targetEl = elementRef?.nativeElement;
+    const oldText = targetEl?.textContent || '';
+    const length = Math.max(oldText.length, newText.length);
+    const chars = '!<>-_\\/[]{}—=+*^?#________';
+
+    const anim = () => {
+      let output = '';
+      let complete = 0;
+      for (let i = 0; i < length; i++) {
+        const start = Math.floor(Math.random() * 3);
+        const end = start + Math.floor(Math.random() * 6);
+        if (frame >= end) { complete++; output += newText[i] || ''; }
+        else if (frame >= start) { output += chars[Math.floor(Math.random() * chars.length)]; }
+        else { output += oldText[i] || ''; }
+      }
+      if (targetEl) targetEl.textContent = output;
+      if (elementRef === this.titleEl) this.activeTitleStr = output;
+      if (complete < length) {
+        frame++;
+        requestAnimationFrame(anim);
+      }
+    };
+    this.ngZone.runOutsideAngular(() => requestAnimationFrame(anim));
+  }
+
+  ngOnDestroy() {
+    clearInterval(this.titleInterval);
+    clearInterval(this.uptimeInterval);
+    clearInterval(this.logInterval);
+    window.removeEventListener('mousemove', this.handleMouseMove);
+  }
+}
