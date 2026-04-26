@@ -5,7 +5,8 @@ import { NgIcon, provideIcons } from "@ng-icons/core";
 import { 
   tablerUser, tablerBriefcase, tablerRocket, 
   tablerSchool, tablerTools, tablerLanguage,
-  tablerBrandGithub, tablerExternalLink
+  tablerBrandGithub, tablerExternalLink,
+  tablerChevronLeft, tablerChevronRight
 } from "@ng-icons/tabler-icons";
 import cv from "../../../../assets/data.json";
 
@@ -17,7 +18,8 @@ import cv from "../../../../assets/data.json";
   providers: [provideIcons({ 
     tablerUser, tablerBriefcase, tablerRocket, 
     tablerSchool, tablerTools, tablerLanguage,
-    tablerBrandGithub, tablerExternalLink
+    tablerBrandGithub, tablerExternalLink,
+    tablerChevronLeft, tablerChevronRight
   })],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -31,9 +33,15 @@ export class cvpage implements OnInit, OnDestroy, AfterViewInit {
   readonly cv = cv;
   private ticking = false;
   private observer!: IntersectionObserver;
+  
+  // Carousel State
+  projectIndices: { [key: string]: number } = {};
+  private autoPlayInterval: any;
 
   ngOnInit() {
     this.cdr.markForCheck();
+    this.initCarouselIndices();
+    this.startAutoPlay();
 
     this.route.fragment.subscribe(frag => {
       if (frag) {
@@ -108,8 +116,40 @@ export class cvpage implements OnInit, OnDestroy, AfterViewInit {
     requestAnimationFrame(anim);
   }
 
+  private initCarouselIndices() {
+    this.cv.projects.forEach((_, index) => {
+      this.projectIndices[index] = 0;
+    });
+  }
+
+  private startAutoPlay() {
+    this.ngZone.runOutsideAngular(() => {
+      this.autoPlayInterval = setInterval(() => {
+        this.ngZone.run(() => {
+          this.cv.projects.forEach((project, index) => {
+            if (project.images && project.images.length > 1) {
+              this.nextImage(index, project.images.length);
+            }
+          });
+          this.cdr.markForCheck();
+        });
+      }, 5000);
+    });
+  }
+
+  nextImage(projectIdx: number, total: number) {
+    this.projectIndices[projectIdx] = (this.projectIndices[projectIdx] + 1) % total;
+    this.cdr.markForCheck();
+  }
+
+  prevImage(projectIdx: number, total: number) {
+    this.projectIndices[projectIdx] = (this.projectIndices[projectIdx] - 1 + total) % total;
+    this.cdr.markForCheck();
+  }
+
   ngOnDestroy() {
     window.removeEventListener('mousemove', this.onMouseMove);
     if (this.observer) this.observer.disconnect();
+    if (this.autoPlayInterval) clearInterval(this.autoPlayInterval);
   }
 }
