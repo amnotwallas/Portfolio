@@ -6,7 +6,8 @@ import {
   tablerUser, tablerBriefcase, tablerRocket, 
   tablerSchool, tablerTools, tablerLanguage,
   tablerBrandGithub, tablerExternalLink,
-  tablerChevronLeft, tablerChevronRight
+  tablerChevronLeft, tablerChevronRight,
+  tablerChevronDown, tablerChevronUp
 } from "@ng-icons/tabler-icons";
 import cv from "../../../../assets/data.json";
 
@@ -19,7 +20,8 @@ import cv from "../../../../assets/data.json";
     tablerUser, tablerBriefcase, tablerRocket, 
     tablerSchool, tablerTools, tablerLanguage,
     tablerBrandGithub, tablerExternalLink,
-    tablerChevronLeft, tablerChevronRight
+    tablerChevronLeft, tablerChevronRight,
+    tablerChevronDown, tablerChevronUp
   })],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -36,6 +38,7 @@ export class cvpage implements OnInit, OnDestroy, AfterViewInit {
   
   // Carousel State
   projectIndices: { [key: string]: number } = {};
+  expandedProjects: { [key: number]: boolean } = {};
   private autoPlayInterval: any;
 
   ngOnInit() {
@@ -144,6 +147,11 @@ export class cvpage implements OnInit, OnDestroy, AfterViewInit {
 
   prevImage(projectIdx: number, total: number) {
     this.projectIndices[projectIdx] = (this.projectIndices[projectIdx] - 1 + total) % total;
+    this.cdr.markForCheck();
+  }
+
+  toggleProject(index: number) {
+    this.expandedProjects[index] = !this.expandedProjects[index];
     this.cdr.markForCheck();
   }
 
