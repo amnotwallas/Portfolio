@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, signal, computed } from '@angular/core';
+import { Component, signal, computed, HostListener } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { NgIcon } from '@ng-icons/core';
 import {
@@ -53,6 +53,21 @@ export class SpeedDialComponent {
       return { x, y };
     });
   });
+
+  @HostListener('window:scroll', [])
+  onWindowScroll() {
+    if (this.open()) {
+      this.open.set(false);
+    }
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    if (!target.closest('app-speed-dial') && this.open()) {
+      this.open.set(false);
+    }
+  }
 
   toggle() {
     this.open.update(v => !v);
