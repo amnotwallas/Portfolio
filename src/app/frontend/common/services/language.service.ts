@@ -20,8 +20,6 @@ export class LanguageService {
       aiThinking: "[WALTER_AI]: THINKING...",
       aiCommand: "COMMAND_ACCEPTED: REDIRECTING...",
       placeholder: 'TYPE_COMMAND_HERE...',
-      execCv: 'EXEC_CV',
-      viewProjects: 'VIEW_PROJECTS'
     },
     es: {
       available: 'Disponible para nuevos proyectos',
