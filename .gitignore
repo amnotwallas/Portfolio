@@ -1,3 +1,5 @@
+.DS_Store
+
 # Angular specific
 /dist/
 /out-tsc/
