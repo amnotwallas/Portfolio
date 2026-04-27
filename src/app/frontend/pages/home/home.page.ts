@@ -2,6 +2,8 @@ import { Component, OnInit, OnDestroy, ViewChild, ElementRef, AfterViewInit, NgZ
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { Router } from "@angular/router";
+import { NgIcon, provideIcons } from "@ng-icons/core";
+import { tablerArrowUp } from "@ng-icons/tabler-icons";
 import { environment } from "../../../../environments/environment";
 import cv from "../../../../assets/data.json";
 
@@ -9,7 +11,8 @@ import cv from "../../../../assets/data.json";
   standalone: true,
   selector: 'homepage',
   templateUrl: 'home.page.html',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, NgIcon],
+  providers: [provideIcons({ tablerArrowUp })],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class homepage implements OnInit, OnDestroy, AfterViewInit {

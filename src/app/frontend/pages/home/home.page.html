@@ -54,7 +54,7 @@
         </p>
         
         <!-- Input Line (Restored UI) -->
-        <form (submit)="onChatSubmit()" class="flex items-center gap-3 border-b-2 border-white/10 focus-within:border-retro-yellow transition-all duration-300 pb-2 mx-auto w-full max-w-md">
+        <form (submit)="onChatSubmit()" class="flex items-center gap-3 border-b-2 border-white/10 focus-within:border-retro-yellow transition-all duration-300 pb-2 mx-auto w-full max-w-md group">
           <span class="font-mono text-retro-yellow text-xs md:text-sm font-bold whitespace-nowrap uppercase tracking-tight">WALTER_AI ></span>
           <input 
             #chatInput
@@ -65,6 +65,13 @@
             placeholder="TYPE_COMMAND_HERE..."
             class="flex-grow bg-transparent border-none outline-none font-mono text-sm md:text-base text-retro-bright placeholder:text-gray-700 tracking-widest"
           >
+          <button 
+            type="submit" 
+            [disabled]="isProcessing || !userQuery.trim()"
+            class="flex items-center justify-center bg-retro-yellow/5 border border-retro-yellow/20 rounded px-2 py-1 text-retro-yellow/60 hover:text-retro-yellow hover:bg-retro-yellow/10 hover:border-retro-yellow/40 disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-300"
+          >
+            <ng-icon name="tablerArrowUp" size="18"></ng-icon>
+          </button>
         </form>
         <div class="flex items-center justify-center gap-2 md:gap-4 mt-6">
           <span class="hidden sm:block h-[1px] w-6 md:w-8 bg-white/10"></span>
