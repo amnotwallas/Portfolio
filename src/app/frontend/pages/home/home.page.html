@@ -47,15 +47,15 @@
 
     <!-- Minimal Terminal Chat (Integrated) -->
     <div class="w-full max-w-lg animate-fade-in-up delay-700 mt-20">
-      <div class="flex flex-col gap-4">
+      <div class="flex flex-col gap-6">
         <!-- AI Response Area -->
-        <p #chatResponseEl class="font-mono text-[10px] md:text-[11px] text-gray-500 min-h-[1.5em] tracking-wide text-center px-4 uppercase">
+        <p #chatResponseEl class="font-mono text-xs md:text-sm text-retro-bright/80 min-h-[1.5em] tracking-wide text-center px-4 uppercase">
           [WALTER_AI]: SYSTEM_READY. TRY_COMMANDS: 'EXEC_CV' OR 'VIEW_PROJECTS'_
         </p>
         
         <!-- Input Line (Restored UI) -->
-        <form (submit)="onChatSubmit()" class="flex items-center gap-2 border-b border-white/10 focus-within:border-retro-yellow/50 transition-colors pb-1 mx-auto w-full max-w-md">
-          <span class="font-mono text-retro-yellow text-[10px] font-bold whitespace-nowrap uppercase tracking-tighter">WALTER_AI ></span>
+        <form (submit)="onChatSubmit()" class="flex items-center gap-3 border-b-2 border-white/10 focus-within:border-retro-yellow transition-all duration-300 pb-2 mx-auto w-full max-w-md">
+          <span class="font-mono text-retro-yellow text-xs md:text-sm font-bold whitespace-nowrap uppercase tracking-tight">WALTER_AI ></span>
           <input 
             #chatInput
             type="text" 
@@ -63,12 +63,16 @@
             name="query"
             autocomplete="off"
             placeholder="TYPE_COMMAND_HERE..."
-            class="flex-grow bg-transparent border-none outline-none font-mono text-[11px] text-retro-bright placeholder:text-gray-800 tracking-wider"
+            class="flex-grow bg-transparent border-none outline-none font-mono text-sm md:text-base text-retro-bright placeholder:text-gray-700 tracking-widest"
           >
         </form>
-        <p class="font-mono text-[7px] text-gray-500 uppercase tracking-[0.4em] opacity-70 mt-2">
-          WALTER_AI_INTERFACE // CORE_STABLE
-        </p>
+        <div class="flex items-center justify-center gap-2 md:gap-4 mt-6">
+          <span class="hidden sm:block h-[1px] w-6 md:w-8 bg-white/10"></span>
+          <p class="font-mono text-[8px] md:text-[10px] text-retro-yellow/60 uppercase tracking-[0.2em] md:tracking-[0.6em] whitespace-nowrap">
+            WALTER_AI_INTERFACE // CORE_STABLE
+          </p>
+          <span class="hidden sm:block h-[1px] w-6 md:w-8 bg-white/10"></span>
+        </div>
       </div>
     </div>
 
