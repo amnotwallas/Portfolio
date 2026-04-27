@@ -22,10 +22,25 @@ import { CommonModule } from "@angular/common";
   template: `
     <footer class="FOOTER_APP fixed bottom-4 right-4 md:bottom-8 md:right-8 flex gap-4 md:gap-6 items-center px-4 py-2 md:px-6 md:py-3 bg-[var(--color-footer-bg)]/80 backdrop-blur-md rounded-full shadow-2xl print:hidden text-retro-bright z-50 border border-white/5">
 
-      <a href="cv.pdf" target="_blank" rel="noopener" class="flex gap-2 items-center text-xs font-medium hover:text-retro-yellow transition-colors whitespace-nowrap">
-        <ng-icon [svg]="icons.tablerCloudDownload" size="18" strokeWidth="2.5" />
-        CV
-      </a>
+      <div class="relative flex items-center">
+        <button 
+          (click)="handleCvClick()"
+          class="flex gap-2 items-center text-xs font-medium hover:text-retro-yellow transition-colors cursor-pointer outline-none border-none bg-transparent whitespace-nowrap"
+        >
+          <ng-icon [svg]="icons.tablerCloudDownload" size="18" strokeWidth="2.5" />
+          <span>CV</span>
+        </button>
+
+        <!-- Tooltip CV No Disponible -->
+        <div 
+          *ngIf="showCvTooltip()"
+          class="absolute bottom-full mb-4 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-retro-bright text-retro-dark text-[10px] font-bold rounded uppercase tracking-widest shadow-xl animate-fade-in-up whitespace-nowrap border border-retro-yellow/30"
+        >
+          Not available yet!
+          <!-- Pequeña flecha del tooltip -->
+          <div class="absolute top-full left-1/2 -translate-x-1/2 border-8 border-transparent border-t-retro-bright"></div>
+        </div>
+      </div>
 
       <a class="flex gap-2 items-center text-xs font-medium hover:text-retro-yellow transition-colors" [href]="cv.basics.profiles[0].url" target="_blank">
         <ng-icon [svg]="icons.tablerBrandLinkedin" size="18" strokeWidth="2.5" />
@@ -74,8 +89,22 @@ export class Footer implements OnInit, OnDestroy {
   }
 
   isCopied = signal(false);
+  cvAvailable = signal(false);
+  showCvTooltip = signal(false);
   private router = inject(Router);
   currentUrl = signal('');
+
+  handleCvClick() {
+    if (this.cvAvailable()) {
+      window.open('cv.pdf', '_blank');
+    } else {
+      if (this.showCvTooltip()) return;
+      this.showCvTooltip.set(true);
+      setTimeout(() => {
+        this.showCvTooltip.set(false);
+      }, 2000);
+    }
+  }
 
   copyEmail() {
     if (this.isCopied()) return;
