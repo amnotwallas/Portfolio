@@ -1,14 +1,16 @@
-<!-- El contenedor ahora es sólido para el mouse y cambia de tamaño según el estado -->
+<!-- Contenedor ajustado: ya no bloquea clics innecesarios -->
 <div class="fixed top-0 left-0 transition-all duration-300 z-50 print:hidden"
      [class.w-80]="open()" [class.h-80]="open()"
-     [class.w-24]="!open()" [class.h-24]="!open()"
+     [class.w-20]="!open()" [class.h-20]="!open()"
      (mouseleave)="open.set(false)">
 
   <!-- Botón Principal (Gatillo) -->
   <button id="thething"
     (mouseenter)="open.set(true)"
     (click)="toggle()"
-    class="bg-retro-muted text-retro-bright absolute top-10 left-10 w-12 h-12 rounded-full text-2xl flex items-center justify-center z-20 border border-retro-yellow/30 shadow-lg"
+    class="bg-retro-muted/80 backdrop-blur-sm text-retro-bright absolute top-4 left-4 md:top-10 md:left-10 w-11 h-11 md:w-12 md:h-12 rounded-full text-2xl flex items-center justify-center z-20 border border-retro-yellow/30 shadow-lg transition-all"
+    [class.opacity-40]="!open()"
+    [class.hover:opacity-100]="true"
   >
     <ng-icon
       [svg]="excludedIcons.tablerMenu2"
@@ -19,7 +21,7 @@
   </button>
 
   <!-- Área de los botones -->
-  <div class="absolute top-10 left-10 z-10" [style.visibility]="open() ? 'visible' : 'hidden'">
+  <div class="absolute top-4 left-4 md:top-10 md:left-10 z-10" [style.visibility]="open() ? 'visible' : 'hidden'">
     @for (item of icons.keys(); track $index; let i = $index) {
       
       @if (icons.get(item)?.icon) {
