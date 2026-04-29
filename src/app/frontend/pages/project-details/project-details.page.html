@@ -1,4 +1,4 @@
-<main class="relative flex flex-col min-h-screen pt-20 pb-32 px-6 md:px-8 lg:px-24 font-['IBM_Plex_Sans'] text-gray-300 max-w-7xl mx-auto">
+<main class="relative flex flex-col min-h-screen pt-20 pb-32 px-6 md:px-8 lg:px-24 font-['IBM_Plex_Sans'] text-gray-300 max-w-7xl mx-auto overflow-x-hidden">
   
   <!-- Back Button -->
   <button (click)="goBack()" class="group mb-12 flex items-center gap-2 text-retro-yellow/60 hover:text-retro-yellow transition-colors font-mono text-sm uppercase tracking-widest w-fit">
@@ -7,7 +7,7 @@
   </button>
 
   @if (project) {
-    <div class="animate-fade-in-up">
+    <div class="animate-fade-in-up transform-gpu will-change-transform">
       <!-- Header -->
       <header class="mb-12">
         <div class="flex flex-col gap-4">
@@ -31,24 +31,83 @@
         </div>
       </header>
 
+      <!-- Metrics Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-16">
+        <div class="p-4 rounded-xl border border-white/5 bg-white/[0.03] flex flex-col gap-1 backdrop-blur-sm">
+          <span class="text-[10px] font-mono text-gray-500 uppercase tracking-widest flex items-center gap-2">
+            <ng-icon name="tablerActivity" size="12" class="text-retro-yellow"></ng-icon>
+            Status
+          </span>
+          <span class="text-sm font-bold text-retro-bright font-mono">{{project.status || 'N/A'}}</span>
+        </div>
+        <div class="p-4 rounded-xl border border-white/5 bg-white/[0.03] flex flex-col gap-1 backdrop-blur-sm">
+          <span class="text-[10px] font-mono text-gray-500 uppercase tracking-widest">Role</span>
+          <span class="text-sm font-bold text-retro-bright font-mono">{{project.role || 'DEVELOPER'}}</span>
+        </div>
+        <div class="p-4 rounded-xl border border-white/5 bg-white/[0.03] flex flex-col gap-1 backdrop-blur-sm">
+          <span class="text-[10px] font-mono text-gray-500 uppercase tracking-widest">Complexity</span>
+          <span class="text-sm font-bold text-retro-bright font-mono">{{project.complexity || 'MEDIUM'}}</span>
+        </div>
+      </div>
+
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
         
         <!-- Main Content -->
-        <div class="lg:col-span-7 space-y-12">
+        <div class="lg:col-span-7 space-y-16">
           
-          <!-- Image Gallery -->
+          <!-- Project Carousel -->
           <section class="space-y-6">
             <h2 class="text-xs font-bold uppercase tracking-[0.2em] text-retro-bright font-mono border-b border-white/10 pb-2">Visual Documentation</h2>
-            <div class="grid grid-cols-1 gap-6">
-              @if (project.images && project.images.length > 0) {
-                @for (img of project.images; track $index) {
-                  <div class="rounded-xl overflow-hidden border border-white/10 bg-retro-dark shadow-2xl group">
-                    <img [src]="img" [alt]="project.name" class="w-full h-auto object-cover opacity-90 group-hover:opacity-100 transition-opacity">
-                  </div>
+            
+            <div class="relative group/carousel h-auto aspect-[4/3] overflow-hidden rounded-xl border border-white/10 bg-retro-dark shadow-lg transform-gpu">
+              
+              <!-- Images Container -->
+              <div class="relative w-full h-full">
+                @if (project.images && project.images.length > 0) {
+                  @for (img of project.images; track $index) {
+                    <img [src]="img" 
+                         loading="lazy"
+                         class="absolute inset-0 w-full h-full object-cover object-top transition-all duration-1000 ease-in-out" 
+                         [class.opacity-100]="projectIndex === $index"
+                         [class.opacity-0]="projectIndex !== $index"
+                         [class.z-10]="projectIndex === $index"
+                         [alt]="project.name + ' image ' + $index">
+                  }
+                } @else if (project.image) {
+                  <img [src]="project.image" 
+                       loading="lazy"
+                       class="w-full h-full object-cover object-top opacity-90" 
+                       [alt]="project.name">
                 }
-              } @else if (project.image) {
-                <div class="rounded-xl overflow-hidden border border-white/10 bg-retro-dark shadow-2xl group">
-                  <img [src]="project.image" [alt]="project.name" class="w-full h-auto object-cover opacity-90 group-hover:opacity-100 transition-opacity">
+                
+                <!-- Overlay Gradient -->
+                <div class="absolute inset-0 z-20 pointer-events-none bg-gradient-to-t from-retro-dark/60 via-transparent to-transparent"></div>
+              </div>
+
+              <!-- Manual Controls -->
+              @if (project.images && project.images.length > 1) {
+                <button (click)="prevImage()" 
+                        class="absolute left-4 top-1/2 -translate-y-1/2 z-30 w-11 h-11 flex items-center justify-center rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-white/70 hover:text-retro-yellow hover:border-retro-yellow/50 transition-all opacity-0 group-hover/carousel:opacity-100">
+                  <ng-icon name="tablerChevronLeft" size="24"></ng-icon>
+                </button>
+                <button (click)="nextImage()" 
+                        class="absolute right-4 top-1/2 -translate-y-1/2 z-30 w-11 h-11 flex items-center justify-center rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-white/70 hover:text-retro-yellow hover:border-retro-yellow/50 transition-all opacity-0 group-hover/carousel:opacity-100">
+                  <ng-icon name="tablerChevronRight" size="24"></ng-icon>
+                </button>
+
+                <!-- Carousel Indicators (Dots) -->
+                <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 flex items-center gap-3 px-4 py-2 rounded-full bg-black/40 backdrop-blur-md border border-white/5 shadow-lg opacity-0 group-hover/carousel:opacity-100 transition-all duration-500">
+                  @for (img of project.images; track $index) {
+                    <button (click)="setProjectIndex($index)"
+                            class="relative h-1.5 rounded-full transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
+                            [class.bg-retro-yellow]="projectIndex === $index"
+                            [class.w-6]="projectIndex === $index"
+                            [class.shadow-[0_0_10px_rgba(250,204,21,0.4)]]="projectIndex === $index"
+                            [class.bg-white/20]="projectIndex !== $index"
+                            [class.w-1.5]="projectIndex !== $index">
+                      <span class="absolute -inset-2 cursor-pointer"></span>
+                    </button>
+                  }
                 </div>
               }
             </div>
@@ -64,6 +123,32 @@
             </div>
           </section>
 
+          <!-- Challenges & Solutions -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            @if (project.challenges) {
+              <section class="space-y-4">
+                <h3 class="text-[10px] font-bold uppercase tracking-[0.2em] text-red-400/80 font-mono flex items-center gap-2">
+                  <ng-icon name="tablerAlertTriangle" size="14"></ng-icon>
+                  The Challenges
+                </h3>
+                <p class="text-sm leading-relaxed text-gray-400 font-light">
+                  {{project.challenges}}
+                </p>
+              </section>
+            }
+            @if (project.solutions) {
+              <section class="space-y-4">
+                <h3 class="text-[10px] font-bold uppercase tracking-[0.2em] text-green-400/80 font-mono flex items-center gap-2">
+                  <ng-icon name="tablerCircleCheck" size="14"></ng-icon>
+                  The Solutions
+                </h3>
+                <p class="text-sm leading-relaxed text-gray-400 font-light">
+                  {{project.solutions}}
+                </p>
+              </section>
+            }
+          </div>
+
         </div>
 
         <!-- Sidebar -->
@@ -74,7 +159,7 @@
             <h2 class="text-xs font-bold uppercase tracking-[0.2em] text-retro-bright font-mono border-b border-white/10 pb-2">Technologies Used</h2>
             <div class="flex flex-wrap gap-3">
               @for (tech of project.highlights; track $index) {
-                <span class="text-xs font-mono px-3 py-1.5 rounded-lg bg-retro-yellow/5 border border-retro-yellow/20 text-retro-yellow/80 uppercase tracking-wider">
+                <span class="text-xs font-mono px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-gray-400 hover:text-retro-yellow hover:border-retro-yellow/30 transition-all cursor-default">
                   {{tech}}
                 </span>
               }
@@ -82,18 +167,26 @@
           </section>
 
           <!-- Action -->
-          @if (project.website) {
-            <section class="p-8 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-xl space-y-6">
-              <h3 class="text-xl font-bold text-retro-bright font-mono">Ready to explore?</h3>
-              <p class="text-sm text-gray-400 font-light">
-                Visit the official repository to see the source code, documentation, and implementation details of this project.
-              </p>
-              <a [href]="project.website" target="_blank" class="flex items-center justify-center gap-3 w-full py-4 rounded-xl bg-retro-yellow text-retro-dark font-bold uppercase tracking-[0.2em] text-sm hover:bg-retro-bright transition-all transform hover:scale-[1.02] active:scale-[0.98]">
-                <span>Access Repository</span>
-                <ng-icon name="tablerExternalLink" size="18"></ng-icon>
-              </a>
-            </section>
-          }
+          <section class="p-8 rounded-2xl bg-white/[0.03] border border-white/10 backdrop-blur-md space-y-6 sticky top-24">
+            <h3 class="text-xl font-bold text-retro-bright font-mono">Ready to explore?</h3>
+            <p class="text-sm text-gray-400 font-light">
+              Explore the system in depth through the source code or the live deployment.
+            </p>
+            <div class="flex flex-col gap-3">
+              @if (project.demoUrl) {
+                <a [href]="project.demoUrl" target="_blank" class="flex items-center justify-center gap-3 w-full py-4 rounded-xl bg-retro-yellow text-retro-dark font-bold uppercase tracking-[0.2em] text-[11px] hover:bg-retro-bright transition-all transform hover:scale-[1.02] active:scale-[0.98]">
+                  <span>Launch Live System</span>
+                  <ng-icon name="tablerWorld" size="18"></ng-icon>
+                </a>
+              }
+              @if (project.website) {
+                <a [href]="project.website" target="_blank" class="flex items-center justify-center gap-3 w-full py-4 rounded-xl bg-white/5 border border-white/10 text-retro-bright font-bold uppercase tracking-[0.2em] text-[11px] hover:bg-white/10 transition-all transform hover:scale-[1.02] active:scale-[0.98]">
+                  <span>Access Repository</span>
+                  <ng-icon name="tablerBrandGithub" size="18"></ng-icon>
+                </a>
+              }
+            </div>
+          </section>
 
         </aside>
 

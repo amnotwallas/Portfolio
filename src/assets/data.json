@@ -119,6 +119,12 @@
         "projects/portfolio/portfolio-image4.png"
       ],
       "website": "https://github.com/amnotwallas/Portfolio",
+      "demoUrl": "https://walterambriz.dev",
+      "status": "COMPLETED",
+      "role": "FULLSTACK DEVELOPER",
+      "complexity": "HIGH",
+      "challenges": "Implementing a high-performance retro glow effect that doesn't compromise mobile performance and creating a robust LLM-to-UI communication bridge.",
+      "solutions": "Utilized GPU-accelerated CSS transforms and radial gradients for the glow, and implemented a custom event-driven architecture for the LLM assistant interactions.",
       "startDate": "2026-04",
       "highlights": [
         "Angular",
@@ -134,6 +140,12 @@
       "image": "projects/Walter_AI/WalterAI.gif",
       "images": [],
       "website": "https://github.com/amnotwallas/walter-ai-neural-core",
+      "demoUrl": null,
+      "status": "IN PRODUCTION",
+      "role": "BACKEND & AI ENGINEER",
+      "complexity": "VERY HIGH",
+      "challenges": "Managing state across multiple specialized agents and ensuring reliable JSON tool calls with smaller open-source models.",
+      "solutions": "Implemented a supervisor pattern for agent orchestration and strict Pydantic validation for all tool outputs to ensure structural integrity.",
       "startDate": "2026-04",
       "highlights": [
         "FastAPI",
