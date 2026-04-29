@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef, AfterViewInit, NgZone, ChangeDetectionStrategy, ChangeDetectorRef, inject } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, RouterModule } from "@angular/router";
 import { NgIcon, provideIcons } from "@ng-icons/core";
 import { 
   tablerUser, tablerBriefcase, tablerRocket, 
@@ -15,7 +15,7 @@ import cv from "../../../../assets/data.json";
   standalone: true,
   selector: 'cv-page',
   templateUrl: 'cv.page.html',
-  imports: [CommonModule, NgIcon],
+  imports: [CommonModule, NgIcon, RouterModule],
   providers: [provideIcons({ 
     tablerUser, tablerBriefcase, tablerRocket, 
     tablerSchool, tablerTools, tablerLanguage,
@@ -58,6 +58,10 @@ export class cvpage implements OnInit, OnDestroy, AfterViewInit {
         });
       }
     });
+  }
+
+  getProjectSlug(name: string): string {
+    return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
   }
 
   ngAfterViewInit() {

@@ -1,0 +1,103 @@
+<main class="relative flex flex-col min-h-screen pt-20 pb-32 px-6 md:px-8 lg:px-24 font-['IBM_Plex_Sans'] text-gray-300 max-w-7xl mx-auto">
+  
+  <!-- Back Button -->
+  <button (click)="goBack()" class="group mb-12 flex items-center gap-2 text-retro-yellow/60 hover:text-retro-yellow transition-colors font-mono text-sm uppercase tracking-widest w-fit">
+    <ng-icon name="tablerArrowLeft" size="18" class="group-hover:-translate-x-1 transition-transform"></ng-icon>
+    <span>Back to Portfolio</span>
+  </button>
+
+  @if (project) {
+    <div class="animate-fade-in-up">
+      <!-- Header -->
+      <header class="mb-12">
+        <div class="flex flex-col gap-4">
+          <div class="flex items-center gap-3">
+            <ng-icon name="tablerRocket" class="text-retro-yellow text-2xl"></ng-icon>
+            <h1 class="text-3xl md:text-5xl lg:text-6xl font-bold text-retro-bright tracking-tight font-mono">{{project.name}}</h1>
+          </div>
+          
+          <div class="flex flex-wrap items-center gap-6 text-sm font-mono text-gray-400">
+            <div class="flex items-center gap-2">
+              <ng-icon name="tablerCalendar" size="16" class="text-retro-yellow/60"></ng-icon>
+              <span>{{project.startDate}}</span>
+            </div>
+            @if (project.website) {
+              <a [href]="project.website" target="_blank" class="flex items-center gap-2 text-retro-yellow hover:text-retro-bright transition-colors">
+                <ng-icon name="tablerBrandGithub" size="18"></ng-icon>
+                <span>View Repository</span>
+              </a>
+            }
+          </div>
+        </div>
+      </header>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
+        
+        <!-- Main Content -->
+        <div class="lg:col-span-7 space-y-12">
+          
+          <!-- Image Gallery -->
+          <section class="space-y-6">
+            <h2 class="text-xs font-bold uppercase tracking-[0.2em] text-retro-bright font-mono border-b border-white/10 pb-2">Visual Documentation</h2>
+            <div class="grid grid-cols-1 gap-6">
+              @if (project.images && project.images.length > 0) {
+                @for (img of project.images; track $index) {
+                  <div class="rounded-xl overflow-hidden border border-white/10 bg-retro-dark shadow-2xl group">
+                    <img [src]="img" [alt]="project.name" class="w-full h-auto object-cover opacity-90 group-hover:opacity-100 transition-opacity">
+                  </div>
+                }
+              } @else if (project.image) {
+                <div class="rounded-xl overflow-hidden border border-white/10 bg-retro-dark shadow-2xl group">
+                  <img [src]="project.image" [alt]="project.name" class="w-full h-auto object-cover opacity-90 group-hover:opacity-100 transition-opacity">
+                </div>
+              }
+            </div>
+          </section>
+
+          <!-- Description -->
+          <section class="space-y-6">
+            <h2 class="text-xs font-bold uppercase tracking-[0.2em] text-retro-bright font-mono border-b border-white/10 pb-2">Overview</h2>
+            <div class="relative pl-4 border-l-2 border-retro-yellow/20">
+              <p class="text-lg leading-relaxed text-gray-400 font-light">
+                {{project.description}}
+              </p>
+            </div>
+          </section>
+
+        </div>
+
+        <!-- Sidebar -->
+        <aside class="lg:col-span-5 space-y-12">
+          
+          <!-- Tech Stack -->
+          <section class="space-y-6">
+            <h2 class="text-xs font-bold uppercase tracking-[0.2em] text-retro-bright font-mono border-b border-white/10 pb-2">Technologies Used</h2>
+            <div class="flex flex-wrap gap-3">
+              @for (tech of project.highlights; track $index) {
+                <span class="text-xs font-mono px-3 py-1.5 rounded-lg bg-retro-yellow/5 border border-retro-yellow/20 text-retro-yellow/80 uppercase tracking-wider">
+                  {{tech}}
+                </span>
+              }
+            </div>
+          </section>
+
+          <!-- Action -->
+          @if (project.website) {
+            <section class="p-8 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-xl space-y-6">
+              <h3 class="text-xl font-bold text-retro-bright font-mono">Ready to explore?</h3>
+              <p class="text-sm text-gray-400 font-light">
+                Visit the official repository to see the source code, documentation, and implementation details of this project.
+              </p>
+              <a [href]="project.website" target="_blank" class="flex items-center justify-center gap-3 w-full py-4 rounded-xl bg-retro-yellow text-retro-dark font-bold uppercase tracking-[0.2em] text-sm hover:bg-retro-bright transition-all transform hover:scale-[1.02] active:scale-[0.98]">
+                <span>Access Repository</span>
+                <ng-icon name="tablerExternalLink" size="18"></ng-icon>
+              </a>
+            </section>
+          }
+
+        </aside>
+
+      </div>
+    </div>
+  }
+</main>

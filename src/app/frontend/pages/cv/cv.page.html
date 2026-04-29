@@ -180,9 +180,9 @@
             </div>
             
             @if (item.website) {
-              <a [href]="item.website" target="_blank" class="inline-flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.2em] text-retro-yellow/40 hover:text-retro-yellow transition-colors mt-auto border-t border-white/5 pt-4">
-                <span>Access Repository</span>
-                <ng-icon name="tablerExternalLink" size="14"></ng-icon>
+              <a [routerLink]="['/project', getProjectSlug(item.name)]" class="inline-flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.2em] text-retro-yellow/40 hover:text-retro-yellow transition-colors mt-auto border-t border-white/5 pt-4 cursor-pointer">
+                <span>See Project</span>
+                <ng-icon name="tablerRocket" size="14"></ng-icon>
               </a>
             }
           </div>
