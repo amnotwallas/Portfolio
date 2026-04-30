@@ -50,7 +50,7 @@
         </div>
       </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
         
         <!-- Main Content -->
         <div class="lg:col-span-7 space-y-16">
@@ -152,14 +152,14 @@
         </div>
 
         <!-- Sidebar -->
-        <aside class="lg:col-span-5 space-y-12">
+        <aside class="lg:col-span-5 space-y-10">
           
           <!-- Tech Stack -->
           <section class="space-y-6">
             <h2 class="text-xs font-bold uppercase tracking-[0.2em] text-retro-bright font-mono border-b border-white/10 pb-2">Technologies Used</h2>
-            <div class="flex flex-wrap gap-3">
+            <div class="flex flex-wrap gap-2.5">
               @for (tech of project.highlights; track $index) {
-                <span class="text-xs font-mono px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-gray-400 hover:text-retro-yellow hover:border-retro-yellow/30 transition-all cursor-default">
+                <span class="text-[10px] font-mono px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-gray-400 hover:text-retro-yellow hover:border-retro-yellow/30 transition-all cursor-default uppercase tracking-wider">
                   {{tech}}
                 </span>
               }
@@ -167,7 +167,7 @@
           </section>
 
           <!-- Action -->
-          <section class="p-8 rounded-2xl bg-white/[0.03] border border-white/10 backdrop-blur-md space-y-6 sticky top-24">
+          <section class="p-6 md:p-8 rounded-2xl bg-white/[0.03] border border-white/10 backdrop-blur-md space-y-6 sticky top-24">
             <h3 class="text-xl font-bold text-retro-bright font-mono">Ready to explore?</h3>
             <p class="text-sm text-gray-400 font-light">
               Explore the system in depth through the source code or the live deployment.
