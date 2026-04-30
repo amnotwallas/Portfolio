@@ -106,7 +106,7 @@ export class ProjectDetailsPage implements OnInit, OnDestroy {
   }
 
   goBack() {
-    this.router.navigate(['/cv'], { fragment: 'PROJECTS' });
+    this.router.navigate(['/cv'], { fragment: '' });
   }
 
   ngOnDestroy() {
