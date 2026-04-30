@@ -179,7 +179,18 @@ h3, .text-accent {
   background-color: rgba(255, 255, 255, 0.03);
 }
 
-/* View Transitions API Animations - Clean Cross-fade only to avoid double-motion conflict */
+/* Glassmorphism Utility */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.glass-effect:hover {
+  border-color: rgba(250, 204, 21, 0.2);
+}
+
 ::view-transition-old(root) {
   animation: var(--anim-speed-slow) var(--ease-standard) both fade-out;
 }

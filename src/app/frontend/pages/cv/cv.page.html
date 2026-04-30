@@ -76,7 +76,7 @@
             
             <div class="flex flex-wrap gap-2">
               @for (tech of item.highlights; track $index) {
-                <span class="text-[10px] font-mono uppercase tracking-wider px-2 py-1 rounded bg-white/5 border border-white/10 text-gray-400 backdrop-blur-sm group-hover/item:border-retro-yellow/30 transition-colors">
+                <span class="text-[10px] font-mono uppercase tracking-wider px-2 py-1 rounded glass-effect text-gray-400 group-hover/item:border-retro-yellow/30 transition-colors">
                   {{tech}}
                 </span>
               }
@@ -95,7 +95,7 @@
 
         <div class="grid grid-cols-1 gap-8">
           @for (item of cv.projects; track $index; let projectIdx = $index) {
-          <div class="p-5 md:p-6 rounded-xl border border-white/5 bg-white/5 backdrop-blur-md hover-lift group/project shadow-xl will-change-transform relative overflow-hidden flex flex-col">
+          <div class="p-5 md:p-6 rounded-xl glass-effect hover-lift group/project shadow-xl will-change-transform relative overflow-hidden flex flex-col">
             
             <!-- Project Image (Single) -->
             <div class="relative mb-6 group/image h-auto aspect-[4/3] overflow-hidden rounded-lg border border-white/10 bg-retro-dark shadow-2xl">
@@ -197,7 +197,7 @@
             </h3>
             <div class="flex flex-wrap gap-2">
               @for (keyword of item.keywords; track $index) {
-                <span class="text-[10px] font-light px-3 py-1.5 rounded-lg bg-white/5 backdrop-blur-md border border-white/10 text-gray-300 hover:border-retro-yellow/40 hover:text-retro-yellow transition-all cursor-default font-mono">
+                <span class="text-[10px] font-light px-3 py-1.5 rounded-lg glass-effect text-gray-300 hover:text-retro-yellow transition-all cursor-default font-mono">
                   {{ keyword }}
                 </span>
               }
@@ -216,7 +216,7 @@
         <!-- ... rest of languages content ... -->
         <div class="grid grid-cols-1 gap-4">
           @for (lang of cv.languages; track $index) {
-          <div class="flex items-center justify-between p-3 rounded-lg bg-white/5 border border-white/5 hover:border-retro-yellow/20 transition-colors">
+          <div class="flex items-center justify-between p-3 rounded-lg glass-effect hover:border-retro-yellow/20 transition-colors">
             <span class="text-xs font-medium text-gray-200 font-mono">{{lang.language}}</span>
             <span class="text-[9px] font-mono text-retro-yellow uppercase tracking-tighter">{{lang.fluency}}</span>
           </div>

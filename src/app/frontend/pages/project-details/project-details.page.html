@@ -43,18 +43,18 @@
 
       <!-- Metrics Grid -->
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-16 animate-fade-in-up delay-100">
-        <div class="p-4 rounded-xl border border-white/5 bg-white/[0.03] flex flex-col gap-1 backdrop-blur-sm">
+        <div class="p-4 rounded-xl glass-effect flex flex-col gap-1">
           <span class="text-[10px] font-mono text-gray-500 uppercase tracking-widest flex items-center gap-2">
             <ng-icon name="tablerActivity" size="12" class="text-retro-yellow"></ng-icon>
             Status
           </span>
           <span class="text-sm font-bold text-retro-bright font-mono">{{project.status || 'N/A'}}</span>
         </div>
-        <div class="p-4 rounded-xl border border-white/5 bg-white/[0.03] flex flex-col gap-1 backdrop-blur-sm">
+        <div class="p-4 rounded-xl glass-effect flex flex-col gap-1">
           <span class="text-[10px] font-mono text-gray-500 uppercase tracking-widest">Role</span>
           <span class="text-sm font-bold text-retro-bright font-mono">{{project.role || 'DEVELOPER'}}</span>
         </div>
-        <div class="p-4 rounded-xl border border-white/5 bg-white/[0.03] flex flex-col gap-1 backdrop-blur-sm">
+        <div class="p-4 rounded-xl glass-effect flex flex-col gap-1">
           <span class="text-[10px] font-mono text-gray-500 uppercase tracking-widest">Complexity</span>
           <span class="text-sm font-bold text-retro-bright font-mono">{{project.complexity || 'MEDIUM'}}</span>
         </div>
@@ -181,7 +181,7 @@
             <h2 class="text-xs font-bold uppercase tracking-[0.2em] text-retro-bright font-mono border-b border-white/10 pb-2">Technologies Used</h2>
             <div class="flex flex-wrap gap-2.5">
               @for (tech of project.highlights; track $index) {
-                <span class="text-[10px] font-mono px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-gray-400 hover:text-retro-yellow hover:border-retro-yellow/30 transition-all cursor-default uppercase tracking-wider">
+                <span class="text-[10px] font-mono px-3 py-1.5 rounded-lg glass-effect text-gray-400 hover:text-retro-yellow transition-all cursor-default uppercase tracking-wider">
                   {{tech}}
                 </span>
               }
@@ -189,7 +189,7 @@
           </section>
 
           <!-- Action -->
-          <section class="p-6 md:p-8 rounded-2xl bg-white/[0.03] border border-white/10 backdrop-blur-md space-y-6 sticky top-24">
+          <section class="p-6 md:p-8 rounded-2xl glass-effect space-y-6 sticky top-24">
             <h3 class="text-xl font-bold text-retro-bright font-mono">Ready to explore?</h3>
             <p class="text-sm text-gray-400 font-light">
               Explore the system in depth through the source code or the live deployment.

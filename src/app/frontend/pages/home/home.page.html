@@ -11,7 +11,7 @@
   </div>
 
   <!-- System Status (Top Right) -->
-  <div class="fixed top-12 right-12 text-right font-mono text-[9px] text-retro-yellow/40 space-y-1 animate-fade-in-up hidden md:block z-10">
+  <div class="fixed top-12 right-12 text-right font-mono text-[9px] text-retro-yellow/40 space-y-1 animate-fade-in-up hidden md:block z-10 p-4 glass-effect rounded-xl">
     <p class="tracking-widest">SYSTEM_ID: {{cv.basics.name.split(' ')[0].toUpperCase()}}_CORE</p>
     <p class="tracking-widest">LOC: MX // 19.4326° N, 99.1332° W</p>
     <p class="tracking-widest">STATUS: <span class="text-retro-yellow/80 uppercase">Building AI Agents</span></p>
@@ -19,7 +19,7 @@
   </div>
 
   <!-- Terminal Log (Bottom Left) -->
-  <div class="fixed bottom-12 left-12 font-mono text-[9px] text-gray-600 space-y-1 hidden md:block opacity-60 animate-fade-in-up delay-500 z-10">
+  <div class="fixed bottom-12 left-12 font-mono text-[9px] text-gray-600 space-y-1 hidden md:block opacity-60 animate-fade-in-up delay-500 z-10 p-4 glass-effect rounded-xl">
     <p class="flex items-center gap-2"><span class="w-1 h-1 bg-retro-yellow/50 rounded-full animate-pulse"></span> <span #logEl1>INITIALIZING_MODULES...</span></p>
     <p class="flex items-center gap-2"><span class="w-1 h-1 bg-retro-yellow/50 rounded-full animate-pulse"></span> <span #logEl2>CONNECTING_TO_LLM_GATEWAY... [OK]</span></p>
     <p class="flex items-center gap-2"><span class="w-1 h-1 bg-retro-yellow/50 rounded-full animate-pulse"></span> <span #logEl3>DATA_STREAM_STABLE</span></p>
