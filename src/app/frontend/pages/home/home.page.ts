@@ -35,7 +35,6 @@ export class homepage implements OnInit, OnDestroy, AfterViewInit {
 
   userQuery = '';
   isProcessing = false;
-  systemMood: 'idle' | 'processing' | 'success' | 'error' = 'idle';
   private chatHistory: {role: string, content: string}[] = [];
   private activeTitleStr = '';
   
@@ -122,7 +121,6 @@ async onChatSubmit(overrideCommand?: string) {
   if (!rawQuery.trim() || this.isProcessing) return;
 
   this.isProcessing = true;
-  this.systemMood = 'processing';
   const query = rawQuery.trim().toLowerCase();
   this.userQuery = '';
   this.cdr.markForCheck();
@@ -132,26 +130,22 @@ async onChatSubmit(overrideCommand?: string) {
   }
 
   if (query === 'cv' || query === 'resume' || query === 'exec_cv') {
-    this.systemMood = 'success';
     this.scramble("COMMAND_ACCEPTED: REDIRECTING TO CV MODULE...", this.chatResponseEl);
     this.cdr.markForCheck();
     setTimeout(() => {
       this.router.navigate(['/cv']);
       this.isProcessing = false;
-      this.systemMood = 'idle';
       this.cdr.markForCheck();
     }, 1000);
     return;
   }
 
   if (query === 'projects' || query === 'view_projects' || query === 'show projects') {
-    this.systemMood = 'success';
     this.scramble("COMMAND_ACCEPTED: OPENING PROJECTS VIEW...", this.chatResponseEl);
     this.cdr.markForCheck();
     setTimeout(() => {
       this.router.navigate(['/cv'], { fragment: 'PROJECTS' });
       this.isProcessing = false;
-      this.systemMood = 'idle';
       this.cdr.markForCheck();
     }, 1000);
     return;
@@ -176,7 +170,6 @@ async onChatSubmit(overrideCommand?: string) {
     });
 
     if (response.status === 429) {
-      this.systemMood = 'error';
       this.scramble("SYSTEM_OVERLOAD: TOO_MANY_REQUESTS. SLOW_DOWN.", this.chatResponseEl);
       this.cdr.markForCheck();
       return;
@@ -209,7 +202,6 @@ async onChatSubmit(overrideCommand?: string) {
     }
 
     if (this.chatResponseEl) this.chatResponseEl.nativeElement.textContent = fullText;
-    this.systemMood = 'idle';
     this.cdr.markForCheck();
 
     // Actualizamos historial local (opcional, para visualización persistente en UI)
@@ -219,18 +211,15 @@ async onChatSubmit(overrideCommand?: string) {
 
     // --- LOGICA DE NAVEGACION DINÁMICA (AI Triggered) ---
     if (fullText.includes('[NAV:CV]')) {
-      this.systemMood = 'success';
       this.cdr.markForCheck();
       setTimeout(() => this.router.navigate(['/cv']), 2500);
     } 
     else if (fullText.includes('[NAV:PROJECTS]')) {
-      this.systemMood = 'success';
       this.cdr.markForCheck();
       setTimeout(() => this.router.navigate(['/cv'], { fragment: 'PROJECTS' }), 2500);
     }
 
   } catch (error) {
-    this.systemMood = 'error';
     this.scramble("CONNECTION_ERROR: UNABLE_TO_REACH_NEURAL_CORE.", this.chatResponseEl);
     this.cdr.markForCheck();
     console.error("Neural Core Error:", error);

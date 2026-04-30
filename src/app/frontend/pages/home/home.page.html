@@ -45,8 +45,13 @@
         </p>
         
         <!-- Input Line (Restored UI) -->
-        <form (submit)="onChatSubmit()" class="flex items-center gap-3 border-b-2 border-white/10 focus-within:border-retro-yellow transition-all duration-300 pb-2 mx-auto w-full max-w-md group">
-          <span class="font-mono text-retro-yellow text-xs md:text-sm font-bold whitespace-nowrap uppercase tracking-tight">WALTER_AI ></span>
+        <form (submit)="onChatSubmit()" 
+              class="flex items-center gap-3 border-b-2 border-white/10 focus-within:border-retro-yellow transition-all duration-300 pb-2 mx-auto w-full max-w-md group"
+              [class.animate-pulse-gold]="isProcessing">
+          <span class="font-mono text-retro-yellow text-xs md:text-sm font-bold whitespace-nowrap uppercase tracking-tight transition-all"
+                [class.animate-pulse-gold]="isProcessing">
+            WALTER_AI >
+          </span>
           <input 
             #chatInput
             type="text" 
