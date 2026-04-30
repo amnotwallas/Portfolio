@@ -136,7 +136,12 @@ h3, .text-accent {
 
 .glow-success {
   background: radial-gradient(circle at center, rgba(34, 197, 94, 0.15), transparent 75%);
-  transition: background 0.3s ease;
+  animation: mood-pulse 1.5s infinite ease-in-out;
+}
+
+.glow-error {
+  background: radial-gradient(circle at center, rgba(228, 30, 30, 0.1), transparent 75%);
+  animation: mood-pulse 1.5s infinite ease-in-out;
 }
 
 /* Skeleton Loading Effect */
