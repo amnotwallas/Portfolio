@@ -95,7 +95,8 @@
 
         <div class="grid grid-cols-1 gap-8">
           @for (item of cv.projects; track $index; let projectIdx = $index) {
-          <div class="p-5 md:p-6 rounded-xl glass-effect hover-lift group/project shadow-xl will-change-transform relative overflow-hidden flex flex-col">
+          <div class="p-5 md:p-6 rounded-xl glass-effect hover-lift group/project shadow-xl will-change-transform relative overflow-hidden flex flex-col"
+               style="content-visibility: auto; contain-intrinsic-size: 500px;">
             
             <!-- Project Image (Single) -->
             <div class="relative mb-6 group/image h-auto aspect-[4/3] overflow-hidden rounded-lg border border-white/10 bg-retro-dark shadow-2xl">

@@ -179,12 +179,15 @@ h3, .text-accent {
   background-color: rgba(255, 255, 255, 0.03);
 }
 
-/* Glassmorphism Utility */
+/* Glassmorphism Utility - Optimized for performance */
 .glass-effect {
   background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  /* Lower blur for better scroll performance */
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   border: 1px solid rgba(255, 255, 255, 0.05);
+  /* Tell browser this layer is stable */
+  will-change: transform;
 }
 
 .glass-effect:hover {
