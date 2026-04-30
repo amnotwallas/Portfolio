@@ -8,6 +8,13 @@
   --color-retro-bright: #FACC15;  /* Blanco puro para títulos de alto impacto */
   --color-retro-font: #E0E0E0;    /* Gris muy claro para el cuerpo del texto (descansa la vista) */
   --color-footer-bg: #1A1A1A;     /* Fondo de la píldora del footer */
+
+  /* Global Animation Variables */
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --anim-speed-fast: 200ms;
+  --anim-speed-base: 400ms;
+  --anim-speed-slow: 600ms;
+  --anim-speed-extra-slow: 1000ms;
 }
 
 html {
@@ -21,11 +28,13 @@ body {
   background-size: 40px 40px;
   color: var(--color-retro-font);
   font-family: "Space Grotesk", sans-serif;
+  /* Uniform transition for body-level changes if any */
+  transition: background-color var(--anim-speed-base) var(--ease-standard);
 }
 
 /* Elevación de tarjetas */
 .hover-lift {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all var(--anim-speed-base) var(--ease-standard);
 }
 .hover-lift:hover {
   transform: translateY(-5px);
@@ -36,6 +45,7 @@ body {
 .text-glow {
   /* Usamos un radio muy pequeño y baja opacidad para que no cambie el tono del texto */
   text-shadow: 0 0 6px rgba(250, 204, 21, 0.3);
+  transition: text-shadow var(--anim-speed-base) var(--ease-standard);
 }
 
 /* Animación de cursor parpadeante elegante */
@@ -63,7 +73,8 @@ body {
   white-space: nowrap;
   vertical-align: bottom;
   animation-name: typeIn;
-  animation-duration: 2s;
+  animation-duration: 2s; /* Typing usually needs more time, but we'll keep it standard-ish */
+  animation-timing-function: steps(40, end);
   animation-fill-mode: forwards;
 }
 
@@ -71,7 +82,7 @@ body {
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(30px);
   }
   to {
     opacity: 1;
@@ -80,10 +91,11 @@ body {
 }
 
 .animate-fade-in-up {
-  animation: fadeInUp 0.6s ease-out forwards;
-  opacity: 0; /* Empieza invisible para la animación */
+  animation: fadeInUp var(--anim-speed-slow) var(--ease-standard) forwards;
+  opacity: 0;
 }
 
+/* Delay Helpers unificados */
 .delay-100 { animation-delay: 100ms; }
 .delay-200 { animation-delay: 200ms; }
 .delay-300 { animation-delay: 300ms; }
@@ -91,6 +103,17 @@ body {
 .delay-500 { animation-delay: 500ms; }
 .delay-600 { animation-delay: 600ms; }
 .delay-700 { animation-delay: 700ms; }
+
+/* Overriding some Tailwind defaults for consistency */
+.transition-all, .transition-colors, .transition-opacity, .transition-transform {
+  transition-timing-function: var(--ease-standard) !important;
+  transition-duration: var(--anim-speed-base) !important;
+}
+
+.duration-300 { transition-duration: 300ms !important; }
+.duration-500 { transition-duration: 500ms !important; }
+.duration-700 { transition-duration: 700ms !important; }
+.duration-1000 { transition-duration: 1000ms !important; }
 
 /* Subtítulos o detalles con el amarillo mostaza */
 h3, .text-accent {
@@ -126,22 +149,22 @@ h3, .text-accent {
 
 .glow-idle {
   background: radial-gradient(circle at center, rgba(250, 204, 21, 0.06), transparent 75%);
-  transition: background 0.5s ease;
+  transition: background var(--anim-speed-base) ease;
 }
 
 .glow-processing {
   background: radial-gradient(circle at center, rgba(255, 255, 255, 0.1), transparent 75%);
-  animation: mood-pulse 1.5s infinite ease-in-out;
+  animation: mood-pulse 1.5s infinite var(--ease-standard);
 }
 
 .glow-success {
   background: radial-gradient(circle at center, rgba(34, 197, 94, 0.15), transparent 75%);
-  animation: mood-pulse 1.5s infinite ease-in-out;
+  animation: mood-pulse 1.5s infinite var(--ease-standard);
 }
 
 .glow-error {
   background: radial-gradient(circle at center, rgba(228, 30, 30, 0.1), transparent 75%);
-  animation: mood-pulse 1.5s infinite ease-in-out;
+  animation: mood-pulse 1.5s infinite var(--ease-standard);
 }
 
 /* Skeleton Loading Effect */
@@ -152,6 +175,35 @@ h3, .text-accent {
 }
 
 .skeleton {
-  animation: skeleton-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  animation: skeleton-pulse 2s var(--ease-standard) infinite;
   background-color: rgba(255, 255, 255, 0.03);
+}
+
+/* View Transitions API Animations - Clean Cross-fade only to avoid double-motion conflict */
+::view-transition-old(root) {
+  animation: var(--anim-speed-slow) var(--ease-standard) both fade-out;
+}
+
+::view-transition-new(root) {
+  animation: var(--anim-speed-slow) var(--ease-standard) both fade-in;
+}
+
+@keyframes fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-to-top {
+  from { transform: translateY(0); }
+  to { transform: translateY(-30px); }
+}
+
+@keyframes slide-from-bottom {
+  from { transform: translateY(30px); }
+  to { transform: translateY(0); }
 }
