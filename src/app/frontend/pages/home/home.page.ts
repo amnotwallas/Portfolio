@@ -206,8 +206,6 @@ async onChatSubmit(overrideCommand?: string) {
     const decoder = new TextDecoder();
     let fullText = "";
 
-    if (this.chatResponseEl) this.chatResponseEl.nativeElement.textContent = "";
-
     while (true) {
       const { done, value } = await reader!.read();
       if (done) break;
