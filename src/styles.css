@@ -23,13 +23,45 @@ html {
 
 body {
   background-color: var(--color-retro-dark);
+  /* Rejilla de precisión técnica */
   background-image: 
-    radial-gradient(circle at 2px 2px, rgba(255, 176, 0, 0.03) 1px, transparent 0);
+    linear-gradient(rgba(255, 176, 0, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 176, 0, 0.02) 1px, transparent 1px);
   background-size: 40px 40px;
   color: var(--color-retro-font);
   font-family: "Space Grotesk", sans-serif;
   /* Uniform transition for body-level changes if any */
   transition: background-color var(--anim-speed-base) var(--ease-standard);
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Línea de escaneo horizontal (izq a derecha) */
+body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: -1px;
+  width: 1px; /* Precisión absoluta: 1px */
+  height: 100vh;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(250, 204, 21, 0.05),
+    rgba(250, 204, 21, 0.3), /* Subrayado muy sutil */
+    rgba(250, 204, 21, 0.05),
+    transparent
+  );
+  /* Resplandor amplio pero tenue: esto es lo que atrapa el blur */
+  box-shadow: 0 0 25px rgba(250, 204, 21, 0.15);
+  pointer-events: none;
+  z-index: -1;
+  animation: scan-horizontal 10s linear infinite; /* Velocidad equilibrada */
+}
+
+@keyframes scan-horizontal {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(100vw); }
 }
 
 /* Elevación de tarjetas */
@@ -164,9 +196,9 @@ h3, .text-accent {
 /* Glassmorphism Utility - Optimized for performance */
 .glass-effect {
   background: rgba(255, 255, 255, 0.03);
-  /* Lower blur for better scroll performance */
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  /* Desenfoque que difuminará la línea al pasar */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.05);
   /* Tell browser this layer is stable */
   will-change: transform;
