@@ -1,15 +1,5 @@
 <main #mainCont class="relative flex flex-col min-h-screen items-center justify-center pt-24 pb-32 md:pt-12 md:pb-32 md:p-6 overflow-hidden select-none">
   
-  <!-- Optimized Hardware-Accelerated Glow -->
-  <div class="pointer-events-none fixed z-0 opacity-100 will-change-transform"
-       style="background: radial-gradient(circle at center, rgba(250, 204, 21, 0.03), transparent 75%); 
-              width: 400px; height: 400px; border-radius: 50%;
-              left: -200px; top: -200px;
-              transform: translate3d(var(--x, -400px), var(--y, -400px), 0);
-              backface-visibility: hidden;
-              -webkit-backface-visibility: hidden;">
-  </div>
-
   <!-- System Status (Top Right) -->
   <div class="fixed top-12 right-12 text-right font-mono text-[9px] text-retro-yellow/40 space-y-1 animate-fade-in-up hidden md:block z-10 p-4 glass-effect rounded-xl">
     <p class="tracking-widest">SYSTEM_ID: {{cv.basics.name.split(' ')[0].toUpperCase()}}_CORE</p>

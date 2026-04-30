@@ -31,7 +31,6 @@ export class cvpage implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('mainCont') mainCont!: ElementRef<HTMLElement>;
   
   readonly cv = cv;
-  private ticking = false;
   private observer!: IntersectionObserver;
   
   // Project State
@@ -60,10 +59,7 @@ export class cvpage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.ngZone.runOutsideAngular(() => {
-      window.addEventListener('mousemove', this.onMouseMove, { passive: true });
-      this.initScrollObserver();
-    });
+    this.initScrollObserver();
   }
 
   private initScrollObserver() {
@@ -79,19 +75,6 @@ export class cvpage implements OnInit, OnDestroy, AfterViewInit {
 
     const sections = this.mainCont.nativeElement.querySelectorAll('section');
     sections.forEach(section => this.observer.observe(section));
-  }
-
-  private onMouseMove = (e: MouseEvent) => {
-    if (!this.ticking) {
-      window.requestAnimationFrame(() => {
-        if (this.mainCont) {
-          this.mainCont.nativeElement.style.setProperty('--x', `${e.clientX}px`);
-          this.mainCont.nativeElement.style.setProperty('--y', `${e.clientY}px`);
-        }
-        this.ticking = false;
-      });
-      this.ticking = true;
-    }
   }
 
   private scrambleElement(el: HTMLElement) {
@@ -129,7 +112,6 @@ export class cvpage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy() {
-    window.removeEventListener('mousemove', this.onMouseMove);
     if (this.observer) this.observer.disconnect();
   }
 }

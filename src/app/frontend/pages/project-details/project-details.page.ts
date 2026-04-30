@@ -37,7 +37,7 @@ import cv from "../../../../assets/data.json";
   })],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ProjectDetailsPage implements OnInit, OnDestroy, AfterViewInit {
+export class ProjectDetailsPage implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
@@ -49,7 +49,6 @@ export class ProjectDetailsPage implements OnInit, OnDestroy, AfterViewInit {
   projectIndex: number = 0;
   imagesLoaded: { [key: string]: boolean } = {};
   private autoPlayInterval: any;
-  private ticking = false;
 
   ngOnInit() {
     window.scrollTo(0, 0);
@@ -65,25 +64,6 @@ export class ProjectDetailsPage implements OnInit, OnDestroy, AfterViewInit {
       this.router.navigate(['/cv']);
     }
     this.cdr.markForCheck();
-  }
-
-  ngAfterViewInit() {
-    this.ngZone.runOutsideAngular(() => {
-      window.addEventListener('mousemove', this.onMouseMove, { passive: true });
-    });
-  }
-
-  private onMouseMove = (e: MouseEvent) => {
-    if (!this.ticking) {
-      window.requestAnimationFrame(() => {
-        if (this.mainCont) {
-          this.mainCont.nativeElement.style.setProperty('--x', `${e.clientX}px`);
-          this.mainCont.nativeElement.style.setProperty('--y', `${e.clientY}px`);
-        }
-        this.ticking = false;
-      });
-      this.ticking = true;
-    }
   }
 
   private startAutoPlay() {
@@ -132,7 +112,6 @@ export class ProjectDetailsPage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy() {
-    window.removeEventListener('mousemove', this.onMouseMove);
     if (this.autoPlayInterval) {
       clearInterval(this.autoPlayInterval);
     }

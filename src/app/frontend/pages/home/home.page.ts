@@ -25,9 +25,7 @@ export class homepage implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('mainCont') mainCont!: ElementRef<HTMLElement>;
   @ViewChild('chatInput') chatInput!: ElementRef<HTMLInputElement>;
   
-  private mouse = { x: -1000, y: -1000 };
   private dpr = 1;
-  private ticking = false;
   private sessionId = crypto.randomUUID();
   private apiUrl = `${environment.apiUrl}/chat/stream`;
 
@@ -97,23 +95,7 @@ export class homepage implements OnInit, OnDestroy, AfterViewInit {
   ngAfterViewInit() {
     this.dpr = window.devicePixelRatio || 1;
     setTimeout(() => this.chatInput?.nativeElement?.focus(), 600);
-    this.ngZone.runOutsideAngular(() => {
-      window.addEventListener('mousemove', this.handleMouseMove, { passive: true });
-      this.scramble(cv.basics.label, this.titleEl);
-    });
-  }
-
-  private handleMouseMove = (e: MouseEvent) => {
-    if (!this.ticking) {
-      window.requestAnimationFrame(() => {
-        if (this.mainCont) {
-          this.mainCont.nativeElement.style.setProperty('--x', `${e.clientX}px`);
-          this.mainCont.nativeElement.style.setProperty('--y', `${e.clientY}px`);
-        }
-        this.ticking = false;
-      });
-      this.ticking = true;
-    }
+    this.scramble(cv.basics.label, this.titleEl);
   }
 
 async initNeuralCore() {
@@ -290,6 +272,5 @@ async onChatSubmit(overrideCommand?: string) {
     clearInterval(this.titleInterval);
     clearInterval(this.uptimeInterval);
     clearInterval(this.logInterval);
-    window.removeEventListener('mousemove', this.handleMouseMove);
   }
 }
