@@ -78,7 +78,24 @@ body {
   animation-fill-mode: forwards;
 }
 
-/* Animaciones de entrada */
+/* Neural Pulse Animation - Subtle version */
+@keyframes pulse-gold {
+  0%, 100% { 
+    color: var(--color-retro-yellow);
+    border-color: rgba(250, 204, 21, 0.1);
+    text-shadow: 0 0 4px rgba(250, 204, 21, 0.1);
+  }
+  50% { 
+    color: var(--color-retro-bright);
+    border-color: rgba(250, 204, 21, 0.4);
+    text-shadow: 0 0 8px rgba(250, 204, 21, 0.3);
+  }
+}
+
+.animate-pulse-gold {
+  animation: pulse-gold 2s var(--ease-standard) infinite;
+}
+
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -130,41 +147,6 @@ h3, .text-accent {
 ::-webkit-scrollbar-thumb {
   background: var(--color-retro-muted);
   border-radius: 10px;
-}
-
-/* System Mood Animations */
-@keyframes mood-pulse {
-  0%, 100% { opacity: 0.4; transform: translate3d(var(--x, -500px), var(--y, -500px), 0) scale(1); }
-  50% { opacity: 0.8; transform: translate3d(var(--x, -500px), var(--y, -500px), 0) scale(1.1); }
-}
-
-@keyframes mood-glitch {
-  0% { transform: translate3d(var(--x, -500px), var(--y, -500px), 0) translate(0); }
-  20% { transform: translate3d(var(--x, -500px), var(--y, -500px), 0) translate(-5px, 5px); }
-  40% { transform: translate3d(var(--x, -500px), var(--y, -500px), 0) translate(-5px, -5px); }
-  60% { transform: translate3d(var(--x, -500px), var(--y, -500px), 0) translate(5px, 5px); }
-  80% { transform: translate3d(var(--x, -500px), var(--y, -500px), 0) translate(5px, -5px); }
-  100% { transform: translate3d(var(--x, -500px), var(--y, -500px), 0) translate(0); }
-}
-
-.glow-idle {
-  background: radial-gradient(circle at center, rgba(250, 204, 21, 0.06), transparent 75%);
-  transition: background var(--anim-speed-base) ease;
-}
-
-.glow-processing {
-  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.1), transparent 75%);
-  animation: mood-pulse 1.5s infinite var(--ease-standard);
-}
-
-.glow-success {
-  background: radial-gradient(circle at center, rgba(34, 197, 94, 0.15), transparent 75%);
-  animation: mood-pulse 1.5s infinite var(--ease-standard);
-}
-
-.glow-error {
-  background: radial-gradient(circle at center, rgba(228, 30, 30, 0.1), transparent 75%);
-  animation: mood-pulse 1.5s infinite var(--ease-standard);
 }
 
 /* Skeleton Loading Effect */
