@@ -107,7 +107,8 @@
                   <img [src]="item.images[0]" 
                        loading="lazy"
                        (load)="onImageLoad(item.images[0])"
-                       class="w-full h-full object-cover object-top transition-all duration-700 ease-in-out" 
+                       class="w-full h-full object-cover object-top transition-all"
+ 
                        [class.opacity-0]="!imagesLoaded[item.images[0]]"
                        [class.opacity-90]="imagesLoaded[item.images[0]]"
                        [class.group-hover/project:opacity-100]="imagesLoaded[item.images[0]]"
@@ -120,7 +121,8 @@
                   <img [src]="item.image" 
                        loading="lazy"
                        (load)="onImageLoad(item.image)"
-                       class="w-full h-full object-cover object-top transition-all duration-700 ease-in-out" 
+                       class="w-full h-full object-cover object-top transition-all"
+ 
                        [class.opacity-0]="!imagesLoaded[item.image]"
                        [class.opacity-90]="imagesLoaded[item.image]"
                        [class.group-hover/project:opacity-100]="imagesLoaded[item.image]"

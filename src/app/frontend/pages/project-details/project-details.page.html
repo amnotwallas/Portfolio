@@ -17,9 +17,9 @@
   </button>
 
   @if (project) {
-    <div class="animate-fade-in-up transform-gpu will-change-transform">
+    <div class="transform-gpu will-change-transform">
       <!-- Header -->
-      <header class="mb-12">
+      <header class="mb-12 animate-fade-in-up">
         <div class="flex flex-col gap-4">
           <div class="flex items-center gap-3">
             <ng-icon name="tablerRocket" class="text-retro-yellow text-2xl"></ng-icon>
@@ -42,7 +42,7 @@
       </header>
 
       <!-- Metrics Grid -->
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-16">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-16 animate-fade-in-up delay-100">
         <div class="p-4 rounded-xl border border-white/5 bg-white/[0.03] flex flex-col gap-1 backdrop-blur-sm">
           <span class="text-[10px] font-mono text-gray-500 uppercase tracking-widest flex items-center gap-2">
             <ng-icon name="tablerActivity" size="12" class="text-retro-yellow"></ng-icon>
@@ -63,7 +63,7 @@
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
         
         <!-- Main Content -->
-        <div class="lg:col-span-7 space-y-16">
+        <div class="lg:col-span-7 space-y-16 animate-fade-in-up delay-200">
           
           <!-- Project Carousel -->
           <section class="space-y-6">
@@ -81,7 +81,8 @@
                     <img [src]="img" 
                          loading="lazy"
                          (load)="onImageLoad(img)"
-                         class="absolute inset-0 w-full h-full object-cover object-top transition-all duration-1000 ease-in-out" 
+                         class="absolute inset-0 w-full h-full object-cover object-top transition-all"
+ 
                          [class.opacity-100]="projectIndex === $index && imagesLoaded[img]"
                          [class.opacity-0]="projectIndex !== $index || !imagesLoaded[img]"
                          [class.z-10]="projectIndex === $index"
@@ -94,7 +95,8 @@
                   <img [src]="project.image" 
                        loading="lazy"
                        (load)="onImageLoad(project.image)"
-                       class="w-full h-full object-cover object-top transition-all duration-1000 ease-in-out" 
+                       class="w-full h-full object-cover object-top transition-all"
+ 
                        [class.opacity-0]="!imagesLoaded[project.image]"
                        [class.opacity-90]="imagesLoaded[project.image]"
                        [alt]="project.name">
@@ -172,7 +174,7 @@
         </div>
 
         <!-- Sidebar -->
-        <aside class="lg:col-span-5 space-y-10">
+        <aside class="lg:col-span-5 space-y-10 animate-fade-in-up delay-300">
           
           <!-- Tech Stack -->
           <section class="space-y-6">
