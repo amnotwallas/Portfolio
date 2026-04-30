@@ -36,6 +36,7 @@ export class cvpage implements OnInit, OnDestroy, AfterViewInit {
   
   // Project State
   expandedProjects: { [key: number]: boolean } = {};
+  imagesLoaded: { [key: string]: boolean } = {};
 
   ngOnInit() {
     this.cdr.markForCheck();
@@ -119,6 +120,11 @@ export class cvpage implements OnInit, OnDestroy, AfterViewInit {
 
   toggleProject(index: number) {
     this.expandedProjects[index] = !this.expandedProjects[index];
+    this.cdr.markForCheck();
+  }
+
+  onImageLoad(url: string) {
+    this.imagesLoaded[url] = true;
     this.cdr.markForCheck();
   }
 

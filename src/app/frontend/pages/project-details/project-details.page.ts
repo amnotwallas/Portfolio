@@ -45,6 +45,7 @@ export class ProjectDetailsPage implements OnInit, OnDestroy {
 
   project: any = null;
   projectIndex: number = 0;
+  imagesLoaded: { [key: string]: boolean } = {};
   private autoPlayInterval: any;
 
   ngOnInit() {
@@ -92,6 +93,11 @@ export class ProjectDetailsPage implements OnInit, OnDestroy {
 
   setProjectIndex(idx: number) {
     this.projectIndex = idx;
+    this.cdr.markForCheck();
+  }
+
+  onImageLoad(url: string) {
+    this.imagesLoaded[url] = true;
     this.cdr.markForCheck();
   }
 

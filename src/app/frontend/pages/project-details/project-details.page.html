@@ -65,18 +65,28 @@
               <div class="relative w-full h-full">
                 @if (project.images && project.images.length > 0) {
                   @for (img of project.images; track $index) {
+                    <!-- Skeleton per image in carousel -->
+                    <div *ngIf="projectIndex === $index && !imagesLoaded[img]" class="absolute inset-0 z-10 skeleton"></div>
+
                     <img [src]="img" 
                          loading="lazy"
+                         (load)="onImageLoad(img)"
                          class="absolute inset-0 w-full h-full object-cover object-top transition-all duration-1000 ease-in-out" 
-                         [class.opacity-100]="projectIndex === $index"
-                         [class.opacity-0]="projectIndex !== $index"
+                         [class.opacity-100]="projectIndex === $index && imagesLoaded[img]"
+                         [class.opacity-0]="projectIndex !== $index || !imagesLoaded[img]"
                          [class.z-10]="projectIndex === $index"
                          [alt]="project.name + ' image ' + $index">
                   }
                 } @else if (project.image) {
+                  <!-- Skeleton -->
+                  <div *ngIf="!imagesLoaded[project.image]" class="absolute inset-0 z-10 skeleton"></div>
+
                   <img [src]="project.image" 
                        loading="lazy"
-                       class="w-full h-full object-cover object-top opacity-90" 
+                       (load)="onImageLoad(project.image)"
+                       class="w-full h-full object-cover object-top transition-all duration-1000 ease-in-out" 
+                       [class.opacity-0]="!imagesLoaded[project.image]"
+                       [class.opacity-90]="imagesLoaded[project.image]"
                        [alt]="project.name">
                 }
                 

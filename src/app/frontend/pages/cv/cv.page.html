@@ -101,14 +101,30 @@
             <div class="relative mb-6 group/image h-auto aspect-[4/3] overflow-hidden rounded-lg border border-white/10 bg-retro-dark shadow-2xl">
               <div class="relative w-full h-full">
                 @if (item.images && item.images.length > 0) {
+                  <!-- Skeleton -->
+                  <div *ngIf="!imagesLoaded[item.images[0]]" class="absolute inset-0 z-10 skeleton"></div>
+                  
                   <img [src]="item.images[0]" 
                        loading="lazy"
-                       class="w-full h-full object-cover object-top opacity-90 group-hover/project:opacity-100 group-hover/project:scale-105 transition-all duration-700 ease-in-out" 
+                       (load)="onImageLoad(item.images[0])"
+                       class="w-full h-full object-cover object-top transition-all duration-700 ease-in-out" 
+                       [class.opacity-0]="!imagesLoaded[item.images[0]]"
+                       [class.opacity-90]="imagesLoaded[item.images[0]]"
+                       [class.group-hover/project:opacity-100]="imagesLoaded[item.images[0]]"
+                       [class.group-hover/project:scale-105]="imagesLoaded[item.images[0]]"
                        [alt]="item.name">
                 } @else if (item.image) {
+                  <!-- Skeleton -->
+                  <div *ngIf="!imagesLoaded[item.image]" class="absolute inset-0 z-10 skeleton"></div>
+
                   <img [src]="item.image" 
                        loading="lazy"
-                       class="w-full h-full object-cover object-top opacity-90 group-hover/project:opacity-100 group-hover/project:scale-105 transition-all duration-700 ease-in-out" 
+                       (load)="onImageLoad(item.image)"
+                       class="w-full h-full object-cover object-top transition-all duration-700 ease-in-out" 
+                       [class.opacity-0]="!imagesLoaded[item.image]"
+                       [class.opacity-90]="imagesLoaded[item.image]"
+                       [class.group-hover/project:opacity-100]="imagesLoaded[item.image]"
+                       [class.group-hover/project:scale-105]="imagesLoaded[item.image]"
                        [alt]="item.name">
                 }
                 
