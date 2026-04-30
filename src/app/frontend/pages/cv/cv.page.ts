@@ -6,7 +6,6 @@ import {
   tablerUser, tablerBriefcase, tablerRocket, 
   tablerSchool, tablerTools, tablerLanguage,
   tablerBrandGithub, tablerExternalLink,
-  tablerChevronLeft, tablerChevronRight,
   tablerChevronDown, tablerChevronUp
 } from "@ng-icons/tabler-icons";
 import cv from "../../../../assets/data.json";
@@ -20,7 +19,6 @@ import cv from "../../../../assets/data.json";
     tablerUser, tablerBriefcase, tablerRocket, 
     tablerSchool, tablerTools, tablerLanguage,
     tablerBrandGithub, tablerExternalLink,
-    tablerChevronLeft, tablerChevronRight,
     tablerChevronDown, tablerChevronUp
   })],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -36,15 +34,11 @@ export class cvpage implements OnInit, OnDestroy, AfterViewInit {
   private ticking = false;
   private observer!: IntersectionObserver;
   
-  // Carousel State
-  projectIndices: { [key: string]: number } = {};
+  // Project State
   expandedProjects: { [key: number]: boolean } = {};
-  private autoPlayInterval: any;
 
   ngOnInit() {
     this.cdr.markForCheck();
-    this.initCarouselIndices();
-    this.startAutoPlay();
 
     this.route.fragment.subscribe(frag => {
       if (frag) {
@@ -123,37 +117,6 @@ export class cvpage implements OnInit, OnDestroy, AfterViewInit {
     requestAnimationFrame(anim);
   }
 
-  private initCarouselIndices() {
-    this.cv.projects.forEach((_, index) => {
-      this.projectIndices[index] = 0;
-    });
-  }
-
-  private startAutoPlay() {
-    this.ngZone.runOutsideAngular(() => {
-      this.autoPlayInterval = setInterval(() => {
-        this.ngZone.run(() => {
-          this.cv.projects.forEach((project, index) => {
-            if (project.images && project.images.length > 1) {
-              this.nextImage(index, project.images.length);
-            }
-          });
-          this.cdr.markForCheck();
-        });
-      }, 5000);
-    });
-  }
-
-  nextImage(projectIdx: number, total: number) {
-    this.projectIndices[projectIdx] = (this.projectIndices[projectIdx] + 1) % total;
-    this.cdr.markForCheck();
-  }
-
-  prevImage(projectIdx: number, total: number) {
-    this.projectIndices[projectIdx] = (this.projectIndices[projectIdx] - 1 + total) % total;
-    this.cdr.markForCheck();
-  }
-
   toggleProject(index: number) {
     this.expandedProjects[index] = !this.expandedProjects[index];
     this.cdr.markForCheck();
@@ -162,6 +125,5 @@ export class cvpage implements OnInit, OnDestroy, AfterViewInit {
   ngOnDestroy() {
     window.removeEventListener('mousemove', this.onMouseMove);
     if (this.observer) this.observer.disconnect();
-    if (this.autoPlayInterval) clearInterval(this.autoPlayInterval);
   }
 }
