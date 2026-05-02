@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, inject, AfterViewInit, ChangeDetectorRef, signal } from '@angular/core';
+import { Component, ElementRef, ViewChild, inject, AfterViewInit, ChangeDetectorRef, signal, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -83,7 +83,8 @@ import { Router } from '@angular/router';
         </p>
       </div>
     </div>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomeChatComponent implements AfterViewInit {
   private chatService = inject(ChatService);

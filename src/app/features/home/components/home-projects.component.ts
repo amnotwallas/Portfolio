@@ -1,4 +1,4 @@
-import { Component, inject, ChangeDetectorRef } from '@angular/core';
+import { Component, inject, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -11,7 +11,9 @@ import { CVService } from '../../../core/services/cv.service';
   imports: [CommonModule, NgIcon, RouterModule],
   providers: [provideIcons({ tablerRocket, tablerBrandGithub, tablerChevronDown, tablerChevronUp })],
   template: `
-    <section id="projects" class="w-full max-w-5xl mx-auto py-20 px-6 group animate-fade-in-up">
+    <section id="projects" 
+             class="w-full max-w-5xl mx-auto py-20 px-6 group animate-fade-in-up"
+             style="content-visibility: auto; contain-intrinsic-size: 800px;">
       <div class="flex items-center gap-3 mb-12">
         <ng-icon name="tablerRocket" class="text-retro-bright text-2xl"></ng-icon>
         <h2 class="text-lg font-bold uppercase tracking-[0.2em] text-retro-bright font-mono">Key Projects</h2>
@@ -79,7 +81,8 @@ import { CVService } from '../../../core/services/cv.service';
         }
       </div>
     </section>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomeProjectsComponent {
   private cvService = inject(CVService);

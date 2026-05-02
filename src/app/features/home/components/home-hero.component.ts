@@ -1,4 +1,4 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, Input, inject, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ScrambleDirective } from '../../../shared/directives/scramble.directive';
 import { CVService } from '../../../core/services/cv.service';
@@ -38,7 +38,8 @@ import { CVService } from '../../../core/services/cv.service';
         </p>
       </div>
     </div>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomeHeroComponent {
   private cvService = inject(CVService);
