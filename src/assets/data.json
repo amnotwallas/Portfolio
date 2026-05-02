@@ -1,116 +1,88 @@
 {
-  "meta": {
-    "theme": "professional",
-    "lastModified": "2026-04-27T00:00:00.000Z"
+  "system": {
+    "id": "WALTER_CORE",
+    "version": "2.1.0",
+    "status": "OPERATIONAL",
+    "location": {
+      "city": "MX",
+      "coords": "19.4326° N, 99.1332° W",
+      "timezone": "UTC-6"
+    },
+    "uptime_start": "2026-04-27T00:00:00Z"
+  },
+  "terminal": {
+    "welcome_message": "[WALTER_AI]: SYSTEM_READY. TRY_COMMANDS: 'EXEC_CV' OR 'VIEW_PROJECTS'_",
+    "command_suggestions": ["EXEC_CV", "VIEW_PROJECTS", "SYSTEM_STATUS", "CONTACT"],
+    "boot_sequence": [
+      "INITIALIZING_MODULES...",
+      "CONNECTING_TO_LLM_GATEWAY... [OK]",
+      "DATA_STREAM_STABLE"
+    ]
   },
   "basics": {
     "name": "Walter Jahir Ambriz Reyna",
     "label": "Backend & AI Engineer",
+    "system_label": "NEURAL_ARCHITECT",
     "summary": "Backend & AI Engineer with production experience building systems that connect LLMs, APIs, and live data into reliable, scalable services using Python and FastAPI. I specialize in multiagent orchestration, LLM integration, and automated evaluation pipelines. I've owned backend services from start to finish, handling API design, integrations, deployment, monitoring, and CI/CD. I work well independently in fast paced startups and enjoy turning complex business problems into working technical solutions.",
+    "email": "walterardev@gmail.com",
     "website": "walterambriz.dev",
     "url": "https://github.com/amnotwallas",
-    "email": "walterardev@gmail.com",
     "profiles": [
       {
-        "username": "walterambriz",
         "network": "LinkedIn",
-        "icon": "https://static.vecteezy.com/system/resources/previews/056/006/604/non_2x/a-black-linkedin-logo-free-png.png",
+        "username": "walterambriz",
         "url": "https://www.linkedin.com/in/walterambriz/"
       },
       {
-        "username": "amnotwallas",
         "network": "GitHub",
-        "icon": "https://images.icon-icons.com/1673/PNG/512/githuboutline_110889.png",
+        "username": "amnotwallas",
         "url": "https://github.com/amnotwallas"
       }
     ]
   },
-  "education": [
-    {
-      "endDate": "2026",
-      "startDate": "2021",
-      "area": "Computer Systems Engineering",
-      "studyType": "B.S.",
-      "institution": "Instituto Tecnológico Superior de Apatzingán"
-    }
-  ],
   "skills": [
     {
-      "name": "Programming",
-      "keywords": ["Python (primary)", "SQL", "JavaScript", "TypeScript"]
+      "category": "Programming",
+      "items": ["Python (primary)", "SQL", "JavaScript", "TypeScript"]
     },
     {
-      "name": "Backend Development",
-      "keywords": [
-        "FastAPI",
-        "REST APIs",
-        "microservices",
-        "service layer architecture",
-        "request validation",
-        "JWT",
-        "RBAC",
-        "server sent events"
-      ]
+      "category": "Backend Development",
+      "items": ["FastAPI", "REST APIs", "Microservices", "Service Layer Architecture", "Request Validation", "JWT", "RBAC", "Server Sent Events"]
     },
     {
-      "name": "AI & LLM Systems",
-      "keywords": [
-        "LLM integration (OpenAI APIs)",
-        "multiagent orchestration",
-        "tool use",
-        "prompt engineering"
-      ]
+      "category": "AI & LLM Systems",
+      "items": ["LLM Integration (OpenAI APIs)", "Multiagent Orchestration", "Tool Use", "Prompt Engineering"]
     },
     {
-      "name": "AI Evaluation",
-      "keywords": [
-        "MLflow evaluation pipelines",
-        "LLM based evaluation",
-        "automated response validation"
-      ]
+      "category": "AI Evaluation",
+      "items": ["MLflow Evaluation Pipelines", "LLM-based Evaluation", "Automated Response Validation"]
     },
     {
-      "name": "Data & Integrations",
-      "keywords": [
-        "SQL Server",
-        "data pipelines",
-        "API integration",
-        "data integrity",
-        "time series data"
-      ]
+      "category": "Data & Integrations",
+      "items": ["SQL Server", "Data Pipelines", "API Integration", "Data Integrity", "Time Series Data"]
     },
     {
-      "name": "Infrastructure & Tools",
-      "keywords": ["Docker", "GitHub Actions", "Linux", "SSH", "Git", "remote debugging", "Azure"]
+      "category": "Infrastructure & Tools",
+      "items": ["Docker", "GitHub Actions", "Linux", "SSH", "Git", "Remote Debugging", "Azure"]
     }
   ],
   "work": [
     {
-      "name": "Backend & AI Engineer",
       "company": "IBICARE",
+      "role": "Backend & AI Engineer",
+      "period": "2025-09 — Present",
       "summary": "Built and owned production backend services with Python and FastAPI, connecting LLM agents to live biometric data and product APIs for a digital health platform serving 400+ users. Developed multiagent orchestration systems and MLflow evaluation pipelines to validate AI responses.",
-      "website": "https://ibicare.com",
-      "startDate": "2025-09",
-      "endDate": "Present",
       "image": "https://play-lh.googleusercontent.com/qRNTf7VjO6Lhc4Zo5APR5MYfyHFgdxDhWVDI0dTNeCYPEZgUi-CvQQtgP87tHvjimDU",
-      "highlights": [
-        "Python",
-        "FastAPI",
-        "LLM Agents",
-        "Biometric Data",
-        "MLflow",
-        "JWT",
-        "RBAC",
-        "GitHub Actions",
-        "OpenAI API",
-        "SQL Server"
-      ]
+      "highlights": ["Python", "FastAPI", "LLM Agents", "MLflow", "SQL Server"]
     }
   ],
   "projects": [
     {
-      "name": "AI Powered Interactive Portfolio",
-      "description": "Interactive portfolio with a retro terminal UI and an integrated LLM assistant (WALTER_AI) that navigates the site and retrieves structured data. Features GPU accelerated visual effects with minimal CPU usage. Built with Angular 21, Tailwind CSS, and FastAPI.",
+      "id": "portfolio",
+      "slug": "portfolio",
+      "name": "AI-Powered Interactive Portfolio",
+      "description": "Interactive portfolio with a retro terminal UI and an integrated LLM assistant.",
+      "long_description": "Interactive portfolio with a retro terminal UI and an integrated LLM assistant (WALTER_AI) that navigates the site and retrieves structured data. Features GPU accelerated visual effects with minimal CPU usage.",
       "image": "projects/portfolio/portfolio-image1.png",
       "images": [
         "projects/portfolio/portfolio-image1.png",
@@ -118,47 +90,52 @@
         "projects/portfolio/portfolio-image3.png",
         "projects/portfolio/portfolio-image4.png"
       ],
-      "website": "https://github.com/amnotwallas/Portfolio",
-      "demoUrl": "https://walterambriz.dev",
-      "status": "COMPLETED",
-      "role": "FULLSTACK DEVELOPER",
-      "complexity": "HIGH",
-      "challenges": "Implementing a high-performance retro glow effect that doesn't compromise mobile performance and creating a robust LLM-to-UI communication bridge.",
-      "solutions": "Utilized GPU-accelerated CSS transforms and radial gradients for the glow, and implemented a custom event-driven architecture for the LLM assistant interactions.",
-      "startDate": "2026-04",
-      "highlights": [
-        "Angular",
-        "TailwindCSS",
-        "Vercel Serverless Functions",
-        "LLM (Groq)",
-        "GPU Acceleration"
-      ]
+      "stack": ["Angular 21", "Tailwind CSS", "FastAPI", "Groq"],
+      "period": "2026-04",
+      "links": {
+        "github": "https://github.com/amnotwallas/Portfolio",
+        "demo": "https://walterambriz.dev"
+      },
+      "metadata": {
+        "status": "COMPLETED",
+        "role": "FULLSTACK DEVELOPER",
+        "complexity": "HIGH",
+        "challenges": "Implementing high-performance retro effects and LLM-to-UI communication.",
+        "solutions": "Utilized GPU-accelerated CSS and custom event-driven architecture."
+      }
     },
     {
+      "id": "walter-ai",
+      "slug": "walter-ai-neural-core",
       "name": "WALTER_AI Neural Core",
-      "description": "Multiagent orchestration engine for AI powered interactions. Built around a master orchestrator that dynamically executes tools to retrieve structured portfolio data. Supports streaming responses via server sent events with execution logs. Follows clean architecture principles. Built with FastAPI and Llama 3.1.",
+      "description": "Multiagent orchestration engine for AI powered interactions.",
+      "long_description": "Multiagent orchestration engine for AI powered interactions. Built around a master orchestrator that dynamically executes tools to retrieve structured portfolio data. Supports streaming responses via server sent events with execution logs.",
       "image": "projects/Walter_AI/WalterAI.gif",
-      "images": [],
-      "website": "https://github.com/amnotwallas/walter-ai-neural-core",
-      "demoUrl": null,
-      "status": "IN PRODUCTION",
-      "role": "BACKEND & AI ENGINEER",
-      "complexity": "VERY HIGH",
-      "challenges": "Managing state across multiple specialized agents and ensuring reliable JSON tool calls with smaller open-source models.",
-      "solutions": "Implemented a supervisor pattern for agent orchestration and strict Pydantic validation for all tool outputs to ensure structural integrity.",
-      "startDate": "2026-04",
-      "highlights": [
-        "FastAPI",
-        "Python",
-        "LLM (Llama 3.1)",
-        "SSE Streaming",
-        "Clean Architecture",
-        "Pytest"
-      ]
+      "images": ["projects/Walter_AI/WalterAI.gif"],
+      "stack": ["FastAPI", "Python", "Llama 3.1", "SSE"],
+      "period": "2026-04",
+      "links": {
+        "github": "https://github.com/amnotwallas/walter-ai-neural-core",
+        "demo": null
+      },
+      "metadata": {
+        "status": "IN PRODUCTION",
+        "role": "BACKEND & AI ENGINEER",
+        "complexity": "VERY HIGH",
+        "challenges": "Managing state across specialized agents and ensuring reliable tool calls.",
+        "solutions": "Supervisor pattern and strict Pydantic validation."
+      }
+    }
+  ],
+  "education": [
+    {
+      "institution": "ITS Apatzingán",
+      "degree": "B.S. Computer Systems Engineering",
+      "period": "2021 — 2026"
     }
   ],
   "languages": [
-    { "language": "Spanish", "fluency": "Native" },
-    { "language": "English", "fluency": "Upper intermediate (B2)" }
+    { "name": "Spanish", "level": "Native" },
+    { "name": "English", "level": "Upper intermediate (B2)" }
   ]
 }

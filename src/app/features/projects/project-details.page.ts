@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, inject, ChangeDetectionStrategy, ChangeDetectorRef, NgZone, ViewChild, ElementRef, AfterViewInit } from "@angular/core";
+import { Component, OnInit, OnDestroy, inject, ChangeDetectionStrategy, ChangeDetectorRef, NgZone, ViewChild, ElementRef } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { ActivatedRoute, RouterModule, Router } from "@angular/router";
 import { NgIcon, provideIcons } from "@ng-icons/core";
@@ -15,11 +15,13 @@ import {
   tablerChevronLeft,
   tablerChevronRight
 } from "@ng-icons/tabler-icons";
-import cv from "../../../../assets/data.json";
+import { CVData, Project } from "../../shared/models/cv.model";
+import { CVService } from "../../core/services/cv.service";
+import { interval, Subscription } from "rxjs";
 
 @Component({
   standalone: true,
-  selector: 'project-details-page',
+  selector: 'app-project-details-page',
   templateUrl: 'project-details.page.html',
   imports: [CommonModule, RouterModule, NgIcon],
   providers: [provideIcons({ 
@@ -38,23 +40,24 @@ import cv from "../../../../assets/data.json";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProjectDetailsPage implements OnInit, OnDestroy {
+  private cvService = inject(CVService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
-  private ngZone = inject(NgZone);
 
   @ViewChild('mainCont') mainCont!: ElementRef<HTMLElement>;
 
-  project: any = null;
+  cv = this.cvService.cv;
+  project: Project | null = null;
   projectIndex: number = 0;
   imagesLoaded: { [key: string]: boolean } = {};
-  private autoPlayInterval: any;
+  private subscription = new Subscription();
 
   ngOnInit() {
     window.scrollTo(0, 0);
     const slug = this.route.snapshot.paramMap.get('slug');
     if (slug) {
-      this.project = cv.projects.find(p => this.getProjectSlug(p.name) === slug);
+      this.project = this.cvService.getProjectBySlug(slug || '') || null;
       if (!this.project) {
         this.router.navigate(['/cv']);
         return;
@@ -67,15 +70,12 @@ export class ProjectDetailsPage implements OnInit, OnDestroy {
   }
 
   private startAutoPlay() {
-    if (this.project?.images?.length > 1) {
-      this.ngZone.runOutsideAngular(() => {
-        this.autoPlayInterval = setInterval(() => {
-          this.ngZone.run(() => {
-            this.nextImage();
-            this.cdr.markForCheck();
-          });
-        }, 5000);
-      });
+    if ((this.project?.images?.length ?? 0) > 1) {
+      this.subscription.add(
+        interval(5000).subscribe(() => {
+          this.nextImage();
+        })
+      );
     }
   }
 
@@ -103,17 +103,11 @@ export class ProjectDetailsPage implements OnInit, OnDestroy {
     this.cdr.markForCheck();
   }
 
-  getProjectSlug(name: string): string {
-    return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
-  }
-
   goBack() {
     this.router.navigate(['/cv'], { fragment: '' });
   }
 
   ngOnDestroy() {
-    if (this.autoPlayInterval) {
-      clearInterval(this.autoPlayInterval);
-    }
+    this.subscription.unsubscribe();
   }
 }

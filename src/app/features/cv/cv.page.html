@@ -27,7 +27,7 @@
       <section id="ABOUTME" #ABOUTME class="group animate-fade-in-up delay-100 will-change-transform transform-gpu">
         <div class="flex items-center gap-3 mb-6">
           <ng-icon name="tablerUser" class="text-retro-bright text-xl"></ng-icon>
-          <h2 class="text-sm font-bold uppercase tracking-[0.2em] text-retro-bright font-mono">About Me</h2>
+          <h2 [appScramble]="'About Me'" [id]="'ABOUTME'" [scrambleOnStart]="false" class="text-sm font-bold uppercase tracking-[0.2em] text-retro-bright font-mono">About Me</h2>
           <div class="h-[1px] flex-grow bg-retro-muted group-hover:bg-retro-yellow/30 transition-colors"></div>
         </div>
         <div class="relative pl-4 border-l-2 border-retro-yellow/20">
@@ -40,10 +40,9 @@
       <section id="WORK_EXPERIENCE" #WORK_EXPERIENCE class="group animate-fade-in-up delay-200 will-change-transform transform-gpu">
         <div class="flex items-center gap-3 mb-8">
           <ng-icon name="tablerBriefcase" class="text-retro-bright text-xl"></ng-icon>
-          <h2 class="text-sm font-bold uppercase tracking-[0.2em] text-retro-bright font-mono">Experience</h2>
+          <h2 [appScramble]="'Experience'" [id]="'WORK_EXPERIENCE'" [scrambleOnStart]="false" class="text-sm font-bold uppercase tracking-[0.2em] text-retro-bright font-mono">Experience</h2>
           <div class="h-[1px] flex-grow bg-retro-muted group-hover:bg-retro-yellow/30 transition-colors"></div>
         </div>
-        <!-- ... rest of experience content ... -->
         <div class="space-y-10 relative before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[1px] before:bg-retro-muted">
           @for (item of cv.work; track $index) {
           <div class="relative pl-10 group/item">
@@ -56,9 +55,9 @@
             </div>
             
             <div class="flex flex-col lg:flex-row lg:items-baseline justify-between mb-2 gap-2">
-              <h3 class="text-lg font-bold text-gray-100">{{item.name}}</h3>
+              <h3 class="text-lg font-bold text-gray-100">{{item.role}}</h3>
               <span class="text-retro-yellow text-[10px] font-mono px-2 py-0.5 rounded bg-retro-yellow/10 border border-retro-yellow/20 self-start lg:self-auto uppercase">
-                {{item.startDate}} — {{item.endDate}}
+                {{item.period}}
               </span>
             </div>
             <p class="text-retro-yellow/80 text-sm font-medium mb-3 uppercase tracking-wider font-mono">{{item.company}}</p>
@@ -79,7 +78,7 @@
       <section id="PROJECTS" #PROJECTS class="group animate-fade-in-up delay-300 will-change-transform transform-gpu">
         <div class="flex items-center gap-3 mb-8">
           <ng-icon name="tablerRocket" class="text-retro-bright text-xl"></ng-icon>
-          <h2 class="text-sm font-bold uppercase tracking-[0.2em] text-retro-bright font-mono">Key Projects</h2>
+          <h2 [appScramble]="'Key Projects'" [id]="'PROJECTS'" [scrambleOnStart]="false" class="text-sm font-bold uppercase tracking-[0.2em] text-retro-bright font-mono">Key Projects</h2>
           <div class="h-[1px] flex-grow bg-retro-muted group-hover:bg-retro-yellow/30 transition-colors"></div>
         </div>
 
@@ -128,8 +127,8 @@
 
             <div class="flex justify-between items-start mb-3 gap-4">
               <h3 class="text-lg md:text-xl font-bold text-gray-100 group-hover/project:text-retro-yellow transition-colors font-mono tracking-tight">{{item.name}}</h3>
-              @if (item.website) {
-                <a [href]="item.website" target="_blank" class="text-retro-bright/30 hover:text-retro-yellow transition-colors flex-shrink-0">
+              @if (item.links.github) {
+                <a [href]="item.links.github" target="_blank" class="text-retro-bright/30 hover:text-retro-yellow transition-colors flex-shrink-0">
                   <ng-icon name="tablerBrandGithub" size="22"></ng-icon>
                 </a>
               }
@@ -151,17 +150,15 @@
             </div>
 
             <div class="flex flex-wrap gap-2 mb-6">
-              @for (tech of item.highlights; track $index) {
+              @for (tech of item.stack; track $index) {
                 <span class="text-[9px] md:text-[10px] font-mono px-2 py-1 rounded bg-retro-yellow/5 border border-retro-yellow/10 text-retro-yellow/70 uppercase tracking-wider">{{tech}}</span>
               }
             </div>
             
-            @if (item.website) {
-              <a [routerLink]="['/project', getProjectSlug(item.name)]" class="inline-flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.2em] text-retro-yellow/40 hover:text-retro-yellow transition-colors mt-auto border-t border-white/5 pt-4 cursor-pointer">
-                <ng-icon name="tablerRocket" size="14"></ng-icon>
-                <span>Details</span>
-              </a>
-            }
+            <a [routerLink]="['/project', item.slug]" class="inline-flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.2em] text-retro-yellow/40 hover:text-retro-yellow transition-colors mt-auto border-t border-white/5 pt-4 cursor-pointer">
+              <ng-icon name="tablerRocket" size="14"></ng-icon>
+              <span>Details</span>
+            </a>
           </div>
           }
         </div>
@@ -175,19 +172,18 @@
       <section id="SKILLS" #SKILLS class="group animate-fade-in-up delay-500 will-change-transform transform-gpu">
         <div class="flex items-center gap-3 mb-6">
           <ng-icon name="tablerTools" class="text-retro-bright text-xl"></ng-icon>
-          <h2 class="text-sm font-bold uppercase tracking-[0.2em] text-retro-bright font-mono">Competencies</h2>
+          <h2 [appScramble]="'Competencies'" [id]="'SKILLS'" [scrambleOnStart]="false" class="text-sm font-bold uppercase tracking-[0.2em] text-retro-bright font-mono">Competencies</h2>
           <div class="h-[1px] flex-grow bg-retro-muted group-hover:bg-retro-yellow/30 transition-colors"></div>
         </div>
-        <!-- ... rest of skills content ... -->
         <div class="space-y-6">
           @for (item of cv.skills; track $index) {
           <div>
             <h3 class="text-[10px] font-bold text-gray-100 uppercase tracking-widest mb-3 flex items-center gap-2 font-mono">
               <span class="w-1 h-1 bg-retro-yellow rounded-full"></span>
-              {{item.name}}
+              {{item.category}}
             </h3>
             <div class="flex flex-wrap gap-2">
-              @for (keyword of item.keywords; track $index) {
+              @for (keyword of item.items; track $index) {
                 <span class="text-[10px] font-light px-3 py-1.5 rounded-lg glass-effect text-gray-300 hover:text-retro-yellow transition-all cursor-default font-mono">
                   {{ keyword }}
                 </span>
@@ -201,15 +197,14 @@
       <section id="LANGUAGES" #LANGUAGES class="group animate-fade-in-up delay-600 will-change-transform transform-gpu">
         <div class="flex items-center gap-3 mb-6">
           <ng-icon name="tablerLanguage" class="text-retro-bright text-xl"></ng-icon>
-          <h2 class="text-sm font-bold uppercase tracking-[0.2em] text-retro-bright font-mono">Languages</h2>
+          <h2 [appScramble]="'Languages'" [id]="'LANGUAGES'" [scrambleOnStart]="false" class="text-sm font-bold uppercase tracking-[0.2em] text-retro-bright font-mono">Languages</h2>
           <div class="h-[1px] flex-grow bg-retro-muted group-hover:bg-retro-yellow/30 transition-colors"></div>
         </div>
-        <!-- ... rest of languages content ... -->
         <div class="grid grid-cols-1 gap-4">
           @for (lang of cv.languages; track $index) {
           <div class="flex items-center justify-between p-3 rounded-lg glass-effect hover:border-retro-yellow/20 transition-colors">
-            <span class="text-xs font-medium text-gray-200 font-mono">{{lang.language}}</span>
-            <span class="text-[9px] font-mono text-retro-yellow uppercase tracking-tighter">{{lang.fluency}}</span>
+            <span class="text-xs font-medium text-gray-200 font-mono">{{lang.name}}</span>
+            <span class="text-[9px] font-mono text-retro-yellow uppercase tracking-tighter">{{lang.level}}</span>
           </div>
           }
         </div>

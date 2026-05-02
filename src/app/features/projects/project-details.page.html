@@ -19,10 +19,10 @@
           <div class="flex flex-wrap items-center gap-6 text-sm font-mono text-gray-400">
             <div class="flex items-center gap-2">
               <ng-icon name="tablerCalendar" size="16" class="text-retro-yellow/60"></ng-icon>
-              <span>{{project.startDate}}</span>
+              <span>{{project.period}}</span>
             </div>
-            @if (project.website) {
-              <a [href]="project.website" target="_blank" class="flex items-center gap-2 text-retro-yellow hover:text-retro-bright transition-colors">
+            @if (project.links.github) {
+              <a [href]="project.links.github" target="_blank" class="flex items-center gap-2 text-retro-yellow hover:text-retro-bright transition-colors">
                 <ng-icon name="tablerBrandGithub" size="18"></ng-icon>
                 <span>View Repository</span>
               </a>
@@ -38,15 +38,15 @@
             <ng-icon name="tablerActivity" size="12" class="text-retro-yellow"></ng-icon>
             Status
           </span>
-          <span class="text-sm font-bold text-retro-bright font-mono">{{project.status || 'N/A'}}</span>
+          <span class="text-sm font-bold text-retro-bright font-mono">{{project.metadata.status || 'N/A'}}</span>
         </div>
         <div class="p-4 rounded-xl glass-effect flex flex-col gap-1">
           <span class="text-[10px] font-mono text-gray-500 uppercase tracking-widest">Role</span>
-          <span class="text-sm font-bold text-retro-bright font-mono">{{project.role || 'DEVELOPER'}}</span>
+          <span class="text-sm font-bold text-retro-bright font-mono">{{project.metadata.role || 'DEVELOPER'}}</span>
         </div>
         <div class="p-4 rounded-xl glass-effect flex flex-col gap-1">
           <span class="text-[10px] font-mono text-gray-500 uppercase tracking-widest">Complexity</span>
-          <span class="text-sm font-bold text-retro-bright font-mono">{{project.complexity || 'MEDIUM'}}</span>
+          <span class="text-sm font-bold text-retro-bright font-mono">{{project.metadata.complexity || 'MEDIUM'}}</span>
         </div>
       </div>
 
@@ -130,32 +130,32 @@
             <h2 class="text-xs font-bold uppercase tracking-[0.2em] text-retro-bright font-mono border-b border-white/10 pb-2">Overview</h2>
             <div class="relative pl-4 border-l-2 border-retro-yellow/20">
               <p class="text-lg leading-relaxed text-gray-400 font-light">
-                {{project.description}}
+                {{project.long_description}}
               </p>
             </div>
           </section>
 
           <!-- Challenges & Solutions -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            @if (project.challenges) {
+            @if (project.metadata.challenges) {
               <section class="space-y-4">
                 <h3 class="text-[10px] font-bold uppercase tracking-[0.2em] text-red-400/80 font-mono flex items-center gap-2">
                   <ng-icon name="tablerAlertTriangle" size="14"></ng-icon>
                   The Challenges
                 </h3>
                 <p class="text-sm leading-relaxed text-gray-400 font-light">
-                  {{project.challenges}}
+                  {{project.metadata.challenges}}
                 </p>
               </section>
             }
-            @if (project.solutions) {
+            @if (project.metadata.solutions) {
               <section class="space-y-4">
                 <h3 class="text-[10px] font-bold uppercase tracking-[0.2em] text-green-400/80 font-mono flex items-center gap-2">
                   <ng-icon name="tablerCircleCheck" size="14"></ng-icon>
                   The Solutions
                 </h3>
                 <p class="text-sm leading-relaxed text-gray-400 font-light">
-                  {{project.solutions}}
+                  {{project.metadata.solutions}}
                 </p>
               </section>
             }
@@ -170,7 +170,7 @@
           <section class="space-y-6">
             <h2 class="text-xs font-bold uppercase tracking-[0.2em] text-retro-bright font-mono border-b border-white/10 pb-2">Technologies Used</h2>
             <div class="flex flex-wrap gap-2.5">
-              @for (tech of project.highlights; track $index) {
+              @for (tech of project.stack; track $index) {
                 <span class="text-[10px] font-mono px-3 py-1.5 rounded-lg glass-effect text-gray-400 hover:text-retro-yellow transition-all cursor-default uppercase tracking-wider">
                   {{tech}}
                 </span>
@@ -185,14 +185,14 @@
               Explore the system in depth through the source code or the live deployment.
             </p>
             <div class="flex flex-col gap-3">
-              @if (project.demoUrl) {
-                <a [href]="project.demoUrl" target="_blank" class="flex items-center justify-center gap-3 w-full py-4 rounded-xl bg-retro-yellow text-retro-dark font-bold uppercase tracking-[0.2em] text-[11px] hover:bg-retro-bright transition-all transform hover:scale-[1.02] active:scale-[0.98]">
+              @if (project.links.demo) {
+                <a [href]="project.links.demo" target="_blank" class="flex items-center justify-center gap-3 w-full py-4 rounded-xl bg-retro-yellow text-retro-dark font-bold uppercase tracking-[0.2em] text-[11px] hover:bg-retro-bright transition-all transform hover:scale-[1.02] active:scale-[0.98]">
                   <span>Launch Live System</span>
                   <ng-icon name="tablerWorld" size="18"></ng-icon>
                 </a>
               }
-              @if (project.website) {
-                <a [href]="project.website" target="_blank" class="flex items-center justify-center gap-3 w-full py-4 rounded-xl bg-white/5 border border-white/10 text-retro-bright font-bold uppercase tracking-[0.2em] text-[11px] hover:bg-white/10 transition-all transform hover:scale-[1.02] active:scale-[0.98]">
+              @if (project.links.github) {
+                <a [href]="project.links.github" target="_blank" class="flex items-center justify-center gap-3 w-full py-4 rounded-xl bg-white/5 border border-white/10 text-retro-bright font-bold uppercase tracking-[0.2em] text-[11px] hover:bg-white/10 transition-all transform hover:scale-[1.02] active:scale-[0.98]">
                   <span>Access Repository</span>
                   <ng-icon name="tablerBrandGithub" size="18"></ng-icon>
                 </a>

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef, AfterViewInit, NgZone, ChangeDetectionStrategy, ChangeDetectorRef, inject } from "@angular/core";
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, AfterViewInit, NgZone, ChangeDetectionStrategy, ChangeDetectorRef, inject, QueryList, ViewChildren } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { ActivatedRoute, RouterModule } from "@angular/router";
 import { NgIcon, provideIcons } from "@ng-icons/core";
@@ -8,13 +8,14 @@ import {
   tablerBrandGithub, tablerExternalLink,
   tablerChevronDown, tablerChevronUp
 } from "@ng-icons/tabler-icons";
-import cv from "../../../../assets/data.json";
+import { CVService } from "../../core/services/cv.service";
+import { ScrambleDirective } from "../../shared/directives/scramble.directive";
 
 @Component({
   standalone: true,
-  selector: 'cv-page',
+  selector: 'app-cv-page',
   templateUrl: 'cv.page.html',
-  imports: [CommonModule, NgIcon, RouterModule],
+  imports: [CommonModule, NgIcon, RouterModule, ScrambleDirective],
   providers: [provideIcons({ 
     tablerUser, tablerBriefcase, tablerRocket, 
     tablerSchool, tablerTools, tablerLanguage,
@@ -23,23 +24,22 @@ import cv from "../../../../assets/data.json";
   })],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class cvpage implements OnInit, OnDestroy, AfterViewInit {
+export class CvPage implements OnInit, OnDestroy, AfterViewInit {
+  private cvService = inject(CVService);
   private cdr = inject(ChangeDetectorRef);
   private route = inject(ActivatedRoute);
   private ngZone = inject(NgZone);
 
   @ViewChild('mainCont') mainCont!: ElementRef<HTMLElement>;
+  @ViewChildren(ScrambleDirective) scrambleDirectives!: QueryList<ScrambleDirective>;
   
-  readonly cv = cv;
+  cv = this.cvService.cv;
   private observer!: IntersectionObserver;
   
-  // Project State
   expandedProjects: { [key: number]: boolean } = {};
   imagesLoaded: { [key: string]: boolean } = {};
 
   ngOnInit() {
-    this.cdr.markForCheck();
-
     this.route.fragment.subscribe(frag => {
       if (frag) {
         this.ngZone.runOutsideAngular(() => {
@@ -66,8 +66,11 @@ export class cvpage implements OnInit, OnDestroy, AfterViewInit {
     this.observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          const title = entry.target.querySelector('h2');
-          if (title) this.scrambleElement(title as HTMLElement);
+          const sectionId = entry.target.id;
+          const directive = this.scrambleDirectives.find(d => (d as any).id === sectionId);
+          if (directive) {
+            directive.scramble(directive.textToScramble);
+          }
           this.observer.unobserve(entry.target);
         }
       });
@@ -75,30 +78,6 @@ export class cvpage implements OnInit, OnDestroy, AfterViewInit {
 
     const sections = this.mainCont.nativeElement.querySelectorAll('section');
     sections.forEach(section => this.observer.observe(section));
-  }
-
-  private scrambleElement(el: HTMLElement) {
-    let frame = 0;
-    const finalText = el.textContent || '';
-    const chars = '!<>-_\\/[]{}—=+*^?#________';
-
-    const anim = () => {
-      let output = '';
-      let complete = 0;
-      for (let i = 0; i < finalText.length; i++) {
-        const start = Math.floor(Math.random() * 3);
-        const end = start + Math.floor(Math.random() * 6);
-        if (frame >= end) { complete++; output += finalText[i]; }
-        else if (frame >= start) { output += chars[Math.floor(Math.random() * chars.length)]; }
-        else { output += ' '; }
-      }
-      el.textContent = output;
-      if (complete < finalText.length) {
-        frame++;
-        requestAnimationFrame(anim);
-      }
-    };
-    requestAnimationFrame(anim);
   }
 
   toggleProject(index: number) {

@@ -1,11 +1,11 @@
 import { bootstrapApplication } from '@angular/platform-browser';
-import { App } from './app/frontend/pages/wrapper/app';
+import { AppComponent } from './app/app.component';
 import { provideBrowserGlobalErrorListeners } from '@angular/core';
 import { provideRouter, withHashLocation, withViewTransitions } from '@angular/router';
-import { routes } from './app/frontend/app.routes';
+import { routes } from './app/app.routes';
 
 
-bootstrapApplication(App, {
+bootstrapApplication(AppComponent, {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes, withHashLocation(), withViewTransitions())

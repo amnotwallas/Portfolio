@@ -32,7 +32,8 @@ An intelligent assistant powered by **Llama 3.1** via Groq. Unlike standard bots
 ## 🛠️ Tech Stack
 
 ### Frontend (The "Shell")
-- **Framework:** Angular 21 (Signals, Standalone Components, Clean Architecture)
+- **Framework:** Angular 21 (Signals, Standalone Components, Clean Feature-based Architecture)
+- **Shared Logic:** Custom `ScrambleDirective` for unified text effects, `ChatService` for neural core integration.
 - **Styling:** Tailwind CSS v4, PrimeNG v21 (Lara Modern Theme)
 - **Icons:** `@ng-icons` (Lucide, Tabler Icons)
 - **Unit Testing:** Vitest with JSDOM
@@ -48,15 +49,14 @@ An intelligent assistant powered by **Llama 3.1** via Groq. Unlike standard bots
 ## 📂 Project Structure
 
 ```text
-src/
-├── app/
-│   └── frontend/
-│       ├── common/          # Shared components (Footer, SpeedDial) & Services
-│       ├── pages/           # Core views (Home, CV, Wrapper)
-│       └── app.routes.ts    # Reactive navigation logic
-├── assets/
-│   └── data.json           # Single source of truth for all portfolio content
-└── environments/           # CI/CD secret injection placeholders
+src/app/
+├── core/               # Singleton services (CV, Language, Chat)
+├── shared/             # Reusable UI (Components, Directives, Models)
+├── features/           # Domain modules (Home, CV, Projects)
+├── app.component.ts    # Root component
+└── app.routes.ts       # Navigation logic
+src/assets/
+└── data.json           # Single source of truth for all portfolio content
 ```
 
 ---

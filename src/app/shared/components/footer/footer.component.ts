@@ -1,7 +1,8 @@
 import { Component, computed, inject, OnDestroy, OnInit, signal } from "@angular/core";
 import { NavigationEnd, Router } from "@angular/router";
 import { NgIcon } from "@ng-icons/core";
-import cv from "../../../../../assets/data.json";
+import { CVData } from "../../models/cv.model";
+import { CVService } from "../../../core/services/cv.service";
 import { tablerBrandGithub,
   tablerBrandLinkedin,
   tablerCloudDownload,
@@ -42,12 +43,12 @@ import { CommonModule } from "@angular/common";
         </div>
       </div>
 
-      <a class="flex gap-2 items-center text-xs font-medium hover:text-retro-yellow transition-colors" [href]="cv.basics.profiles[0].url" target="_blank">
+      <a class="flex gap-2 items-center text-xs font-medium hover:text-retro-yellow transition-colors" [href]="getProfileUrl('LinkedIn')" target="_blank">
         <ng-icon [svg]="icons.tablerBrandLinkedin" size="18" strokeWidth="2.5" />
         LinkedIn
       </a>
 
-      <a class="flex gap-2 items-center text-xs font-medium hover:text-retro-yellow transition-colors" [href]="cv.basics.profiles[1].url" target="_blank">
+      <a class="flex gap-2 items-center text-xs font-medium hover:text-retro-yellow transition-colors" [href]="getProfileUrl('GitHub')" target="_blank">
         <ng-icon [svg]="icons.tablerBrandGithub" size="18" strokeWidth="2.5" />
         GitHub
       </a>
@@ -77,8 +78,9 @@ import { CommonModule } from "@angular/common";
   `
 })
 export class Footer implements OnInit, OnDestroy {
+  private cvService = inject(CVService);
   private routerSubscription: any;
-  readonly cv = cv;
+  get cv(): CVData { return this.cvService.cv; }
   readonly icons = {
     tablerMail,
     tablerBrandLinkedin,
@@ -93,6 +95,10 @@ export class Footer implements OnInit, OnDestroy {
   showCvTooltip = signal(false);
   private router = inject(Router);
   currentUrl = signal('');
+
+  getProfileUrl(network: string): string {
+    return this.cv.basics.profiles.find(p => p.network === network)?.url || '#';
+  }
 
   handleCvClick() {
     if (this.cvAvailable()) {

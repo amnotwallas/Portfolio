@@ -1,0 +1,21 @@
+<main class="relative flex flex-col min-h-screen items-center justify-center pt-24 pb-32 md:pt-12 md:pb-32 md:p-6 overflow-hidden select-none">
+  
+  <app-home-status 
+    [systemId]="cv.system.id"
+    [location]="cv.system.location.city + ' // ' + cv.system.location.coords"
+    [status]="cv.system.status"
+    [uptime]="uptime">
+  </app-home-status>
+
+  <app-home-logs [logs]="currentLogs"></app-home-logs>
+
+  <div class="relative flex flex-col items-center z-10 w-full max-w-2xl px-4 text-center">
+    <app-home-hero 
+      [firstName]="firstName" 
+      [activeTitle]="activeTitle">
+    </app-home-hero>
+
+    <app-home-chat></app-home-chat>
+  </div>
+
+</main>
