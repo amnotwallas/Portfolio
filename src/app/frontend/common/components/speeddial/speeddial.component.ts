@@ -3,12 +3,8 @@ import { Component, signal, computed, HostListener } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { NgIcon } from '@ng-icons/core';
 import {
-  tablerLayoutGrid,
-  tablerCategory2,
   tablerSmartHome,
-  tablerCompass,
   tablerNews,
-  tablerPlus,
   tablerMenu2,
 } from '@ng-icons/tabler-icons';
 
@@ -24,23 +20,19 @@ import {
 export class SpeedDialComponent {
   open = signal(false);
 
-  radius = 80; // distancia desde el boton principal
+  radius = 90;
   startAngle = 0;
   endAngle = 90;
 
   readonly excludedIcons = {
-    tablerLayoutGrid,
-    tablerCategory2,
-    tablerCompass,
-    tablerPlus,
     tablerMenu2,
   }
 
-
   readonly icons = new Map([
-    ['home', { icon: tablerSmartHome, label: 'Inicio' }],
-    ['cv', { icon: tablerNews, label: 'Mi CV' }],
-    ['sep-1', { icon: '', label: '' }],
+    ['home', { icon: tablerSmartHome, label: 'Home', fragment: '' }],
+    ['sep-1', { icon: '', label: '', fragment: '' }],
+    ['cv', { icon: tablerNews, label: 'About Me', fragment: '' }],
+    ['sep-2', { icon: '', label: '', fragment: '' }],
   ]);
 
   positions = computed(() => {
