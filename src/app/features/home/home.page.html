@@ -1,28 +1,27 @@
-<main class="relative flex flex-col min-h-screen pt-24 pb-32 md:pt-12 md:pb-32 px-4 md:px-8 lg:px-24 overflow-x-hidden">
-  
-  <app-home-status 
-    [systemId]="cv.system.id"
-    [location]="cv.system.location.city + ' // ' + cv.system.location.coords"
-    [status]="cv.system.status"
-    [uptime]="uptime">
-  </app-home-status>
+<main class="min-h-screen">
+    <!-- Scrollable Content -->
+    <div class="pt-32 pb-24">
+        <app-home-hero [firstName]="firstName" [activeTitle]="activeTitle"></app-home-hero>
+        
+        <div class="container mx-auto px-6 mt-32 space-y-32">
+            <!-- Experience (Lazy Hydration) -->
+            @defer (on viewport) {
+                <app-home-experience></app-home-experience>
+            } @placeholder {
+                <div class="h-[500px] w-full bg-retro-dark animate-pulse opacity-5"></div>
+            }
 
-  <app-home-logs [logs]="currentLogs"></app-home-logs>
+            <!-- Projects (Lazy Hydration) -->
+            @defer (on viewport) {
+                <app-home-projects></app-home-projects>
+            } @placeholder {
+                <div class="h-[800px] w-full bg-retro-dark animate-pulse opacity-5"></div>
+            }
+        </div>
+    </div>
 
-  <!-- Hero & Intro Section -->
-  <div class="relative flex flex-col items-center z-10 w-full max-w-6xl mx-auto min-h-[80vh] justify-center">
-    <app-home-hero 
-      [firstName]="firstName" 
-      [activeTitle]="activeTitle">
-    </app-home-hero>
-
-    <app-home-chat></app-home-chat>
-  </div>
-
-  <!-- Detailed Sections -->
-  <div class="relative z-10 space-y-32 mt-20">
-    <app-home-experience></app-home-experience>
-    <app-home-projects></app-home-projects>
-  </div>
-
+    <!-- Chat Interface (Defer until Idle) -->
+    @defer (on idle) {
+        <app-home-chat></app-home-chat>
+    }
 </main>

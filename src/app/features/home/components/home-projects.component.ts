@@ -31,6 +31,8 @@ import { CVService } from '../../../core/services/cv.service';
                 <div *ngIf="!imagesLoaded[item.images[0]]" class="absolute inset-0 z-10 skeleton"></div>
                 <img [src]="item.images[0]" 
                      loading="lazy"
+                     width="600"
+                     height="450"
                      (load)="onImageLoad(item.images[0])"
                      class="w-full h-full object-cover object-top transition-all duration-700"
                      [class.opacity-0]="!imagesLoaded[item.images[0]]"
