@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, signal, computed, HostListener } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Component, signal, computed, HostListener, inject } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
 import { NgIcon } from '@ng-icons/core';
 import {
   tablerSmartHome,
   tablerNews,
   tablerMenu2,
+  tablerRocket,
 } from '@ng-icons/tabler-icons';
 
 @Component({
@@ -18,6 +19,7 @@ import {
   ],
 })
 export class SpeedDialComponent {
+  private router = inject(Router);
   open = signal(false);
 
   radius = 90;
@@ -29,10 +31,12 @@ export class SpeedDialComponent {
   }
 
   readonly icons = new Map([
-    ['home', { icon: tablerSmartHome, label: 'Home', fragment: '' }],
+    ['home', { icon: tablerSmartHome, label: 'Top', fragment: '' }],
     ['sep-1', { icon: '', label: '', fragment: '' }],
-    ['cv', { icon: tablerNews, label: 'About Me', fragment: '' }],
+    ['home#experience', { icon: tablerNews, label: 'Experience', fragment: 'experience' }],
     ['sep-2', { icon: '', label: '', fragment: '' }],
+    ['home#projects', { icon: tablerRocket, label: 'Projects', fragment: 'projects' }],
+    ['sep-3', { icon: '', label: '', fragment: '' }],
   ]);
 
   positions = computed(() => {
@@ -63,5 +67,22 @@ export class SpeedDialComponent {
 
   toggle() {
     this.open.update(v => !v);
+  }
+
+  navigateTo(item: any) {
+    this.open.set(false);
+    if (!item) return;
+
+    if (item.fragment) {
+      const el = document.getElementById(item.fragment);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        this.router.navigate(['/home'], { fragment: item.fragment });
+      }
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      this.router.navigate(['/home']);
+    }
   }
 }

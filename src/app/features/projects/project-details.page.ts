@@ -59,12 +59,12 @@ export class ProjectDetailsPage implements OnInit, OnDestroy {
     if (slug) {
       this.project = this.cvService.getProjectBySlug(slug || '') || null;
       if (!this.project) {
-        this.router.navigate(['/cv']);
+        this.router.navigate(['/home']);
         return;
       }
       this.startAutoPlay();
     } else {
-      this.router.navigate(['/cv']);
+      this.router.navigate(['/home']);
     }
     this.cdr.markForCheck();
   }
@@ -104,7 +104,7 @@ export class ProjectDetailsPage implements OnInit, OnDestroy {
   }
 
   goBack() {
-    this.router.navigate(['/cv'], { fragment: '' });
+    this.router.navigate(['/home'], { fragment: 'projects' });
   }
 
   ngOnDestroy() {

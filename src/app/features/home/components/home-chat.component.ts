@@ -1,8 +1,8 @@
-import { Component, ElementRef, ViewChild, inject, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { Component, ElementRef, ViewChild, inject, AfterViewInit, ChangeDetectorRef, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { tablerArrowUp } from '@ng-icons/tabler-icons';
+import { tablerArrowUp, tablerTerminal, tablerX } from '@ng-icons/tabler-icons';
 import { ChatService } from '../../../core/services/chat.service';
 import { CVService } from '../../../core/services/cv.service';
 import { Router } from '@angular/router';
@@ -11,22 +11,51 @@ import { Router } from '@angular/router';
   selector: 'app-home-chat',
   standalone: true,
   imports: [CommonModule, FormsModule, NgIcon],
-  providers: [provideIcons({ tablerArrowUp })],
+  providers: [provideIcons({ tablerArrowUp, tablerTerminal, tablerX })],
   template: `
-    <div class="w-full max-w-lg animate-fade-in-up delay-700 mt-20">
-      <div class="flex flex-col gap-6">
-        <!-- AI Response Area -->
-        <p #chatResponseEl class="font-mono text-xs md:text-sm text-retro-bright/80 min-h-[1.5em] tracking-wide text-center px-4 uppercase">
+    <!-- Floating Trigger Button -->
+    <button 
+      (click)="toggleWidget()"
+      class="fixed bottom-24 right-6 z-50 flex items-center justify-center w-14 h-14 rounded-2xl bg-retro-dark border-2 border-retro-yellow/30 text-retro-yellow shadow-[0_0_20px_rgba(250,204,21,0.2)] hover:shadow-[0_0_30px_rgba(250,204,21,0.4)] hover:border-retro-yellow transition-all duration-300 group"
+      [class.opacity-0]="isOpen()"
+      [class.pointer-events-none]="isOpen()">
+      <ng-icon name="tablerTerminal" size="28" class="group-hover:scale-110 transition-transform"></ng-icon>
+      <span class="absolute -top-1 -right-1 flex h-3 w-3">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-retro-yellow opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-3 w-3 bg-retro-yellow"></span>
+      </span>
+    </button>
+
+    <!-- Widget Container -->
+    <div 
+      class="fixed bottom-24 right-6 z-50 w-[calc(100vw-3rem)] sm:w-96 glass-effect border-2 border-retro-yellow/20 rounded-2xl shadow-2xl transition-all duration-500 origin-bottom-right overflow-hidden flex flex-col"
+      [class.scale-0]="!isOpen()"
+      [class.opacity-0]="!isOpen()"
+      [class.pointer-events-none]="!isOpen()">
+      
+      <!-- Header -->
+      <div class="flex items-center justify-between p-4 border-b border-white/10 bg-retro-yellow/5">
+        <div class="flex items-center gap-2">
+          <div class="w-2 h-2 rounded-full bg-retro-yellow animate-pulse"></div>
+          <span class="font-mono text-[10px] font-bold text-retro-yellow uppercase tracking-widest">WALTER_AI // NEURAL_CORE</span>
+        </div>
+        <button (click)="toggleWidget()" class="text-retro-bright/40 hover:text-retro-yellow transition-colors">
+          <ng-icon name="tablerX" size="18"></ng-icon>
+        </button>
+      </div>
+
+      <!-- Chat Area -->
+      <div class="flex-grow p-5 flex flex-col gap-4">
+        <p #chatResponseEl class="font-mono text-xs text-retro-bright/80 min-h-[4em] leading-relaxed uppercase tracking-tight">
           {{cv.terminal.welcome_message}}
         </p>
         
-        <!-- Input Line -->
+        <!-- Input Area -->
         <form (submit)="onChatSubmit()" 
-              class="flex items-center gap-3 border-b-2 border-white/10 focus-within:border-retro-yellow transition-all duration-300 pb-2 mx-auto w-full max-w-md group"
+              class="flex items-center gap-2 border-b border-white/10 focus-within:border-retro-yellow transition-all pb-1 group"
               [class.animate-pulse-gold]="isProcessing()">
-          <span class="font-mono text-retro-yellow text-xs md:text-sm font-bold whitespace-nowrap uppercase tracking-tight transition-all"
-                [class.animate-pulse-gold]="isProcessing()">
-            WALTER_AI >
+          <span class="font-mono text-retro-yellow text-[10px] font-bold whitespace-nowrap uppercase">
+            >
           </span>
           <input 
             #chatInput
@@ -34,24 +63,24 @@ import { Router } from '@angular/router';
             [(ngModel)]="userQuery" 
             name="query"
             autocomplete="off"
-            placeholder="TYPE_COMMAND_HERE..."
-            class="flex-grow bg-transparent border-none outline-none font-mono text-sm md:text-base text-retro-bright placeholder:text-gray-700 tracking-widest"
+            placeholder="TYPE_CMD..."
+            class="flex-grow bg-transparent border-none outline-none font-mono text-xs text-retro-bright placeholder:text-gray-700 tracking-wider"
           >
           <button 
             type="submit" 
             [disabled]="isProcessing() || !userQuery.trim()"
-            class="flex items-center justify-center bg-retro-yellow/5 border border-retro-yellow/20 rounded px-2 py-1 text-retro-yellow/60 hover:text-retro-yellow hover:bg-retro-yellow/10 hover:border-retro-yellow/40 disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-300"
+            class="text-retro-yellow/40 hover:text-retro-yellow disabled:opacity-30 transition-colors"
           >
-            <ng-icon name="tablerArrowUp" size="18"></ng-icon>
+            <ng-icon name="tablerArrowUp" size="16"></ng-icon>
           </button>
         </form>
-        <div class="flex items-center justify-center gap-2 md:gap-4 mt-6">
-          <span class="hidden sm:block h-[1px] w-6 md:w-8 bg-white/10"></span>
-          <p class="font-mono text-[8px] md:text-[10px] text-retro-yellow/60 uppercase tracking-[0.2em] md:tracking-[0.6em] whitespace-nowrap">
-            WALTER_AI_INTERFACE // CORE_STABLE
-          </p>
-          <span class="hidden sm:block h-[1px] w-6 md:w-8 bg-white/10"></span>
-        </div>
+      </div>
+
+      <!-- Footer Info -->
+      <div class="px-4 py-2 border-t border-white/5 bg-black/20">
+        <p class="font-mono text-[8px] text-retro-yellow/30 uppercase tracking-[0.2em] text-center">
+          CORE_STATUS: OPERATIONAL // V.2.1.0
+        </p>
       </div>
     </div>
   `
@@ -68,9 +97,24 @@ export class HomeChatComponent implements AfterViewInit {
   userQuery = '';
   isProcessing = this.chatService.isProcessing;
   cv = this.cvService.cv;
+  isOpen = signal(false);
 
   ngAfterViewInit() {
-    setTimeout(() => this.chatInput?.nativeElement?.focus(), 600);
+    // Initial focus handled by toggle
+  }
+
+  toggleWidget() {
+    this.isOpen.update(v => !v);
+    if (this.isOpen()) {
+      setTimeout(() => this.chatInput?.nativeElement?.focus(), 300);
+    }
+  }
+
+  private scrollToSection(id: string) {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   }
 
   async onChatSubmit() {
@@ -82,15 +126,15 @@ export class HomeChatComponent implements AfterViewInit {
 
     // Static Commands
     const lowerQuery = query.toLowerCase();
-    if (['cv', 'resume', 'exec_cv'].includes(lowerQuery)) {
-      this.chatResponseEl.nativeElement.textContent = "COMMAND_ACCEPTED: REDIRECTING TO CV MODULE...";
-      setTimeout(() => this.router.navigate(['/cv']), 1000);
+    if (['experience', 'work', 'exec_cv'].includes(lowerQuery)) {
+      this.chatResponseEl.nativeElement.textContent = "COMMAND_ACCEPTED: SCROLLING TO EXPERIENCE...";
+      setTimeout(() => this.scrollToSection('experience'), 1000);
       return;
     }
 
     if (['projects', 'view_projects', 'show projects'].includes(lowerQuery)) {
-      this.chatResponseEl.nativeElement.textContent = "COMMAND_ACCEPTED: OPENING PROJECTS VIEW...";
-      setTimeout(() => this.router.navigate(['/cv'], { fragment: 'PROJECTS' }), 1000);
+      this.chatResponseEl.nativeElement.textContent = "COMMAND_ACCEPTED: SCROLLING TO PROJECTS...";
+      setTimeout(() => this.scrollToSection('projects'), 1000);
       return;
     }
 
@@ -125,10 +169,11 @@ export class HomeChatComponent implements AfterViewInit {
       this.chatService.addToHistory('user', query);
       this.chatService.addToHistory('assistant', fullText);
 
-      if (fullText.includes('[NAV:CV]')) {
-        setTimeout(() => this.router.navigate(['/cv']), 2500);
+      // Handle AI Navigation Tokens
+      if (fullText.includes('[NAV:CV]') || fullText.includes('[NAV:EXPERIENCE]')) {
+        setTimeout(() => this.scrollToSection('experience'), 2500);
       } else if (fullText.includes('[NAV:PROJECTS]')) {
-        setTimeout(() => this.router.navigate(['/cv'], { fragment: 'PROJECTS' }), 2500);
+        setTimeout(() => this.scrollToSection('projects'), 2500);
       }
 
     } catch (error: any) {

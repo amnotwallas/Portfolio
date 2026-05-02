@@ -1,10 +1,10 @@
-import { Directive, ElementRef, Input, NgZone, OnDestroy, inject, AfterViewInit } from '@angular/core';
+import { Directive, ElementRef, Input, NgZone, OnDestroy, inject, AfterViewInit, OnChanges, SimpleChanges } from '@angular/core';
 
 @Directive({
   selector: '[appScramble]',
   standalone: true
 })
-export class ScrambleDirective implements AfterViewInit, OnDestroy {
+export class ScrambleDirective implements AfterViewInit, OnChanges, OnDestroy {
   private el = inject(ElementRef);
   private ngZone = inject(NgZone);
 
@@ -15,6 +15,12 @@ export class ScrambleDirective implements AfterViewInit, OnDestroy {
 
   private chars = '!@$%&<>-_\\/[]{}—=+*^?#________';
   private frameRequest: number | null = null;
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['textToScramble'] && !changes['textToScramble'].firstChange) {
+      this.scramble(changes['textToScramble'].currentValue);
+    }
+  }
 
   ngAfterViewInit() {
     if (this.scrambleOnStart) {

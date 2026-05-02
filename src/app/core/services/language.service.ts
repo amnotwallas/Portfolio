@@ -14,13 +14,12 @@ export class LanguageService {
       aboutMe: 'About Me',
       experience: 'Experience',
       projects: 'Key Projects',
-      skills: 'Competencies',
       languages: 'Languages',
       seeMore: 'See More',
       seeLess: 'See Less',
-      aiReady: "[WALTER_AI]: SYSTEM_READY. TRY_COMMANDS: 'EXEC_CV' OR 'VIEW_PROJECTS'_",
+      aiReady: "[WALTER_AI]: SYSTEM_READY. TRY_COMMANDS: 'VIEW_PROJECTS' OR 'EXPERIENCE'_",
       aiThinking: "[WALTER_AI]: THINKING...",
-      aiCommand: "COMMAND_ACCEPTED: REDIRECTING...",
+      aiCommand: "COMMAND_ACCEPTED: SCROLLING...",
       placeholder: 'TYPE_COMMAND_HERE...',
     },
     es: {
@@ -28,15 +27,13 @@ export class LanguageService {
       aboutMe: 'Sobre Mí',
       experience: 'Experiencia',
       projects: 'Proyectos Clave',
-      skills: 'Competencias',
       languages: 'Idiomas',
       seeMore: 'Ver Más',
       seeLess: 'Ver Menos',
-      aiReady: "[WALTER_AI]: SISTEMA_LISTO. PRUEBA: 'EXEC_CV' O 'VIEW_PROJECTS'_",
+      aiReady: "[WALTER_AI]: SISTEMA_LISTO. PRUEBA: 'VIEW_PROJECTS' O 'EXPERIENCE'_",
       aiThinking: "[WALTER_AI]: PENSANDO...",
-      aiCommand: "COMANDO_ACEPTADO: REDIRIGIENDO...",
+      aiCommand: "COMANDO_ACEPTADO: DESPLAZANDO...",
       placeholder: 'ESCRIBE_UN_COMANDO...',
-      execCv: 'VER_CV',
       viewProjects: 'VER_PROYECTOS'
     }
   };

@@ -1,4 +1,4 @@
-<main class="relative flex flex-col min-h-screen items-center justify-center pt-24 pb-32 md:pt-12 md:pb-32 md:p-6 overflow-hidden select-none">
+<main class="relative flex flex-col min-h-screen pt-24 pb-32 md:pt-12 md:pb-32 px-4 md:px-8 lg:px-24 overflow-x-hidden">
   
   <app-home-status 
     [systemId]="cv.system.id"
@@ -9,13 +9,20 @@
 
   <app-home-logs [logs]="currentLogs"></app-home-logs>
 
-  <div class="relative flex flex-col items-center z-10 w-full max-w-2xl px-4 text-center">
+  <!-- Hero & Intro Section -->
+  <div class="relative flex flex-col items-center z-10 w-full max-w-6xl mx-auto min-h-[80vh] justify-center">
     <app-home-hero 
       [firstName]="firstName" 
       [activeTitle]="activeTitle">
     </app-home-hero>
 
     <app-home-chat></app-home-chat>
+  </div>
+
+  <!-- Detailed Sections -->
+  <div class="relative z-10 space-y-32 mt-20">
+    <app-home-experience></app-home-experience>
+    <app-home-projects></app-home-projects>
   </div>
 
 </main>

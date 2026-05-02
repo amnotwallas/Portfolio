@@ -34,9 +34,7 @@
           [style.transform]="open() ? 'translate(' + positions()[i].x + 'px,' + positions()[i].y + 'px)' : 'translate(0,0)'"
           [style.opacity]="open() ? 1 : 0"
           [style.transition-delay]="(i * 50) + 'ms'"
-          [routerLink]="['/' + item.split('#')[0]]"
-          [fragment]="icons.get(item)?.fragment"
-          (click)="open.set(false)"
+          (click)="navigateTo(icons.get(item))"
         >
             <ng-icon
               [svg]="icons.get(item)?.icon"
