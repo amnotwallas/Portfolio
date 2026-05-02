@@ -13,7 +13,7 @@ export class ScrambleDirective implements AfterViewInit, OnChanges, OnDestroy {
   @Input() scrambleOnStart: boolean = true;
   @Input() scrambleDuration: number = 600;
 
-  private chars = '!@$%&<>-_\\/[]{}—=+*^?#________';
+  private chars = '!@#$%^&*()_+-=[]{}|;:,.<>?/X_';
   private frameRequest: number | null = null;
 
   ngOnChanges(changes: SimpleChanges) {
@@ -38,29 +38,39 @@ export class ScrambleDirective implements AfterViewInit, OnChanges, OnDestroy {
     const oldText = targetEl.textContent || '';
     const length = Math.max(oldText.length, newText.length);
 
+    const maxFrames = 100; 
+
     const anim = () => {
       let output = '';
       let complete = 0;
+
       for (let i = 0; i < length; i++) {
-        const start = Math.floor(Math.random() * 3);
-        const end = start + Math.floor(Math.random() * 6);
-        if (frame >= end) {
-          complete++;
-          output += newText[i] || '';
-        } else if (frame >= start) {
-          output += this.chars[Math.floor(Math.random() * this.chars.length)];
+        const targetChar = newText[i] || '';
+
+        // Randomize when each character "settles" - wider range for longer effect
+        const settleFrame = Math.floor(Math.random() * maxFrames);
+
+        if (frame >= settleFrame) {
+          // Increased flicker chance to 10% and extended duration
+          if (frame < maxFrames + 10 && Math.random() < 0.10) {
+            output += this.chars[Math.floor(Math.random() * this.chars.length)];
+          } else {
+            complete++;
+            output += targetChar;
+          }
         } else {
-          output += oldText[i] || '';
+          // Noise phase
+          output += this.chars[Math.floor(Math.random() * this.chars.length)];
         }
       }
+
       targetEl.textContent = output;
-      
-      if (complete < length) {
+
+      if (complete < length || frame < maxFrames + 10) {
         frame++;
         this.frameRequest = requestAnimationFrame(anim);
       }
     };
-
     this.ngZone.runOutsideAngular(() => {
       this.frameRequest = requestAnimationFrame(anim);
     });
