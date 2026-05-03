@@ -1,7 +1,7 @@
 import { Component, Input, inject, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ScrambleDirective } from '../../../shared/directives/scramble.directive';
-import { CVService } from '../../../core/services/cv.service';
+import { PortfolioService } from '../../../core/services/portfolio.service';
 
 @Component({
   selector: 'app-home-hero',
@@ -42,8 +42,8 @@ import { CVService } from '../../../core/services/cv.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomeHeroComponent {
-  private cvService = inject(CVService);
-  cv = this.cvService.cv;
+  private portfolioService = inject(PortfolioService);
+  cv = this.portfolioService.portfolio;
 
   @Input() firstName: string = '';
   @Input() activeTitle: string = '';

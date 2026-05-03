@@ -5,44 +5,44 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688?style=flat-square&logo=fastapi)](https://fastapi.tiangolo.com/)
 [![GitHub Actions](https://img.shields.io/badge/CI%2FCD-GitHub%20Actions-2088FF?style=flat-square&logo=github-actions)](https://github.com/features/actions)
 
-A high-performance, interactive portfolio featuring a retro-terminal aesthetic and an integrated AI assistant (**WALTER_AI**). Built for speed, responsiveness, and seamless user interaction using the latest web standards.
+A high-performance, interactive portfolio featuring a retro-terminal aesthetic and an integrated AI assistant (**WALTER_AI**). Built as a **Data-Driven SPA**, it orchestrates communication between a custom FastAPI backend and a reactive Angular frontend.
 
 🔗 **Live Demo:** [walterambriz.dev](https://amnotwallas.github.io/Portfolio/#/home)
-
-![Image Demo](og-image.png)
-![Image Demo 2](og-image2.png)
 
 ---
 
 ## 🚀 Key Features
 
-### 🤖 WALTER_AI Neural Core
-An intelligent assistant powered by **Llama 3.1** via Groq. Unlike standard bots, it acts as an **Orchestrator** for the portfolio.
-- **Context-Aware:** Deep knowledge of my professional background, technical stack, and project highlights.
-- **Autonomous Navigation:** Capable of triggering site-wide redirects (e.g., `[NAV:CV]`, `[NAV:PROJECTS]`) based on conversational intent.
-- **Real-time Feedback:** Terminal-style "thinking" states and streaming responses.
+### 🧠 Single Source of Truth (SSOT)
+The portfolio is entirely dynamic. It no longer relies on local JSON files or static assets. All professional data and project metadata are served via a **FastAPI Neural Core**, ensuring total consistency between the web UI and the AI assistant's knowledge base.
 
-### ⌨️ Advanced Retro Experience
-- **Scramble Text Animation:** Custom logic for smooth character transitions on dynamic content.
-- **GPU-Accelerated Visuals:** High-performance effects (Scanlines, CRT flicker) optimized for 60FPS with minimal CPU overhead.
-- **Signal-Based Architecture:** Fully reactive UI powered by Angular Signals for optimal performance.
+### 🛡️ Secure Asset Streaming
+Images and professional documents are served through an authenticated asset pipeline. 
+- **Header-based Auth:** Assets require `X-API-KEY` validation.
+- **Blob Resolution:** The frontend resolves secure streams into local Blob URLs, preventing unauthorized direct access.
+- **On-the-fly Optimization:** The backend serves optimized WebP formats to maximize delivery speed.
+
+### ⚡ WPO & Performance (Lighthouse +90)
+- **SWR Caching:** Implements *Stale-While-Revalidate* strategy using LocalStorage for near-instant First Contentful Paint (FCP).
+- **Lazy Hydration:** Utilizes Angular's `@defer` blocks for viewport-based component loading.
+- **Layout Shift Protection:** Zero-CLS architecture using pre-allocated skeletons and explicit aspect-ratios.
+- **GPU-Accelerated Visuals:** CRT flicker and scanline effects optimized for 60FPS with minimal CPU overhead.
 
 ---
 
 ## 🛠️ Tech Stack
 
 ### Frontend (The "Shell")
-- **Framework:** Angular 21 (Signals, Standalone Components, Clean Feature-based Architecture)
-- **Shared Logic:** Custom `ScrambleDirective` for unified text effects, `ChatService` for neural core integration.
-- **Styling:** Tailwind CSS v4, PrimeNG v21 (Lara Modern Theme)
-- **Icons:** `@ng-icons` (Lucide, Tabler Icons)
-- **Unit Testing:** Vitest with JSDOM
+- **Framework:** Angular 21 (Signals, Standalone Components, APP_INITIALIZER)
+- **Performance:** Native SWR implementation, Secure Image Resolvers.
+- **Styling:** Tailwind CSS v4, PrimeNG v21.
+- **Animations:** CSS-based Glitch engine, Scramble Directive for terminal effects.
 
 ### Backend (The "Neural Core")
 - **Language:** Python 3.11+
-- **Framework:** FastAPI
-- **AI Engine:** Llama 3.1 (Groq API)
-- **Architecture:** Multi-Agent Orchestration with Function Calling
+- **Framework:** FastAPI (RESTful API, SSE, Secure Streaming)
+- **Security:** API Key Middleware, CORS Policy Management.
+- **AI Engine:** Llama 3.1 via Groq (Multi-Agent Orchestration).
 
 ---
 
@@ -50,13 +50,10 @@ An intelligent assistant powered by **Llama 3.1** via Groq. Unlike standard bots
 
 ```text
 src/app/
-├── core/               # Singleton services (CV, Language, Chat)
-├── shared/             # Reusable UI (Components, Directives, Models)
-├── features/           # Domain modules (Home, CV, Projects)
-├── app.component.ts    # Root component
-└── app.routes.ts       # Navigation logic
-src/assets/
-└── data.json           # Single source of truth for all portfolio content
+├── core/               # Singleton services (Portfolio, Chat, Language)
+├── shared/             # Reusable UI (Skeletons, ScrambleDirective, Models)
+├── features/           # Domain modules (Home, ProjectDetails)
+└── portfolio.model.ts  # Centralized Data Schema
 ```
 
 ---

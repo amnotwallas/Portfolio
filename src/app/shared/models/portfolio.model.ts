@@ -83,7 +83,7 @@ export interface Language {
   level: string;
 }
 
-export interface CVData {
+export interface PortfolioData {
   system: SystemConfig;
   terminal: TerminalConfig;
   basics: Basics;

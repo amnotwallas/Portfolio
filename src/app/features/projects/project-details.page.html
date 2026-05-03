@@ -68,7 +68,8 @@
                     <!-- Skeleton per image in carousel -->
                     <div *ngIf="projectIndex === $index && !imagesLoaded[img]" class="absolute inset-0 z-10 skeleton"></div>
 
-                    <img [src]="img" 
+                    <img *ngIf="resolvedImages[img]"
+                         [src]="resolvedImages[img]" 
                          loading="lazy"
                          (load)="onImageLoad(img)"
                          class="absolute inset-0 w-full h-full object-cover object-top transition-all"
@@ -82,7 +83,8 @@
                   <!-- Skeleton -->
                   <div *ngIf="!imagesLoaded[project.image]" class="absolute inset-0 z-10 skeleton"></div>
 
-                  <img [src]="project.image" 
+                  <img *ngIf="resolvedImages[project.image]"
+                       [src]="resolvedImages[project.image]" 
                        loading="lazy"
                        (load)="onImageLoad(project.image)"
                        class="w-full h-full object-cover object-top transition-all"

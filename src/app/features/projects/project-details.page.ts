@@ -15,8 +15,8 @@ import {
   tablerChevronLeft,
   tablerChevronRight
 } from "@ng-icons/tabler-icons";
-import { CVData, Project } from "../../shared/models/cv.model";
-import { CVService } from "../../core/services/cv.service";
+import { PortfolioData, Project } from "../../shared/models/portfolio.model";
+import { PortfolioService } from "../../core/services/portfolio.service";
 import { interval, Subscription } from "rxjs";
 
 @Component({
@@ -40,29 +40,47 @@ import { interval, Subscription } from "rxjs";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProjectDetailsPage implements OnInit, OnDestroy {
-  private cvService = inject(CVService);
+  private portfolioService = inject(PortfolioService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
 
   @ViewChild('mainCont') mainCont!: ElementRef<HTMLElement>;
 
-  cv = this.cvService.cv;
+  cv = this.portfolioService.portfolio;
   project: Project | null = null;
   projectIndex: number = 0;
   imagesLoaded: { [key: string]: boolean } = {};
+  
+  // Maps original paths to resolved Blob URLs
+  resolvedImages: { [key: string]: string } = {};
+  
   private subscription = new Subscription();
 
-  ngOnInit() {
+  async ngOnInit() {
     window.scrollTo(0, 0);
     const slug = this.route.snapshot.paramMap.get('slug');
     if (slug) {
-      this.project = this.cvService.getProjectBySlug(slug || '') || null;
+      this.project = this.portfolioService.getProjectBySlug(slug || '') || null;
       if (!this.project) {
         this.router.navigate(['/home']);
         return;
       }
+      
+      // Resolve secure images for the gallery
+      const imagesToResolve = [...(this.project.images || [])];
+      if (this.project.image && !imagesToResolve.includes(this.project.image)) {
+        imagesToResolve.push(this.project.image);
+      }
+      
+      const resolutionPromises = imagesToResolve.map(async (img) => {
+        const resolvedUrl = await this.portfolioService.getSecureImage(img);
+        this.resolvedImages[img] = resolvedUrl;
+        this.cdr.markForCheck();
+      });
+      
       this.startAutoPlay();
+      await Promise.all(resolutionPromises);
     } else {
       this.router.navigate(['/home']);
     }

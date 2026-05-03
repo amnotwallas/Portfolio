@@ -2,7 +2,7 @@ import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/cor
 import { CommonModule } from '@angular/common';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { tablerBriefcase, tablerChevronDown, tablerChevronUp } from '@ng-icons/tabler-icons';
-import { CVService } from '../../../core/services/cv.service';
+import { PortfolioService } from '../../../core/services/portfolio.service';
 
 @Component({
   selector: 'app-home-experience',
@@ -120,8 +120,8 @@ import { CVService } from '../../../core/services/cv.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomeExperienceComponent {
-  private cvService = inject(CVService);
-  cv = this.cvService.cv;
+  private portfolioService = inject(PortfolioService);
+  cv = this.portfolioService.portfolio;
 
   expandedIndex = signal<number | null>(0);
 

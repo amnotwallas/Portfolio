@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { tablerArrowUp, tablerTerminal, tablerX } from '@ng-icons/tabler-icons';
 import { ChatService } from '../../../core/services/chat.service';
-import { CVService } from '../../../core/services/cv.service';
+import { PortfolioService } from '../../../core/services/portfolio.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -88,7 +88,7 @@ import { Router } from '@angular/router';
 })
 export class HomeChatComponent implements AfterViewInit {
   private chatService = inject(ChatService);
-  private cvService = inject(CVService);
+  private portfolioService = inject(PortfolioService);
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
 
@@ -97,7 +97,7 @@ export class HomeChatComponent implements AfterViewInit {
 
   userQuery = '';
   isProcessing = this.chatService.isProcessing;
-  cv = this.cvService.cv;
+  cv = this.portfolioService.portfolio;
   isOpen = signal(false);
 
   ngAfterViewInit() {

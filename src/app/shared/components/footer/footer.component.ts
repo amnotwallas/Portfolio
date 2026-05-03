@@ -1,8 +1,8 @@
 import { Component, computed, inject, OnDestroy, OnInit, signal } from "@angular/core";
 import { NavigationEnd, Router } from "@angular/router";
 import { NgIcon } from "@ng-icons/core";
-import { CVData } from "../../models/cv.model";
-import { CVService } from "../../../core/services/cv.service";
+import { PortfolioData, Profile } from "../../models/portfolio.model";
+import { PortfolioService } from "../../../core/services/portfolio.service";
 import { tablerBrandGithub,
   tablerBrandLinkedin,
   tablerCloudDownload,
@@ -78,9 +78,11 @@ import { CommonModule } from "@angular/common";
   `
 })
 export class Footer implements OnInit, OnDestroy {
-  private cvService = inject(CVService);
+  private portfolioService = inject(PortfolioService);
   private routerSubscription: any;
-  get cv(): CVData { return this.cvService.cv; }
+  
+  get portfolio(): PortfolioData { return this.portfolioService.portfolio; }
+  
   readonly icons = {
     tablerMail,
     tablerBrandLinkedin,
@@ -97,7 +99,7 @@ export class Footer implements OnInit, OnDestroy {
   currentUrl = signal('');
 
   getProfileUrl(network: string): string {
-    return this.cv.basics.profiles.find(p => p.network === network)?.url || '#';
+    return this.portfolio.basics.profiles.find((p: Profile) => p.network === network)?.url || '#';
   }
 
   handleCvClick() {
@@ -115,7 +117,7 @@ export class Footer implements OnInit, OnDestroy {
   copyEmail() {
     if (this.isCopied()) return;
 
-    navigator.clipboard.writeText(this.cv.basics.email).then(() => {
+    navigator.clipboard.writeText(this.portfolio.basics.email).then(() => {
       this.isCopied.set(true);
       setTimeout(() => {
         this.isCopied.set(false);

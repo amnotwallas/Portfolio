@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, inject, ChangeDetectionStrategy, ChangeDetectorRef, NgZone } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { CVService } from "../../core/services/cv.service";
+import { PortfolioService } from "../../core/services/portfolio.service";
 import { HomeHeroComponent } from "./components/home-hero.component";
 import { HomeChatComponent } from "./components/home-chat.component";
 import { HomeExperienceComponent } from './components/home-experience.component';
@@ -21,11 +21,11 @@ import { interval, Subscription } from "rxjs";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomePage implements OnInit, OnDestroy {
-  private cvService = inject(CVService);
+  private portfolioService = inject(PortfolioService);
   private cdr = inject(ChangeDetectorRef);
   private ngZone = inject(NgZone);
   
-  cv = this.cvService.cv;
+  cv = this.portfolioService.portfolio;
   firstName = this.cv.basics.name.split(' ')[0];
   
   activeTitle = this.cv.basics.label;

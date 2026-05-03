@@ -1,9 +1,9 @@
-import { Component, inject, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, ChangeDetectorRef, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { tablerRocket, tablerBrandGithub, tablerChevronDown, tablerChevronUp } from '@ng-icons/tabler-icons';
-import { CVService } from '../../../core/services/cv.service';
+import { PortfolioService } from '../../../core/services/portfolio.service';
 
 @Component({
   selector: 'app-home-projects',
@@ -27,20 +27,24 @@ import { CVService } from '../../../core/services/cv.service';
           <!-- Project Image -->
           <div class="relative mb-6 aspect-[4/3] overflow-hidden rounded-lg border border-white/10 bg-retro-dark shadow-inner">
             <div class="relative w-full h-full">
-              @if (item.images && item.images.length > 0) {
-                <div *ngIf="!imagesLoaded[item.images[0]]" class="absolute inset-0 z-10 skeleton"></div>
-                <img [src]="item.images[0]" 
-                     loading="lazy"
-                     width="600"
-                     height="450"
-                     (load)="onImageLoad(item.images[0])"
-                     class="w-full h-full object-cover object-top transition-all duration-700"
-                     [class.opacity-0]="!imagesLoaded[item.images[0]]"
-                     [class.opacity-80]="imagesLoaded[item.images[0]]"
-                     [class.group-hover/project:opacity-100]="imagesLoaded[item.images[0]]"
-                     [class.group-hover/project:scale-105]="imagesLoaded[item.images[0]]"
-                     [alt]="item.name">
+              <!-- SKELETON: Shown while image is loading -->
+              @if (!imagesLoaded[item.image]) {
+                <div class="absolute inset-0 z-10 skeleton bg-retro-yellow/5"></div>
               }
+              
+              <img *ngIf="resolvedImages[item.image]"
+                   [src]="resolvedImages[item.image]" 
+                   loading="lazy"
+                   width="600"
+                   height="450"
+                   (load)="onImageLoad(item.image)"
+                   class="w-full h-full object-cover object-top transition-all duration-700"
+                   [class.opacity-0]="!imagesLoaded[item.image]"
+                   [class.opacity-80]="imagesLoaded[item.image]"
+                   [class.group-hover/project:opacity-100]="imagesLoaded[item.image]"
+                   [class.group-hover/project:scale-105]="imagesLoaded[item.image]"
+                   [alt]="item.name">
+              
               <div class="absolute inset-0 z-20 pointer-events-none bg-gradient-to-t from-retro-dark/80 via-transparent to-transparent"></div>
             </div>
           </div>
@@ -86,13 +90,26 @@ import { CVService } from '../../../core/services/cv.service';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HomeProjectsComponent {
-  private cvService = inject(CVService);
+export class HomeProjectsComponent implements OnInit {
+  private portfolioService = inject(PortfolioService);
   private cdr = inject(ChangeDetectorRef);
-  cv = this.cvService.cv;
+  cv = this.portfolioService.portfolio;
 
   expandedProjects: { [key: number]: boolean } = {};
   imagesLoaded: { [key: string]: boolean } = {};
+  
+  // Maps original paths to resolved Blob URLs
+  resolvedImages: { [key: string]: string } = {};
+
+  async ngOnInit() {
+    // Start resolving all images as soon as component initializes
+    const resolutionPromises = this.cv.projects.map(async (project) => {
+      const resolvedUrl = await this.portfolioService.getSecureImage(project.image);
+      this.resolvedImages[project.image] = resolvedUrl;
+      this.cdr.markForCheck();
+    });
+    await Promise.all(resolutionPromises);
+  }
 
   toggleProject(index: number) {
     this.expandedProjects[index] = !this.expandedProjects[index];
