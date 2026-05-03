@@ -22,10 +22,17 @@ export class SpeedDialComponent {
   private router = inject(Router);
   private scroller = inject(ViewportScroller);
   open = signal(false);
+  isTouch = false;
 
   radius = 90;
   startAngle = 0;
   endAngle = 90;
+
+  constructor() {
+    if (typeof window !== 'undefined') {
+      this.isTouch = window.matchMedia('(pointer: coarse)').matches;
+    }
+  }
 
   readonly excludedIcons = {
     tablerMenu2,
@@ -68,6 +75,18 @@ export class SpeedDialComponent {
 
   toggle() {
     this.open.update(v => !v);
+  }
+
+  onMouseEnter() {
+    if (!this.isTouch) {
+      this.open.set(true);
+    }
+  }
+
+  onMouseLeave() {
+    if (!this.isTouch) {
+      this.open.set(false);
+    }
   }
 
   navigateTo(item: any) {
