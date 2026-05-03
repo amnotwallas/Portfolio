@@ -5,6 +5,7 @@ import { NgIcon, provideIcons } from '@ng-icons/core';
 import { tablerArrowUp, tablerTerminal, tablerX } from '@ng-icons/tabler-icons';
 import { ChatService } from '../../../core/services/chat.service';
 import { PortfolioService } from '../../../core/services/portfolio.service';
+import { UiService } from '../../../core/services/ui.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -89,6 +90,7 @@ import { Router } from '@angular/router';
 export class ChatComponent implements AfterViewInit {
   private chatService = inject(ChatService);
   private portfolioService = inject(PortfolioService);
+  private uiService = inject(UiService);
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
 
@@ -100,25 +102,33 @@ export class ChatComponent implements AfterViewInit {
   cv = this.portfolioService.portfolio;
   isOpen = signal(false);
 
-  ngAfterViewInit() {
-    // Initial focus handled by toggle
+  private processedTokens = new Set<string>();
+
+  ngAfterViewInit() {}
+
+  private getChatContext() {
+    const url = this.router.url;
+    let page = 'home';
+    let project_slug = null;
+
+    if (url.includes('/project/')) {
+      page = 'project_details';
+      // Extraer slug: /project/nombre-proyecto -> nombre-proyecto
+      const parts = url.split('/');
+      project_slug = parts[parts.indexOf('project') + 1] || null;
+      // Limpiar posibles fragmentos o query params
+      if (project_slug) {
+        project_slug = project_slug.split('#')[0].split('?')[0];
+      }
+    }
+
+    return { url, page, project_slug };
   }
 
   toggleWidget() {
     this.isOpen.update(v => !v);
     if (this.isOpen()) {
-      setTimeout(() => this.chatInput?.nativeElement?.focus(), 300);
-    }
-  }
-
-  private scrollToSection(id: string) {
-    if (this.router.url.includes('/home')) {
-      const el = document.getElementById(id);
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    } else {
-      this.router.navigate(['/home'], { fragment: id });
+      setTimeout(() => this.chatInput.nativeElement.focus(), 100);
     }
   }
 
@@ -126,32 +136,22 @@ export class ChatComponent implements AfterViewInit {
     const query = this.userQuery.trim();
     if (!query || this.isProcessing()) return;
 
+    const context = this.getChatContext();
     this.userQuery = '';
+    this.processedTokens.clear();
     this.chatResponseEl.nativeElement.textContent = "[WALTER_AI]: PROCESSING_COMMAND...";
 
-    // Static Commands
-    const lowerQuery = query.toLowerCase();
-    if (['experience', 'work', 'exec_cv'].includes(lowerQuery)) {
-      this.chatResponseEl.nativeElement.textContent = "COMMAND_ACCEPTED: SCROLLING TO EXPERIENCE...";
-      setTimeout(() => this.scrollToSection('experience'), 1000);
-      return;
-    }
-
-    if (['projects', 'view_projects', 'show projects'].includes(lowerQuery)) {
-      this.chatResponseEl.nativeElement.textContent = "COMMAND_ACCEPTED: SCROLLING TO PROJECTS...";
-      setTimeout(() => this.scrollToSection('projects'), 1000);
-      return;
-    }
-
-    this.chatResponseEl.nativeElement.textContent = "[WALTER_AI]: THINKING...";
-
     try {
-      const body = await this.chatService.submitQuery(query);
+      const body = await this.chatService.submitQuery(query, context);
       if (!body) return;
 
       const reader = body.getReader();
       const decoder = new TextDecoder();
       let fullText = "";
+
+      const NAV_REGEX = /\[NAV:(EXPERIENCE|PROJECTS)\]/g;
+      const HIGHLIGHT_REGEX = /\[HIGHLIGHT:(PROJECT|EXPERIENCE):(.+?)\]/g;
+      const PARTIAL_TOKEN_REGEX = /\[[^\]]*$/; // Oculta cualquier corchete no cerrado al final
 
       while (true) {
         const { done, value } = await reader.read();
@@ -164,22 +164,59 @@ export class ChatComponent implements AfterViewInit {
           if (line.startsWith('data: ')) {
             const content = line.replace('data: ', '');
             fullText += content;
-            this.chatResponseEl.nativeElement.textContent = fullText + "_";
+            
+            // 1. Process Highlights
+            const hMatch = fullText.match(HIGHLIGHT_REGEX);
+            if (hMatch) {
+              for (const fullToken of hMatch) {
+                if (!this.processedTokens.has(fullToken)) {
+                  const match = fullToken.match(/:(.+?):(.+?)\]/);
+                  if (match) {
+                    const [_, type, id] = match;
+                    this.uiService.triggerHighlight(type as any, id);
+                    this.processedTokens.add(fullToken);
+                  }
+                }
+              }
+            }
+
+            // 2. Process Navigation
+            const nMatch = fullText.match(NAV_REGEX);
+            if (nMatch) {
+              for (const fullToken of nMatch) {
+                if (!this.processedTokens.has(fullToken)) {
+                  const match = fullToken.match(/:(.+?)\]/);
+                  if (match) {
+                    const target = match[1];
+                    this.uiService.navigate(target);
+                    this.processedTokens.add(fullToken);
+                  }
+                }
+              }
+            }
+
+            // 3. Silent Cleaning for UI (proactivo con fragmentos)
+            const displayText = fullText
+              .replace(HIGHLIGHT_REGEX, '')
+              .replace(NAV_REGEX, '')
+              .replace(PARTIAL_TOKEN_REGEX, '')
+              .trim();
+
+            this.chatResponseEl.nativeElement.textContent = displayText + "_";
             await new Promise(resolve => setTimeout(resolve, 15)); 
           }
         }
       }
 
-      this.chatResponseEl.nativeElement.textContent = fullText;
+      // Final cleanup
+      const finalContent = fullText
+        .replace(HIGHLIGHT_REGEX, '')
+        .replace(NAV_REGEX, '')
+        .trim();
+      
+      this.chatResponseEl.nativeElement.textContent = finalContent;
       this.chatService.addToHistory('user', query);
-      this.chatService.addToHistory('assistant', fullText);
-
-      // Handle AI Navigation Tokens
-      if (fullText.includes('[NAV:CV]') || fullText.includes('[NAV:EXPERIENCE]')) {
-        setTimeout(() => this.scrollToSection('experience'), 2500);
-      } else if (fullText.includes('[NAV:PROJECTS]')) {
-        setTimeout(() => this.scrollToSection('projects'), 2500);
-      }
+      this.chatService.addToHistory('assistant', finalContent);
 
     } catch (error: any) {
       if (error.message === 'TOO_MANY_REQUESTS') {

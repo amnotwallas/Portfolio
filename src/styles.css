@@ -118,22 +118,32 @@ body::after {
   animation-fill-mode: forwards;
 }
 
-/* Neural Pulse Animation - Subtle version */
+/* Neural Pulse Animation - Ultra-visible for AI Highlights */
 @keyframes pulse-gold {
   0%, 100% { 
-    color: var(--color-retro-yellow);
-    border-color: rgba(250, 204, 21, 0.1);
-    text-shadow: 0 0 4px rgba(250, 204, 21, 0.1);
+    border-color: rgba(250, 204, 21, 0.2);
+    box-shadow: 0 0 0px rgba(250, 204, 21, 0);
+    transform: scale(1);
+    background: rgba(255, 255, 255, 0.03);
   }
   50% { 
-    color: var(--color-retro-bright);
-    border-color: rgba(250, 204, 21, 0.4);
-    text-shadow: 0 0 8px rgba(250, 204, 21, 0.3);
+    border-color: rgba(250, 204, 21, 1);
+    box-shadow: 0 0 40px rgba(250, 204, 21, 0.6);
+    transform: scale(1.05);
+    background: rgba(250, 204, 21, 0.08);
   }
 }
 
 .animate-pulse-gold {
-  animation: pulse-gold 2s var(--ease-standard) infinite;
+  animation: pulse-gold 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  z-index: 50 !important;
+  position: relative;
+}
+
+/* Ensure container doesn't clip the glow during highlight */
+.highlight-active {
+  overflow: visible !important;
+  z-index: 50 !important;
 }
 
 @keyframes fadeInUp {

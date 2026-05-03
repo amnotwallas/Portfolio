@@ -1,8 +1,10 @@
-import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, signal, ChangeDetectionStrategy, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { tablerBriefcase, tablerChevronDown, tablerChevronUp } from '@ng-icons/tabler-icons';
 import { PortfolioService } from '../../../core/services/portfolio.service';
+import { UiService } from '../../../core/services/ui.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home-experience',
@@ -25,7 +27,7 @@ import { PortfolioService } from '../../../core/services/portfolio.service';
         }
 
         @for (item of cv.work; track $index) {
-          <div class="relative pl-14 sm:pl-20">
+          <div class="relative pl-14 sm:pl-20" [id]="'experience-' + (item.company | lowercase)">
             <!-- Timeline Dot -->
             <div class="absolute left-0 top-7 w-6 h-6 flex items-center justify-center -translate-x-[1px] z-10 bg-[#0D0D0D]">
               <div class="w-3.5 h-3.5 rounded-full bg-[#0D0D0D] border-2 transition-all duration-300"
@@ -41,7 +43,9 @@ import { PortfolioService } from '../../../core/services/portfolio.service';
             <!-- Accordion Item -->
             <div class="glass-effect rounded-xl border transition-all duration-300 overflow-hidden transform-gpu"
                  [class.border-retro-yellow/30]="isExpanded($index)"
-                 [class.border-white/5]="!isExpanded($index)">
+                 [class.border-white/5]="!isExpanded($index)"
+                 [class.animate-pulse-gold]="highlightedExp === (item.company | lowercase)"
+                 [class.highlight-active]="highlightedExp === (item.company | lowercase)">
               
               <!-- Header -->
               <div (click)="toggleItem($index)" 
@@ -117,11 +121,52 @@ import { PortfolioService } from '../../../core/services/portfolio.service';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HomeExperienceComponent {
+export class HomeExperienceComponent implements OnInit, OnDestroy {
   private portfolioService = inject(PortfolioService);
+  private uiService = inject(UiService);
+  private cdr = inject(ChangeDetectorRef);
   cv = this.portfolioService.portfolio;
 
   expandedIndex = signal<number | null>(0);
+  highlightedExp: string | null = null;
+  private sub = new Subscription();
+
+  ngOnInit() {
+    this.sub.add(
+      this.uiService.highlight$.subscribe(event => {
+        if (event.type === 'EXPERIENCE') {
+          let targetId = event.id.toLowerCase();
+          
+          // Find index by exact match or partial match
+          let index = this.cv.work.findIndex(w => w.company.toLowerCase() === targetId);
+          
+          if (index === -1) {
+            // Try fuzzy match (contains)
+            index = this.cv.work.findIndex(w => w.company.toLowerCase().includes(targetId));
+          }
+
+          if (index !== -1) {
+            const actualCompanyId = this.cv.work[index].company.toLowerCase();
+            this.highlightedExp = actualCompanyId;
+            this.expandedIndex.set(index);
+            this.cdr.markForCheck();
+
+            setTimeout(() => {
+              const el = document.getElementById('experience-' + actualCompanyId);
+              if (el) {
+                el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              }
+            }, 100);
+
+            setTimeout(() => {
+              this.highlightedExp = null;
+              this.cdr.markForCheck();
+            }, 5000);
+          }
+        }
+      })
+    );
+  }
 
   toggleItem(index: number) {
     if (this.expandedIndex() === index) {
@@ -133,5 +178,9 @@ export class HomeExperienceComponent {
 
   isExpanded(index: number): boolean {
     return this.expandedIndex() === index;
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 }

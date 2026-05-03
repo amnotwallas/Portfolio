@@ -12,7 +12,7 @@ export class ChatService {
   isProcessing = signal(false);
   chatHistory = signal<{ role: string, content: string }[]>([]);
 
-  async submitQuery(query: string): Promise<ReadableStream<Uint8Array> | null> {
+  async submitQuery(query: string, context?: any): Promise<ReadableStream<Uint8Array> | null> {
     if (this.isProcessing()) return null;
 
     this.isProcessing.set(true);
@@ -27,7 +27,8 @@ export class ChatService {
         body: JSON.stringify({
           query,
           session_id: this.sessionId,
-          action: 'chat'
+          action: 'chat',
+          context: context || {}
         })
       });
 

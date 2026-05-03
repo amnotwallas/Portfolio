@@ -1,9 +1,11 @@
-import { Component, inject, ChangeDetectorRef, ChangeDetectionStrategy, OnInit } from '@angular/core';
+import { Component, inject, ChangeDetectorRef, ChangeDetectionStrategy, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { tablerRocket, tablerBrandGithub, tablerChevronDown, tablerChevronUp } from '@ng-icons/tabler-icons';
 import { PortfolioService } from '../../../core/services/portfolio.service';
+import { UiService } from '../../../core/services/ui.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home-projects',
@@ -20,7 +22,12 @@ import { PortfolioService } from '../../../core/services/portfolio.service';
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         @for (item of cv.projects; track $index; let projectIdx = $index) {
-        <div class="p-6 rounded-xl glass-effect hover-lift group/project shadow-xl relative overflow-hidden flex flex-col border border-white/5 hover:border-retro-yellow/20 transition-all duration-500">
+        <div 
+          [id]="'project-' + item.slug"
+          class="p-6 rounded-xl glass-effect hover-lift group/project shadow-xl relative overflow-hidden flex flex-col border border-white/5 hover:border-retro-yellow/20 transition-all duration-500"
+          [class.animate-pulse-gold]="highlightedProject === item.slug"
+          [class.highlight-active]="highlightedProject === item.slug"
+        >
           
           <!-- Project Image -->
           <div class="relative mb-6 aspect-[4/3] overflow-hidden rounded-lg border border-white/10 bg-retro-dark shadow-inner">
@@ -88,8 +95,9 @@ import { PortfolioService } from '../../../core/services/portfolio.service';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HomeProjectsComponent implements OnInit {
+export class HomeProjectsComponent implements OnInit, OnDestroy {
   private portfolioService = inject(PortfolioService);
+  private uiService = inject(UiService);
   private cdr = inject(ChangeDetectorRef);
   cv = this.portfolioService.portfolio;
 
@@ -99,8 +107,43 @@ export class HomeProjectsComponent implements OnInit {
   // Maps original paths to resolved Blob URLs
   resolvedImages: { [key: string]: string } = {};
 
+  highlightedProject: string | null = null;
+  private sub = new Subscription();
+
   async ngOnInit() {
-    // Start resolving all images as soon as component initializes
+    // Listen for AI highlights
+    this.sub.add(
+      this.uiService.highlight$.subscribe(event => {
+        if (event.type === 'PROJECT') {
+          let targetId = event.id;
+          let el = document.getElementById('project-' + targetId);
+
+          // Fallback: If exact slug not found, try finding a project that contains the string
+          if (!el) {
+            const matchedProject = this.cv.projects.find(p => p.slug.includes(targetId));
+            if (matchedProject) {
+              targetId = matchedProject.slug;
+              el = document.getElementById('project-' + targetId);
+            }
+          }
+
+          if (el) {
+            this.highlightedProject = targetId;
+            this.cdr.markForCheck();
+            
+            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            // Auto-remove highlight after 5 seconds
+            setTimeout(() => {
+              this.highlightedProject = null;
+              this.cdr.markForCheck();
+            }, 5000);
+          }
+        }
+      })
+    );
+
+    // Start resolving all images
     const resolutionPromises = this.cv.projects.map(async (project) => {
       const resolvedUrl = await this.portfolioService.getSecureImage(project.image);
       this.resolvedImages[project.image] = resolvedUrl;
@@ -117,5 +160,9 @@ export class HomeProjectsComponent implements OnInit {
   onImageLoad(url: string) {
     this.imagesLoaded[url] = true;
     this.cdr.markForCheck();
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 }
