@@ -108,4 +108,15 @@ export class PortfolioService {
   getProjectBySlug(slug: string) {
     return this.portfolio?.projects?.find(p => p.slug === slug);
   }
-}
+
+  getAdjacentProjects(slug: string) {
+    const projects = this.portfolio?.projects || [];
+    const index = projects.findIndex(p => p.slug === slug);
+    if (index === -1) return { prev: null, next: null };
+
+    return {
+      prev: projects[index - 1] || null,
+      next: projects[index + 1] || null
+    };
+  }
+  }

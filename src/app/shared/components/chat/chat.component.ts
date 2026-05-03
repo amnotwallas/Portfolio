@@ -8,7 +8,7 @@ import { PortfolioService } from '../../../core/services/portfolio.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-home-chat',
+  selector: 'app-chat',
   standalone: true,
   imports: [CommonModule, FormsModule, NgIcon],
   providers: [provideIcons({ tablerArrowUp, tablerTerminal, tablerX })],
@@ -86,7 +86,7 @@ import { Router } from '@angular/router';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HomeChatComponent implements AfterViewInit {
+export class ChatComponent implements AfterViewInit {
   private chatService = inject(ChatService);
   private portfolioService = inject(PortfolioService);
   private router = inject(Router);
@@ -112,9 +112,13 @@ export class HomeChatComponent implements AfterViewInit {
   }
 
   private scrollToSection(id: string) {
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (this.router.url.includes('/home')) {
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    } else {
+      this.router.navigate(['/home'], { fragment: id });
     }
   }
 

@@ -2,13 +2,14 @@ import { Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Footer } from './shared/components/footer/footer.component';
 import { SpeedDialComponent } from './shared/components/speeddial/speeddial.component';
+import { ChatComponent } from './shared/components/chat/chat.component';
 import { LanguageService } from './core/services/language.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterModule, Footer, SpeedDialComponent, CommonModule],
+  imports: [RouterModule, Footer, SpeedDialComponent, ChatComponent, CommonModule],
   templateUrl: './app.component.html',
 })
 export class AppComponent {

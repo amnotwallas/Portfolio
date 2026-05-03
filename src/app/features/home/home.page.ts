@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy, inject, ChangeDetectionStrategy, ChangeDe
 import { CommonModule } from "@angular/common";
 import { PortfolioService } from "../../core/services/portfolio.service";
 import { HomeHeroComponent } from "./components/home-hero.component";
-import { HomeChatComponent } from "./components/home-chat.component";
 import { HomeExperienceComponent } from './components/home-experience.component';
 import { HomeProjectsComponent } from './components/home-projects.component';
 import { RevealDirective } from "../../shared/directives/reveal.directive";
@@ -15,7 +14,6 @@ import { interval, Subscription } from "rxjs";
   imports: [
     CommonModule, 
     HomeHeroComponent, 
-    HomeChatComponent,
     HomeExperienceComponent,
     HomeProjectsComponent,
     RevealDirective
