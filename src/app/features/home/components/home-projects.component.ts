@@ -11,15 +11,13 @@ import { PortfolioService } from '../../../core/services/portfolio.service';
   imports: [CommonModule, NgIcon, RouterModule],
   providers: [provideIcons({ tablerRocket, tablerBrandGithub, tablerChevronDown, tablerChevronUp })],
   template: `
-    <section id="projects" 
-             class="w-full max-w-5xl mx-auto py-20 px-6 group animate-fade-in-up"
-             style="content-visibility: auto; contain-intrinsic-size: 800px;">
+    <div class="w-full max-w-5xl mx-auto py-20 px-6 group animate-fade-in-up"
+              style="content-visibility: auto; contain-intrinsic-size: 800px;">
       <div class="flex items-center gap-3 mb-12">
         <ng-icon name="tablerRocket" class="text-retro-bright text-2xl"></ng-icon>
         <h2 class="text-lg font-bold uppercase tracking-[0.2em] text-retro-bright font-mono">Key Projects</h2>
         <div class="h-[1px] flex-grow bg-retro-muted group-hover:bg-retro-yellow/30 transition-colors"></div>
       </div>
-
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         @for (item of cv.projects; track $index; let projectIdx = $index) {
         <div class="p-6 rounded-xl glass-effect hover-lift group/project shadow-xl relative overflow-hidden flex flex-col border border-white/5 hover:border-retro-yellow/20 transition-all duration-500">
@@ -81,12 +79,12 @@ import { PortfolioService } from '../../../core/services/portfolio.service';
           
           <a [routerLink]="['/project', item.slug]" class="inline-flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.2em] text-retro-yellow/40 hover:text-retro-yellow transition-all mt-auto border-t border-white/5 pt-4 group/btn">
             <ng-icon name="tablerRocket" size="14" class="group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform"></ng-icon>
-            <span>View Technical Case</span>
+            <span>SEE PROJECT</span>
           </a>
         </div>
         }
       </div>
-    </section>
+    </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })

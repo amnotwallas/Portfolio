@@ -10,16 +10,14 @@ import { PortfolioService } from '../../../core/services/portfolio.service';
   imports: [CommonModule, NgIcon],
   providers: [provideIcons({ tablerBriefcase, tablerChevronDown, tablerChevronUp })],
   template: `
-    <section id="experience" 
-             class="w-full max-w-4xl mx-auto py-24 px-6 group animate-fade-in-up"
-             style="content-visibility: auto; contain-intrinsic-size: 500px;">
+    <div class="w-full max-w-4xl mx-auto py-24 px-6 group animate-fade-in-up"
+         style="content-visibility: auto; contain-intrinsic-size: 500px;">
       <!-- Header -->
       <div class="flex items-center gap-3 mb-16">
         <ng-icon name="tablerBriefcase" class="text-retro-bright text-2xl"></ng-icon>
         <h2 class="text-lg font-bold uppercase tracking-[0.2em] text-retro-bright font-mono">Experience</h2>
         <div class="h-[1px] flex-grow bg-retro-muted group-hover:bg-retro-yellow/30 transition-colors"></div>
       </div>
-
       <div class="relative space-y-10">
         <!-- Vertical Line (Only if more than 1 item) -->
         @if (cv.work.length > 1) {
@@ -115,7 +113,7 @@ import { PortfolioService } from '../../../core/services/portfolio.service';
           </div>
         }
       </div>
-    </section>
+    </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })

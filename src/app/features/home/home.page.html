@@ -1,26 +1,30 @@
 <main class="min-h-screen">
-    <!-- Scrollable Content -->
-    <div class="pt-32 pb-24">
+    <!-- Hero Section (Full Viewport) -->
+    <section appReveal class="min-h-screen flex items-center justify-center snap-start snap-always pt-20">
         <app-home-hero [firstName]="firstName" [activeTitle]="activeTitle"></app-home-hero>
-        
-        <div class="container mx-auto px-6 mt-32 space-y-32">
-            <!-- Experience (Lazy Hydration) -->
+    </section>
+    
+    <div class="container mx-auto px-6">
+        <!-- Experience Section (Full Viewport) -->
+        <section id="experience" appReveal class="min-h-screen flex items-center justify-center snap-start snap-always py-20">
             @defer (on viewport) {
-                <app-home-experience></app-home-experience>
+                <app-home-experience class="w-full"></app-home-experience>
             } @placeholder {
-                <div class="h-[500px] w-full bg-retro-dark animate-pulse opacity-5"></div>
+                <div class="h-screen w-full bg-retro-dark animate-pulse opacity-5"></div>
             }
+        </section>
 
-            <!-- Projects (Lazy Hydration) -->
+        <!-- Projects Section (Full Viewport) -->
+        <section id="projects" appReveal class="min-h-screen flex flex-col justify-center snap-start snap-always py-24">
             @defer (on viewport) {
-                <app-home-projects></app-home-projects>
+                <app-home-projects class="w-full"></app-home-projects>
             } @placeholder {
-                <div class="h-[800px] w-full bg-retro-dark animate-pulse opacity-5"></div>
+                <div class="h-screen w-full bg-retro-dark animate-pulse opacity-5"></div>
             }
-        </div>
+        </section>
     </div>
 
-    <!-- Chat Interface (Defer until Idle) -->
+    <!-- Chat Interface (Floating) -->
     @defer (on idle) {
         <app-home-chat></app-home-chat>
     }

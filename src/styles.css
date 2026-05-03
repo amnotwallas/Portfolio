@@ -19,6 +19,14 @@
 
 html {
   scroll-behavior: smooth;
+  /* Scroll Snap for professional section navigation */
+  scroll-snap-type: y proximity;
+}
+
+@media (min-width: 1024px) {
+  html {
+    scroll-snap-type: y mandatory;
+  }
 }
 
 body {
@@ -144,6 +152,25 @@ body::after {
   opacity: 0;
 }
 
+/* Scroll Reveal Base State */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 800ms cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity, transform;
+}
+
+/* Active Reveal State */
+.reveal-active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Perspective for more premium feel */
+section {
+  perspective: 1000px;
+}
+
 /* Delay Helpers unificados */
 .delay-100 { animation-delay: 100ms; }
 .delay-200 { animation-delay: 200ms; }
@@ -224,6 +251,23 @@ h3, .text-accent {
 @keyframes fade-in {
   from { opacity: 0; }
   to { opacity: 1; }
+}
+
+/* Minecraft Splash Text Animation */
+@keyframes splash-pulse {
+  0%, 100% { transform: scale(1) rotate(-15deg); }
+  50% { transform: scale(1.1) rotate(-15deg); }
+}
+
+.splash-text {
+  font-family: 'Silkscreen', cursive;
+  color: #55FF55; /* Classic Minecraft Green */
+  text-shadow: 2px 2px 0px #003F00, 3px 3px 0px #000000;
+  display: inline-block;
+  animation: splash-pulse 0.5s ease-in-out infinite;
+  pointer-events: none;
+  white-space: nowrap;
+  letter-spacing: -0.02em;
 }
 
 @keyframes slide-to-top {

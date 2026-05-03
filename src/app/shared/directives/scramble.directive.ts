@@ -38,7 +38,7 @@ export class ScrambleDirective implements AfterViewInit, OnChanges, OnDestroy {
     const oldText = targetEl.textContent || '';
     const length = Math.max(oldText.length, newText.length);
 
-    const maxFrames = 100; 
+    const maxFrames = 80; 
 
     const anim = () => {
       let output = '';

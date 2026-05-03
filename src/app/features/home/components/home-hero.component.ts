@@ -1,4 +1,4 @@
-import { Component, Input, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, inject, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ScrambleDirective } from '../../../shared/directives/scramble.directive';
 import { PortfolioService } from '../../../core/services/portfolio.service';
@@ -10,20 +10,38 @@ import { PortfolioService } from '../../../core/services/portfolio.service';
   template: `
     <div class="w-full flex flex-col items-center text-center">
       <!-- Welcome Line -->
-      <div class="mb-4">
-        <h1 class="text-4xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tighter leading-none mb-2">
+      <div class="mb-4 flex flex-col items-center">
+        <h1 class="text-4xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tighter leading-none mb-2 relative">
           <span class="font-extralight text-gray-400">Hi, I am </span>
           <br class="sm:hidden">
-          <span class="font-mono font-light text-retro-bright text-glow cursor-blink animate-typing inline-block" 
-                [style.width.ch]="firstName.length"
-                [style.animation-timing-function]="'steps(' + firstName.length + ', end)'">
-            {{firstName}}
+          
+          <!-- Name Container with space reservation -->
+          <span class="relative inline-block">
+            <!-- Invisible placeholder to reserve full width from start -->
+            <span class="font-mono font-light opacity-0 select-none pointer-events-none" aria-hidden="true">{{firstName}}</span>
+            
+            <!-- Real animated name -->
+            <span class="glitch-wrapper absolute left-0 top-0 w-full">
+              <span class="font-mono font-light text-retro-bright text-glow cursor-blink animate-typing inline-block glitch-text" 
+                    [attr.data-text]="firstName"
+                    [style.width.ch]="firstName.length"
+                    [style.animation-timing-function]="'steps(' + firstName.length + ', end)'">
+                {{firstName}}
+              </span>
+            </span>
+
+            <!-- Minecraft Splash Text: Now truly stable -->
+            <div class="absolute -bottom-2 -right-8 sm:-right-12 md:-right-16 z-40 pointer-events-none origin-center">
+              <span class="splash-text text-[10px] sm:text-xs md:text-sm lg:text-base uppercase">
+                {{ currentSplash }}
+              </span>
+            </div>
           </span>
         </h1>
       </div>
       
       <!-- Dynamic Title -->
-      <div class="h-8 mb-10 flex items-center justify-center">
+      <div class="h-8 mb-4 flex items-center justify-center">
         <span class="font-mono text-sm md:text-base mr-3" style="color: var(--color-retro-yellow); opacity: 0.4;">></span>
         <p [appScramble]="activeTitle" 
            class="font-mono font-medium uppercase tracking-[0.2em] md:tracking-[0.4em] text-xs md:text-sm lg:text-base text-glow"
@@ -31,9 +49,9 @@ import { PortfolioService } from '../../../core/services/portfolio.service';
         </p>
       </div>
 
-      <!-- Professional Pitch -->
-      <div class="max-w-2xl mx-auto px-4 border-l-2 border-retro-yellow/10 pl-6 py-2">
-        <p class="font-light text-base md:text-lg leading-relaxed text-gray-400 text-left animate-fade-in-up delay-300">
+      <!-- Professional Pitch: Clean & Minimalist -->
+      <div class="max-w-2xl mx-auto px-6 border-l border-retro-yellow/20 py-1 text-left animate-fade-in-up delay-300">
+        <p class="font-light text-base md:text-lg leading-relaxed text-gray-400">
           {{cv.basics.summary}}
         </p>
       </div>
@@ -41,10 +59,19 @@ import { PortfolioService } from '../../../core/services/portfolio.service';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HomeHeroComponent {
+export class HomeHeroComponent implements OnInit {
   private portfolioService = inject(PortfolioService);
   cv = this.portfolioService.portfolio;
 
   @Input() firstName: string = '';
   @Input() activeTitle: string = '';
+
+  splashPhrases = [
+    'Available for work!',
+  ];
+  currentSplash = '';
+
+  ngOnInit() {
+    this.currentSplash = this.splashPhrases[Math.floor(Math.random() * this.splashPhrases.length)];
+  }
 }

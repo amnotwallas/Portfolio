@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, ViewportScroller } from '@angular/common';
 import { Component, signal, computed, HostListener, inject } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { NgIcon } from '@ng-icons/core';
@@ -20,6 +20,7 @@ import {
 })
 export class SpeedDialComponent {
   private router = inject(Router);
+  private scroller = inject(ViewportScroller);
   open = signal(false);
 
   radius = 90;
@@ -74,15 +75,15 @@ export class SpeedDialComponent {
     if (!item) return;
 
     if (item.fragment) {
-      const el = document.getElementById(item.fragment);
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (this.router.url.includes('/home')) {
+        this.scroller.scrollToAnchor(item.fragment);
+        this.router.navigate([], { fragment: item.fragment, replaceUrl: true });
       } else {
         this.router.navigate(['/home'], { fragment: item.fragment });
       }
     } else {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      this.router.navigate(['/home']);
+      this.scroller.scrollToPosition([0, 0]);
+      this.router.navigate(['/home'], { fragment: undefined });
     }
   }
 }
