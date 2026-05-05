@@ -38,7 +38,7 @@ export class ScrambleDirective implements AfterViewInit, OnChanges, OnDestroy {
     const oldText = targetEl.textContent || '';
     const length = Math.max(oldText.length, newText.length);
 
-    const maxFrames = 80; 
+    const maxFrames = 40; // Reduced from 80 for better performance and snappier feel
 
     const anim = () => {
       let output = '';
@@ -47,12 +47,12 @@ export class ScrambleDirective implements AfterViewInit, OnChanges, OnDestroy {
       for (let i = 0; i < length; i++) {
         const targetChar = newText[i] || '';
 
-        // Randomize when each character "settles" - wider range for longer effect
+        // Randomize when each character "settles"
         const settleFrame = Math.floor(Math.random() * maxFrames);
 
         if (frame >= settleFrame) {
-          // Increased flicker chance to 10% and extended duration
-          if (frame < maxFrames + 10 && Math.random() < 0.10) {
+          // Flicker chance
+          if (frame < maxFrames + 5 && Math.random() < 0.10) {
             output += this.chars[Math.floor(Math.random() * this.chars.length)];
           } else {
             complete++;
@@ -66,7 +66,7 @@ export class ScrambleDirective implements AfterViewInit, OnChanges, OnDestroy {
 
       targetEl.textContent = output;
 
-      if (complete < length || frame < maxFrames + 10) {
+      if (complete < length || frame < maxFrames + 5) {
         frame++;
         this.frameRequest = requestAnimationFrame(anim);
       }

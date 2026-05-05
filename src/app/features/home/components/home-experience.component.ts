@@ -12,8 +12,7 @@ import { Subscription } from 'rxjs';
   imports: [CommonModule, NgIcon],
   providers: [provideIcons({ tablerBriefcase, tablerChevronDown, tablerChevronUp })],
   template: `
-    <div class="w-full max-w-4xl mx-auto py-24 px-6 group animate-fade-in-up"
-         style="content-visibility: auto; contain-intrinsic-size: 500px;">
+    <div class="w-full max-w-4xl mx-auto py-24 px-6 group">
       <!-- Header -->
       <div class="flex items-center gap-3 mb-16">
         <ng-icon name="tablerBriefcase" class="text-retro-bright text-2xl"></ng-icon>

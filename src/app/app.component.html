@@ -1,5 +1,8 @@
 <app-speed-dial/>
-<app-chat/>
+
+@defer (on idle) {
+  <app-chat/>
+}
 
 <main class="main">
   <router-outlet />

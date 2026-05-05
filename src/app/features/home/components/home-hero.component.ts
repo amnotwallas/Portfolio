@@ -41,16 +41,22 @@ import { PortfolioService } from '../../../core/services/portfolio.service';
       </div>
       
       <!-- Dynamic Title -->
-      <div class="h-8 mb-4 flex items-center justify-center">
+      <div class="h-8 mb-4 flex items-center justify-center w-full overflow-hidden">
         <span class="font-mono text-sm md:text-base mr-3" style="color: var(--color-retro-yellow); opacity: 0.4;">></span>
-        <p [appScramble]="activeTitle" 
-           class="font-mono font-medium uppercase tracking-[0.2em] md:tracking-[0.4em] text-xs md:text-sm lg:text-base text-glow"
-           style="color: var(--color-retro-yellow);">
-        </p>
+        <div class="relative inline-flex items-center">
+           <!-- Reserve space for the longest title to prevent layout shaking -->
+           <p class="font-mono font-medium uppercase tracking-[0.2em] md:tracking-[0.4em] text-xs md:text-sm lg:text-base opacity-0 select-none pointer-events-none whitespace-nowrap" aria-hidden="true">
+             Crafting Intelligent Solutions
+           </p>
+           <p [appScramble]="activeTitle" 
+              class="absolute left-0 top-0 w-full font-mono font-medium uppercase tracking-[0.2em] md:tracking-[0.4em] text-xs md:text-sm lg:text-base text-glow whitespace-nowrap"
+              style="color: var(--color-retro-yellow);">
+           </p>
+        </div>
       </div>
 
       <!-- Professional Pitch: Clean & Minimalist -->
-      <div class="max-w-2xl mx-auto px-6 border-l border-retro-yellow/20 py-1 text-left animate-fade-in-up delay-300">
+      <div class="max-w-2xl mx-auto px-6 border-l border-retro-yellow/20 py-1 text-left opacity-0 animate-fade-in delay-300">
         <p class="font-light text-base md:text-lg leading-relaxed text-gray-400">
           {{cv.basics.summary}}
         </p>

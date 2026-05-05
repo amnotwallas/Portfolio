@@ -18,7 +18,7 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  /* Removed scroll-behavior: smooth to avoid conflict with scroll-snap jitter */
   /* Scroll Snap for professional section navigation */
   scroll-snap-type: y proximity;
 }
@@ -38,38 +38,9 @@ body {
   background-size: 40px 40px;
   color: var(--color-retro-font);
   font-family: "Space Grotesk", sans-serif;
-  /* Uniform transition for body-level changes if any */
-  transition: background-color var(--anim-speed-base) var(--ease-standard);
+  /* Removed background-color transition that could cause flashes */
   position: relative;
   overflow-x: hidden;
-}
-
-/* Línea de escaneo horizontal (izq a derecha) */
-body::after {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: -1px;
-  width: 1px; /* Precisión absoluta: 1px */
-  height: 100vh;
-  background: linear-gradient(
-    to bottom,
-    transparent,
-    rgba(250, 204, 21, 0.05),
-    rgba(250, 204, 21, 0.3), /* Subrayado muy sutil */
-    rgba(250, 204, 21, 0.05),
-    transparent
-  );
-  /* Resplandor amplio pero tenue: esto es lo que atrapa el blur */
-  box-shadow: 0 0 25px rgba(250, 204, 21, 0.15);
-  pointer-events: none;
-  z-index: -1;
-  animation: scan-horizontal 10s linear infinite; /* Velocidad equilibrada */
-}
-
-@keyframes scan-horizontal {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(100vw); }
 }
 
 /* Elevación de tarjetas */
@@ -118,19 +89,17 @@ body::after {
   animation-fill-mode: forwards;
 }
 
-/* Neural Pulse Animation - Ultra-visible for AI Highlights */
+/* Neural Pulse Animation - Optimized */
 @keyframes pulse-gold {
   0%, 100% { 
     border-color: rgba(250, 204, 21, 0.2);
-    box-shadow: 0 0 0px rgba(250, 204, 21, 0);
     transform: scale(1);
     background: rgba(255, 255, 255, 0.03);
   }
   50% { 
     border-color: rgba(250, 204, 21, 1);
-    box-shadow: 0 0 40px rgba(250, 204, 21, 0.6);
-    transform: scale(1.05);
-    background: rgba(250, 204, 21, 0.08);
+    transform: scale(1.02);
+    background: rgba(250, 204, 21, 0.1);
   }
 }
 
@@ -138,6 +107,7 @@ body::after {
   animation: pulse-gold 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
   z-index: 50 !important;
   position: relative;
+  will-change: transform, border-color, background;
 }
 
 /* Ensure container doesn't clip the glow during highlight */
@@ -162,11 +132,10 @@ body::after {
   opacity: 0;
 }
 
-/* Scroll Reveal Base State */
+/* Scroll Reveal Base State - Optimized for initial stability */
 .reveal-on-scroll {
   opacity: 0;
   transform: translateY(40px);
-  transition: all 800ms cubic-bezier(0.4, 0, 0.2, 1);
   will-change: opacity, transform;
 }
 
@@ -174,6 +143,8 @@ body::after {
 .reveal-active {
   opacity: 1;
   transform: translateY(0);
+  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), 
+              transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Perspective for more premium feel */
@@ -192,8 +163,8 @@ section {
 
 /* Overriding some Tailwind defaults for consistency */
 .transition-all, .transition-colors, .transition-opacity, .transition-transform {
-  transition-timing-function: var(--ease-standard) !important;
-  transition-duration: var(--anim-speed-base) !important;
+  transition-timing-function: var(--ease-standard);
+  transition-duration: var(--anim-speed-base);
 }
 
 .duration-300 { transition-duration: 300ms !important; }
@@ -237,7 +208,9 @@ h3, .text-accent {
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.05);
-  /* Tell browser this layer is stable */
+  /* GPU acceleration for transform only, backdrop-filter is handled separately by browser */
+  transform: translateZ(0);
+  backface-visibility: hidden;
   will-change: transform;
 }
 
@@ -246,11 +219,11 @@ h3, .text-accent {
 }
 
 ::view-transition-old(root) {
-  animation: var(--anim-speed-slow) var(--ease-standard) both fade-out;
+  animation: var(--anim-speed-fast) var(--ease-standard) both fade-out;
 }
 
 ::view-transition-new(root) {
-  animation: var(--anim-speed-slow) var(--ease-standard) both fade-in;
+  animation: var(--anim-speed-fast) var(--ease-standard) both fade-in;
 }
 
 @keyframes fade-out {

@@ -13,7 +13,15 @@ bootstrapApplication(AppComponent, {
     provideRouter(
       routes, 
       withHashLocation(), 
-      withViewTransitions(),
+      withViewTransitions({
+        onViewTransitionCreated: ({ transition, to }) => {
+          // Disable view transitions for fragment-only navigation to prevent flickering
+          const toUrl = to.toString();
+          if (toUrl.includes('#')) {
+            transition.skipTransition();
+          }
+        }
+      }),
       withInMemoryScrolling({
         anchorScrolling: 'enabled',
         scrollPositionRestoration: 'enabled'

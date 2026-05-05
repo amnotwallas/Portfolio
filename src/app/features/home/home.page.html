@@ -1,26 +1,30 @@
 <main class="min-h-screen">
     <!-- Hero Section (Full Viewport) -->
-    <section appReveal class="min-h-screen flex items-center justify-center snap-start snap-always pt-20">
+    <section class="min-h-screen flex items-center justify-center snap-start snap-always pt-20">
         <app-home-hero [firstName]="firstName" [activeTitle]="activeTitle"></app-home-hero>
     </section>
     
     <div class="container mx-auto px-6">
         <!-- Experience Section (Full Viewport) -->
-        <section id="experience" appReveal class="min-h-screen flex items-center justify-center snap-start snap-always py-20">
-            @defer (on viewport) {
-                <app-home-experience class="w-full"></app-home-experience>
-            } @placeholder {
-                <div class="h-screen w-full bg-retro-dark animate-pulse opacity-5"></div>
-            }
+        <section id="experience" class="min-h-screen flex items-center justify-center snap-start snap-always py-20">
+            <div appReveal class="w-full">
+                @defer (on viewport; prefetch on idle) {
+                    <app-home-experience class="w-full"></app-home-experience>
+                } @placeholder {
+                    <div class="h-[70vh] w-full bg-retro-dark animate-pulse opacity-5"></div>
+                }
+            </div>
         </section>
 
         <!-- Projects Section (Full Viewport) -->
-        <section id="projects" appReveal class="min-h-screen flex flex-col justify-center snap-start snap-always py-24">
-            @defer (on viewport) {
-                <app-home-projects class="w-full"></app-home-projects>
-            } @placeholder {
-                <div class="h-screen w-full bg-retro-dark animate-pulse opacity-5"></div>
-            }
+        <section id="projects" class="min-h-screen flex flex-col justify-center snap-start snap-always py-24">
+            <div appReveal class="w-full">
+                @defer (on viewport; prefetch on idle) {
+                    <app-home-projects class="w-full"></app-home-projects>
+                } @placeholder {
+                    <div class="h-[70vh] w-full bg-retro-dark animate-pulse opacity-5"></div>
+                }
+            </div>
         </section>
-        </div>
+    </div>
         </main>

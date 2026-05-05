@@ -18,6 +18,12 @@ export class UiService {
   highlight$ = this.highlightSubject.asObservable();
 
   triggerHighlight(type: 'PROJECT' | 'EXPERIENCE', id: string) {
+    // 1. Force navigation to the parent section to trigger @defer (on viewport)
+    const sectionId = type === 'PROJECT' ? 'projects' : 'experience';
+    this.navigate(sectionId);
+
+    // 2. Emit the highlight event. 
+    // ReplaySubject(1) will hold it if the component is still initializing.
     this.highlightSubject.next({ type, id });
   }
 

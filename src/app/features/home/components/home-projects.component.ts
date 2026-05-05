@@ -13,8 +13,7 @@ import { Subscription } from 'rxjs';
   imports: [CommonModule, NgIcon, RouterModule],
   providers: [provideIcons({ tablerRocket, tablerBrandGithub, tablerChevronDown, tablerChevronUp })],
   template: `
-    <div class="w-full max-w-5xl mx-auto py-20 px-6 group animate-fade-in-up"
-              style="content-visibility: auto; contain-intrinsic-size: 800px;">
+    <div class="w-full max-w-5xl mx-auto py-20 px-6 group">
       <div class="flex items-center gap-3 mb-12">
         <ng-icon name="tablerRocket" class="text-retro-bright text-2xl"></ng-icon>
         <h2 class="text-lg font-bold uppercase tracking-[0.2em] text-retro-bright font-mono">Key Projects</h2>

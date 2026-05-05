@@ -12,22 +12,31 @@ export class RevealDirective implements OnInit, OnDestroy {
 
   ngOnInit() {
     if (isPlatformBrowser(this.platformId)) {
-      this.el.nativeElement.classList.add('reveal-on-scroll');
-      
       this.observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             this.el.nativeElement.classList.add('reveal-active');
-            // Once revealed, we can stop observing if we want it to stay
+            // Keep it revealed once seen to prevent flickers when scrolling back up
             // this.observer?.unobserve(entry.target);
-          } else {
-            // Optional: remove to hide again when leaving
+          } else if (entry.boundingClientRect.top > window.innerHeight) {
+            // Only hide if it goes back BELOW the viewport
             this.el.nativeElement.classList.remove('reveal-active');
           }
         });
       }, {
-        threshold: 0.2 // Trigger when 20% of the section is visible
+        threshold: 0.1
       });
+
+      const rect = this.el.nativeElement.getBoundingClientRect();
+      const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+
+      if (isVisible) {
+        // If visible, just show it immediately without the translateY(40px) jump
+        this.el.nativeElement.classList.add('reveal-active');
+      } else {
+        // If not visible, apply the hidden state
+        this.el.nativeElement.classList.add('reveal-on-scroll');
+      }
 
       this.observer.observe(this.el.nativeElement);
     }
