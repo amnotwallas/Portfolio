@@ -19,7 +19,8 @@
           <div class="space-y-4">
             <div class="flex items-center gap-4">
               <ng-icon name="tablerRocket" class="text-retro-yellow text-3xl md:text-4xl animate-pulse-gold"></ng-icon>
-              <h1 class="text-3xl md:text-5xl font-bold text-retro-bright tracking-tight font-mono leading-tight">{{project.name}}</h1>
+              <h1 class="text-3xl md:text-5xl font-bold text-retro-bright tracking-tight font-mono leading-tight"
+                  [style.view-transition-name]="'project-title-' + project.slug">{{project.name}}</h1>
             </div>
             <div class="flex flex-wrap items-center gap-2">
               <span class="px-2 py-1 rounded bg-retro-yellow/10 border border-retro-yellow/20 text-retro-yellow text-[10px] font-mono uppercase tracking-widest shadow-[0_0_10px_rgba(255,176,0,0.05)]">
@@ -53,7 +54,8 @@
             <!-- Project Carousel -->
             <section class="space-y-4">
               <div class="relative group/carousel h-auto aspect-[4/3] overflow-hidden rounded-2xl border border-white/10 bg-retro-dark shadow-2xl transform-gpu cursor-zoom-in"
-                   (click)="openLightbox()">
+                   (click)="openLightbox()"
+                   [style.view-transition-name]="'project-image-' + project.slug">
                 
                 <!-- Images Container -->
                 <div class="relative w-full h-full">

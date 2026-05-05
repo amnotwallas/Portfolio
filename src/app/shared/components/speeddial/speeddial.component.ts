@@ -9,13 +9,15 @@ import {
   tablerRocket,
 } from '@ng-icons/tabler-icons';
 
+import { MagneticDirective } from '../../directives/magnetic.directive';
+
 @Component({
   selector: 'app-speed-dial',
   standalone: true,
   templateUrl: './speeddial.component.html',
   imports: [
     CommonModule, NgIcon,
-    RouterModule
+    RouterModule, MagneticDirective
   ],
 })
 export class SpeedDialComponent {

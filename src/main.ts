@@ -14,10 +14,10 @@ bootstrapApplication(AppComponent, {
       routes, 
       withHashLocation(), 
       withViewTransitions({
-        onViewTransitionCreated: ({ transition, to }) => {
-          // Disable view transitions for fragment-only navigation to prevent flickering
-          const toUrl = to.toString();
-          if (toUrl.includes('#')) {
+        onViewTransitionCreated: ({ transition, from, to }) => {
+          // Disable view transitions only for fragment-only navigation on the SAME page to prevent flickering
+          // Comparing routeConfig is a reliable way to know if it's the same route definition
+          if (from.routeConfig === to.routeConfig && to.fragment) {
             transition.skipTransition();
           }
         }

@@ -23,13 +23,15 @@ import { Subscription } from 'rxjs';
         @for (item of cv.projects; track $index; let projectIdx = $index) {
         <div 
           [id]="'project-' + item.slug"
-          class="p-6 rounded-xl glass-effect hover-lift group/project shadow-xl relative overflow-hidden flex flex-col border border-white/5 hover:border-retro-yellow/20 transition-all duration-500"
+          class="p-6 rounded-xl glass-effect hover-lift group/project shadow-xl relative overflow-hidden flex flex-col border border-white/5 hover:border-retro-yellow/20 transition-all duration-500 animate-fade-in-up"
+          [style.animation-delay]="($index * 100) + 'ms'"
           [class.animate-pulse-gold]="highlightedProject === item.slug"
           [class.highlight-active]="highlightedProject === item.slug"
         >
           
           <!-- Project Image -->
-          <div class="relative mb-6 aspect-[4/3] overflow-hidden rounded-lg border border-white/10 bg-retro-dark shadow-inner">
+          <div class="relative mb-6 aspect-[4/3] overflow-hidden rounded-lg border border-white/10 bg-retro-dark shadow-inner"
+               [style.view-transition-name]="'project-image-' + item.slug">
             <div class="relative w-full h-full">
               <!-- SKELETON: Shown while image is loading -->
               @if (!imagesLoaded[item.image]) {
@@ -54,7 +56,8 @@ import { Subscription } from 'rxjs';
           </div>
 
           <div class="flex justify-between items-start mb-4 gap-4">
-            <h3 class="text-xl font-bold text-gray-100 group-hover/project:text-retro-yellow transition-colors font-mono tracking-tight">{{item.name}}</h3>
+            <h3 class="text-xl font-bold text-gray-100 group-hover/project:text-retro-yellow transition-colors font-mono tracking-tight"
+                [style.view-transition-name]="'project-title-' + item.slug">{{item.name}}</h3>
             @if (item.links.github) {
               <a [href]="item.links.github" target="_blank" class="text-retro-bright/30 hover:text-retro-yellow transition-colors flex-shrink-0">
                 <ng-icon name="tablerBrandGithub" size="22"></ng-icon>

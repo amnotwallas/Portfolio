@@ -26,7 +26,9 @@ import { Subscription } from 'rxjs';
         }
 
         @for (item of cv.work; track $index) {
-          <div class="relative pl-14 sm:pl-20" [id]="'experience-' + (item.company | lowercase)">
+          <div class="relative pl-14 sm:pl-20 animate-fade-in-up" 
+               [style.animation-delay]="($index * 100) + 'ms'"
+               [id]="'experience-' + (item.company | lowercase)">
             <!-- Timeline Dot -->
             <div class="absolute left-0 top-7 w-6 h-6 flex items-center justify-center -translate-x-[1px] z-10 bg-[#0D0D0D]">
               <div class="w-3.5 h-3.5 rounded-full bg-[#0D0D0D] border-2 transition-all duration-300"

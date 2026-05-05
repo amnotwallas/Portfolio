@@ -15,12 +15,12 @@ export class RevealDirective implements OnInit, OnDestroy {
       this.observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-            this.el.nativeElement.classList.add('reveal-active');
+            this.el.nativeElement.classList.add('animate-fade-in-up');
             // Keep it revealed once seen to prevent flickers when scrolling back up
             // this.observer?.unobserve(entry.target);
           } else if (entry.boundingClientRect.top > window.innerHeight) {
             // Only hide if it goes back BELOW the viewport
-            this.el.nativeElement.classList.remove('reveal-active');
+            this.el.nativeElement.classList.remove('animate-fade-in-up');
           }
         });
       }, {
@@ -31,11 +31,11 @@ export class RevealDirective implements OnInit, OnDestroy {
       const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
 
       if (isVisible) {
-        // If visible, just show it immediately without the translateY(40px) jump
-        this.el.nativeElement.classList.add('reveal-active');
+        // If visible, just show it immediately
+        this.el.nativeElement.classList.add('animate-fade-in-up');
       } else {
         // If not visible, apply the hidden state
-        this.el.nativeElement.classList.add('reveal-on-scroll');
+        this.el.nativeElement.style.opacity = '0';
       }
 
       this.observer.observe(this.el.nativeElement);
