@@ -18,15 +18,9 @@
 }
 
 html {
-  /* Removed scroll-behavior: smooth to avoid conflict with scroll-snap jitter */
-  /* Scroll Snap for professional section navigation */
+  /* Scroll Snap optimized for smoothness */
   scroll-snap-type: y proximity;
-}
-
-@media (min-width: 1024px) {
-  html {
-    scroll-snap-type: y mandatory;
-  }
+  scroll-behavior: smooth;
 }
 
 body {
@@ -38,101 +32,16 @@ body {
   background-size: 40px 40px;
   color: var(--color-retro-font);
   font-family: "Space Grotesk", sans-serif;
-  /* Removed background-color transition that could cause flashes */
   position: relative;
   overflow-x: hidden;
 }
 
-/* --- CRT EFFECTS & POWER-ON --- */
-
-.crt-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
-              linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
-  background-size: 100% 3px, 3px 100%;
-  z-index: 1000;
-  pointer-events: none;
-  opacity: 0.15;
-}
-
-.crt-overlay::after {
-  content: " ";
-  display: block;
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background: rgba(18, 16, 16, 0.03);
-  opacity: 0;
-  z-index: 1001;
-  pointer-events: none;
-  animation: crt-flicker 0.15s infinite;
-}
-
-@keyframes crt-flicker {
-  0% { opacity: 0.27; }
-  5% { opacity: 0.21; }
-  10% { opacity: 0.25; }
-  15% { opacity: 0.22; }
-  20% { opacity: 0.25; }
-  25% { opacity: 0.23; }
-  30% { opacity: 0.25; }
-  35% { opacity: 0.21; }
-  40% { opacity: 0.25; }
-  45% { opacity: 0.28; }
-  50% { opacity: 0.22; }
-  55% { opacity: 0.25; }
-  60% { opacity: 0.23; }
-  65% { opacity: 0.25; }
-  70% { opacity: 0.21; }
-  75% { opacity: 0.25; }
-  80% { opacity: 0.22; }
-  85% { opacity: 0.25; }
-  90% { opacity: 0.23; }
-  95% { opacity: 0.25; }
-  100% { opacity: 0.24; }
-}
-
-.vignette {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  box-shadow: inset 0 0 150px rgba(0,0,0,0.5);
-  z-index: 999;
-  pointer-events: none;
-}
-
-@keyframes powerOn {
-  0% { transform: scale(1, 0.005); opacity: 0; }
-  50% { transform: scale(1, 0.005); opacity: 1; }
-  100% { transform: scale(1, 1); opacity: 1; }
-}
-
-.animate-power-on {
-  animation: powerOn 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
-}
-
 /* --- EXISTING STYLES --- */
-.hover-lift {
-  transition: all var(--anim-speed-base) var(--ease-standard);
-}
-.hover-lift:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 30px -10px rgba(250, 204, 21, 0.1);
-}
 
 /* Efectos de resplandor retro sutil */
 .text-glow {
   /* Usamos un radio muy pequeño y baja opacidad para que no cambie el tono del texto */
   text-shadow: 0 0 6px rgba(250, 204, 21, 0.3);
-  transition: text-shadow var(--anim-speed-base) var(--ease-standard);
 }
 
 /* Animación de cursor parpadeante elegante */
@@ -160,131 +69,16 @@ body {
   white-space: nowrap;
   vertical-align: bottom;
   animation-name: typeIn;
-  animation-duration: 2s; /* Typing usually needs more time, but we'll keep it standard-ish */
+  animation-duration: 2s;
   animation-timing-function: steps(40, end);
   animation-fill-mode: forwards;
-}
-
-/* Neural Pulse Animation - Optimized */
-@keyframes pulse-gold {
-  0%, 100% { 
-    border-color: rgba(250, 204, 21, 0.2);
-    transform: scale(1);
-    background: rgba(255, 255, 255, 0.03);
-  }
-  50% { 
-    border-color: rgba(250, 204, 21, 1);
-    transform: scale(1.02);
-    background: rgba(250, 204, 21, 0.1);
-  }
-}
-
-.animate-pulse-gold {
-  animation: pulse-gold 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-  z-index: 50 !important;
-  position: relative;
-  will-change: transform, border-color, background;
-}
-
-/* Ensure container doesn't clip the glow during highlight */
-.highlight-active {
-  overflow: visible !important;
-  z-index: 50 !important;
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fade-in-up {
-  animation: fadeInUp var(--anim-speed-slow) var(--ease-standard) forwards;
-  opacity: 0;
-}
-
-/* Scroll Reveal Base State - Optimized for initial stability */
-.reveal-on-scroll {
-  opacity: 0;
-  transform: translateY(40px);
-  will-change: opacity, transform;
-}
-
-/* Active Reveal State */
-.reveal-active {
-  opacity: 1;
-  transform: translateY(0);
-  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), 
-              transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Perspective for more premium feel */
-section {
-  perspective: 1000px;
-}
-
-/* Delay Helpers unificados */
-.delay-100 { animation-delay: 100ms; }
-.delay-200 { animation-delay: 200ms; }
-.delay-300 { animation-delay: 300ms; }
-.delay-400 { animation-delay: 400ms; }
-.delay-500 { animation-delay: 500ms; }
-.delay-600 { animation-delay: 600ms; }
-.delay-700 { animation-delay: 700ms; }
-
-/* Overriding some Tailwind defaults for consistency */
-.transition-all, .transition-colors, .transition-opacity, .transition-transform {
-  transition-timing-function: var(--ease-standard);
-  transition-duration: var(--anim-speed-base);
-}
-
-.duration-300 { transition-duration: 300ms !important; }
-.duration-500 { transition-duration: 500ms !important; }
-.duration-700 { transition-duration: 700ms !important; }
-.duration-1000 { transition-duration: 1000ms !important; }
-
-/* Subtítulos o detalles con el amarillo mostaza */
-h3, .text-accent {
-  color: var(--color-retro-yellow);
-}
-
-/* Scrollbar más discreta */
-::-webkit-scrollbar {
-  width: 6px;
-}
-::-webkit-scrollbar-track {
-  background: var(--color-retro-dark);
-}
-::-webkit-scrollbar-thumb {
-  background: var(--color-retro-muted);
-  border-radius: 10px;
-}
-
-/* Skeleton Loading Effect */
-@keyframes skeleton-pulse {
-  0% { background-color: rgba(255, 255, 255, 0.03); }
-  50% { background-color: rgba(255, 255, 255, 0.08); }
-  100% { background-color: rgba(255, 255, 255, 0.03); }
-}
-
-.skeleton {
-  animation: skeleton-pulse 2s var(--ease-standard) infinite;
-  background-color: rgba(255, 255, 255, 0.03);
 }
 
 /* Glassmorphism Utility - Optimized for performance */
 .glass-effect {
   background: rgba(255, 255, 255, 0.03);
-  /* Desenfoque que difuminará la línea al pasar */
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.05);
-  /* GPU acceleration for transform only, backdrop-filter is handled separately by browser */
+  /* GPU acceleration for transform only */
   transform: translateZ(0);
   backface-visibility: hidden;
   will-change: transform;
@@ -292,37 +86,6 @@ h3, .text-accent {
 
 .glass-effect:hover {
   border-color: rgba(250, 204, 21, 0.2);
-}
-
-::view-transition-old(root) {
-  animation: var(--anim-speed-fast) var(--ease-standard) both fade-out;
-}
-
-::view-transition-new(root) {
-  animation: var(--anim-speed-fast) var(--ease-standard) both fade-in;
-}
-
-@keyframes fade-out {
-  from { opacity: 1; }
-  to { opacity: 0; }
-}
-
-@keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes zoom-in {
-  from { transform: scale(0.95); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-
-.animate-fade-in {
-  animation: fade-in 0.3s var(--ease-standard) forwards;
-}
-
-.animate-zoom-in {
-  animation: zoom-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
 /* Minecraft Splash Text Animation */

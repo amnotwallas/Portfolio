@@ -7,9 +7,9 @@ import { ScrambleDirective } from '../../../shared/directives/scramble.directive
   standalone: true,
   imports: [CommonModule, ScrambleDirective],
   template: `
-    <div class="fixed bottom-12 left-12 font-mono text-[9px] text-gray-600 space-y-1 hidden md:block opacity-60 animate-fade-in-up delay-500 z-10 p-4 glass-effect rounded-xl">
+    <div class="fixed bottom-12 left-12 font-mono text-[9px] text-gray-600 space-y-1 hidden md:block opacity-60 z-10 p-4 glass-effect rounded-xl">
       <p *ngFor="let log of logs" class="flex items-center gap-2">
-        <span class="w-1 h-1 bg-retro-yellow/50 rounded-full animate-pulse"></span>
+        <span class="w-1 h-1 bg-retro-yellow/50 rounded-full"></span>
         <span [appScramble]="log">{{log}}</span>
       </p>
     </div>

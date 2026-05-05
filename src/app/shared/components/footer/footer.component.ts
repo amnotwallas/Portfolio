@@ -35,7 +35,7 @@ import { CommonModule } from "@angular/common";
         <!-- Tooltip CV No Disponible -->
         <div 
           *ngIf="showCvTooltip()"
-          class="absolute bottom-full mb-4 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-retro-bright text-retro-dark text-[10px] font-bold rounded uppercase tracking-widest shadow-xl animate-fade-in-up whitespace-nowrap border border-retro-yellow/30"
+          class="absolute bottom-full mb-4 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-retro-bright text-retro-dark text-[10px] font-bold rounded uppercase tracking-widest shadow-xl whitespace-nowrap border border-retro-yellow/30"
         >
           Not available yet!
           <!-- Pequeña flecha del tooltip -->
@@ -66,7 +66,7 @@ import { CommonModule } from "@angular/common";
         <!-- Tooltip -->
         <div 
           *ngIf="isCopied()"
-          class="absolute bottom-full mb-4 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-retro-bright text-retro-dark text-[10px] font-bold rounded uppercase tracking-widest shadow-xl animate-fade-in-up whitespace-nowrap border border-retro-yellow/30"
+          class="absolute bottom-full mb-4 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-retro-bright text-retro-dark text-[10px] font-bold rounded uppercase tracking-widest shadow-xl whitespace-nowrap border border-retro-yellow/30"
         >
           Email Copied!
           <!-- Pequeña flecha del tooltip -->

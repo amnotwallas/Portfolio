@@ -10,7 +10,7 @@ import { PortfolioService } from '../../../core/services/portfolio.service';
   template: `
     <div class="w-full flex flex-col items-center text-center">
       <!-- Welcome Line -->
-      <div class="mb-4 flex flex-col items-center animate-fade-in-up delay-500">
+      <div class="mb-4 flex flex-col items-center">
         <h1 class="text-4xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tighter leading-none mb-2 relative">
           <span class="font-extralight text-gray-400">Hi, I am </span>
           <br class="sm:hidden">
@@ -41,7 +41,7 @@ import { PortfolioService } from '../../../core/services/portfolio.service';
       </div>
       
       <!-- Dynamic Title -->
-      <div class="h-8 mb-4 flex items-center justify-center w-full overflow-hidden animate-fade-in-up delay-700">
+      <div class="h-8 mb-4 flex items-center justify-center w-full overflow-hidden">
         <span class="font-mono text-sm md:text-base mr-3" style="color: var(--color-retro-yellow); opacity: 0.4;">></span>
         <div class="relative inline-flex items-center">
            <!-- Reserve space for the longest title to prevent layout shaking -->
@@ -56,7 +56,7 @@ import { PortfolioService } from '../../../core/services/portfolio.service';
       </div>
 
       <!-- Professional Pitch: Clean & Minimalist -->
-      <div class="max-w-2xl mx-auto px-6 border-l border-retro-yellow/20 py-1 text-left animate-fade-in-up delay-1000">
+      <div class="max-w-2xl mx-auto px-6 border-l border-retro-yellow/20 py-1 text-left">
         <p class="font-light text-base md:text-lg leading-relaxed text-gray-400">
           {{cv.basics.summary}}
         </p>

@@ -26,27 +26,23 @@ import { Subscription } from 'rxjs';
         }
 
         @for (item of cv.work; track $index) {
-          <div class="relative pl-14 sm:pl-20 animate-fade-in-up" 
-               [style.animation-delay]="($index * 100) + 'ms'"
+          <div class="relative pl-14 sm:pl-20" 
                [id]="'experience-' + (item.company | lowercase)">
             <!-- Timeline Dot -->
             <div class="absolute left-0 top-7 w-6 h-6 flex items-center justify-center -translate-x-[1px] z-10 bg-[#0D0D0D]">
-              <div class="w-3.5 h-3.5 rounded-full bg-[#0D0D0D] border-2 transition-all duration-300"
+              <div class="w-3.5 h-3.5 rounded-full bg-[#0D0D0D] border-2"
                    [class.border-retro-yellow]="isExpanded($index)"
                    [class.border-retro-muted]="!isExpanded($index)">
                 @if (isExpanded($index)) {
-                  <div class="absolute inset-0 rounded-full bg-retro-yellow animate-ping opacity-20"></div>
                   <div class="absolute inset-[3px] rounded-full bg-retro-yellow shadow-[0_0_10px_rgba(250,204,21,0.6)]"></div>
                 }
               </div>
             </div>
 
             <!-- Accordion Item -->
-            <div class="glass-effect rounded-xl border transition-all duration-300 overflow-hidden transform-gpu"
+            <div class="glass-effect rounded-xl border overflow-hidden transform-gpu"
                  [class.border-retro-yellow/30]="isExpanded($index)"
-                 [class.border-white/5]="!isExpanded($index)"
-                 [class.animate-pulse-gold]="highlightedExp === (item.company | lowercase)"
-                 [class.highlight-active]="highlightedExp === (item.company | lowercase)">
+                 [class.border-white/5]="!isExpanded($index)">
               
               <!-- Header -->
               <div (click)="toggleItem($index)" 
@@ -93,7 +89,7 @@ import { Subscription } from 'rxjs';
               </div>
 
               <!-- Optimized Expansion using CSS Grid -->
-              <div class="grid transition-[grid-template-rows,opacity] duration-300 ease-out"
+              <div class="grid"
                    [class.grid-rows-[1fr]]="isExpanded($index)"
                    [class.grid-rows-[0fr]]="!isExpanded($index)"
                    [class.opacity-100]="isExpanded($index)"

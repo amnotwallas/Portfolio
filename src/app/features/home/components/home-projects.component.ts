@@ -23,20 +23,13 @@ import { Subscription } from 'rxjs';
         @for (item of cv.projects; track $index; let projectIdx = $index) {
         <div 
           [id]="'project-' + item.slug"
-          class="p-6 rounded-xl glass-effect hover-lift group/project shadow-xl relative overflow-hidden flex flex-col border border-white/5 hover:border-retro-yellow/20 transition-all duration-500 animate-fade-in-up"
-          [style.animation-delay]="($index * 100) + 'ms'"
-          [class.animate-pulse-gold]="highlightedProject === item.slug"
-          [class.highlight-active]="highlightedProject === item.slug"
+          class="p-6 rounded-xl glass-effect group/project shadow-xl relative overflow-hidden flex flex-col border border-white/5 hover:border-retro-yellow/20 transition-all duration-500"
         >
           
           <!-- Project Image -->
           <div class="relative mb-6 aspect-[4/3] overflow-hidden rounded-lg border border-white/10 bg-retro-dark shadow-inner"
                [style.view-transition-name]="'project-image-' + item.slug">
             <div class="relative w-full h-full">
-              <!-- SKELETON: Shown while image is loading -->
-              @if (!imagesLoaded[item.image]) {
-                <div class="absolute inset-0 z-10 skeleton bg-retro-yellow/5"></div>
-              }
               
               <img *ngIf="resolvedImages[item.image]"
                    [src]="resolvedImages[item.image]" 
@@ -45,7 +38,6 @@ import { Subscription } from 'rxjs';
                    height="450"
                    (load)="onImageLoad(item.image)"
                    class="w-full h-full object-cover object-top transition-all duration-700"
-                   [class.opacity-0]="!imagesLoaded[item.image]"
                    [class.opacity-80]="imagesLoaded[item.image]"
                    [class.group-hover/project:opacity-100]="imagesLoaded[item.image]"
                    [class.group-hover/project:scale-105]="imagesLoaded[item.image]"

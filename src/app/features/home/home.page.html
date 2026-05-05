@@ -1,28 +1,28 @@
 <main class="min-h-screen">
     <!-- Hero Section (Full Viewport) -->
-    <section class="min-h-screen flex items-center justify-center snap-start snap-always pt-20">
+    <section class="min-h-screen flex items-center justify-center pt-20 snap-start">
         <app-home-hero [firstName]="firstName" [activeTitle]="activeTitle"></app-home-hero>
     </section>
     
     <div class="container mx-auto px-6">
         <!-- Experience Section (Full Viewport) -->
-        <section id="experience" class="min-h-screen flex items-center justify-center snap-start snap-always py-20">
-            <div appReveal class="w-full">
+        <section id="experience" class="min-h-screen flex items-center justify-center py-20 snap-start">
+            <div class="w-full">
                 @defer (on viewport; prefetch on idle) {
                     <app-home-experience class="w-full"></app-home-experience>
                 } @placeholder {
-                    <div class="h-[70vh] w-full bg-retro-dark animate-pulse opacity-5"></div>
+                    <div class="h-[70vh] w-full bg-retro-dark opacity-5"></div>
                 }
             </div>
         </section>
 
         <!-- Projects Section (Full Viewport) -->
-        <section id="projects" class="min-h-screen flex flex-col justify-center snap-start snap-always py-24">
-            <div appReveal class="w-full">
+        <section id="projects" class="min-h-screen flex flex-col justify-center py-24 snap-start">
+            <div class="w-full">
                 @defer (on viewport; prefetch on idle) {
                     <app-home-projects class="w-full"></app-home-projects>
                 } @placeholder {
-                    <div class="h-[70vh] w-full bg-retro-dark animate-pulse opacity-5"></div>
+                    <div class="h-[70vh] w-full bg-retro-dark opacity-5"></div>
                 }
             </div>
         </section>

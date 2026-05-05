@@ -1,10 +1,6 @@
 <main #mainCont class="relative flex flex-col min-h-screen pt-12 pb-32 px-6 md:px-8 lg:px-24 font-['Space_Grotesk'] text-gray-300 max-w-7xl mx-auto overflow-x-hidden pl-16 sm:pl-20 md:pl-24">
   
-  <div class="transition-[opacity,transform] duration-500 ease-in-out transform-gpu" 
-       [class.opacity-0]="isChanging" 
-       [class.translate-y-4]="isChanging"
-       [class.opacity-100]="!isChanging"
-       [class.translate-y-0]="!isChanging">
+  <div>
 
     <!-- Back Button -->
     <button (click)="goBack()" class="group mb-6 flex items-center gap-2 text-retro-yellow/60 hover:text-retro-yellow transition-colors font-mono text-xs uppercase tracking-widest w-fit">
@@ -15,10 +11,10 @@
     @if (project) {
       <div class="transform-gpu will-change-transform">
         <!-- Header: Compact & Direct -->
-        <header class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6 animate-fade-in-up">
+        <header class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div class="space-y-4">
             <div class="flex items-center gap-4">
-              <ng-icon name="tablerRocket" class="text-retro-yellow text-3xl md:text-4xl animate-pulse-gold"></ng-icon>
+              <ng-icon name="tablerRocket" class="text-retro-yellow text-3xl md:text-4xl"></ng-icon>
               <h1 class="text-3xl md:text-5xl font-bold text-retro-bright tracking-tight font-mono leading-tight"
                   [style.view-transition-name]="'project-title-' + project.slug">{{project.name}}</h1>
             </div>
@@ -49,7 +45,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
           
           <!-- Main Content: Documentation & Overview -->
-          <div class="lg:col-span-7 space-y-12 animate-fade-in-up delay-100">
+          <div class="lg:col-span-7 space-y-12">
             
             <!-- Project Carousel -->
             <section class="space-y-4">
@@ -61,7 +57,6 @@
                 <div class="relative w-full h-full">
                   @if (project.images && project.images.length > 0) {
                     @for (img of project.images; track $index) {
-                      <div *ngIf="projectIndex === $index && !imagesLoaded[img]" class="absolute inset-0 z-10 skeleton"></div>
                       <img *ngIf="resolvedImages[img]"
                            [src]="resolvedImages[img]" 
                            loading="lazy"
@@ -73,7 +68,6 @@
                            [alt]="project.name">
                     }
                   } @else if (project.image) {
-                    <div *ngIf="!imagesLoaded[project.image]" class="absolute inset-0 z-10 skeleton"></div>
                     <img *ngIf="resolvedImages[project.image]"
                          [src]="resolvedImages[project.image]" 
                          loading="lazy"
@@ -135,7 +129,7 @@
           </div>
 
           <!-- Sidebar: Metrics & Logic -->
-          <aside class="lg:col-span-5 space-y-8 animate-fade-in-up delay-200">
+          <aside class="lg:col-span-5 space-y-8">
             
             <!-- Quick Metrics Card -->
             <div class="grid grid-cols-3 gap-3">
@@ -242,7 +236,7 @@
 
 <!-- Lightbox Modal -->
 @if (showLightbox && project) {
-  <div class="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8 animate-fade-in"
+  <div class="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8"
        (click)="closeLightbox()">
     
     <!-- Backdrop -->
@@ -263,7 +257,7 @@
         @let currentImg = project.images[projectIndex] || project.image;
         @if (resolvedImages[currentImg]) {
           <img [src]="resolvedImages[currentImg]" 
-               class="w-full h-full object-contain animate-zoom-in"
+               class="w-full h-full object-contain"
                [alt]="project.name">
         }
       </div>

@@ -4,7 +4,6 @@ import { PortfolioService } from "../../core/services/portfolio.service";
 import { HomeHeroComponent } from "./components/home-hero.component";
 import { HomeExperienceComponent } from './components/home-experience.component';
 import { HomeProjectsComponent } from './components/home-projects.component';
-import { RevealDirective } from "../../shared/directives/reveal.directive";
 import { interval, Subscription } from "rxjs";
 
 @Component({
@@ -15,8 +14,7 @@ import { interval, Subscription } from "rxjs";
     CommonModule, 
     HomeHeroComponent, 
     HomeExperienceComponent,
-    HomeProjectsComponent,
-    RevealDirective
+    HomeProjectsComponent
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
