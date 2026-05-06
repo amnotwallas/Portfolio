@@ -12,14 +12,14 @@ import { Subscription } from 'rxjs';
   imports: [CommonModule, NgIcon],
   providers: [provideIcons({ tablerBriefcase, tablerChevronDown, tablerChevronUp })],
   template: `
-    <div class="w-full max-w-4xl mx-auto py-24 px-6 group">
+    <div class="w-full max-w-4xl mx-auto py-12 px-6 group">
       <!-- Header -->
-      <div class="flex items-center gap-3 mb-16">
+      <div class="flex items-center gap-3 mb-10">
         <ng-icon name="tablerBriefcase" class="text-retro-bright text-2xl"></ng-icon>
         <h2 class="text-lg font-bold uppercase tracking-[0.2em] text-retro-bright font-mono">Experience</h2>
         <div class="h-[1px] flex-grow bg-retro-muted group-hover:bg-retro-yellow/30 transition-colors"></div>
       </div>
-      <div class="relative space-y-10">
+      <div class="relative space-y-6">
         <!-- Vertical Line (Only if more than 1 item) -->
         @if (cv.work.length > 1) {
           <div class="absolute left-[11px] top-7 bottom-7 w-[2px] bg-[#FFB000] z-0 opacity-30"></div>
@@ -46,63 +46,64 @@ import { Subscription } from 'rxjs';
               
               <!-- Header -->
               <div (click)="toggleItem($index)" 
-                   class="p-5 sm:p-6 cursor-pointer flex justify-between items-center gap-4 group/header">
+                   class="p-4 sm:p-5 cursor-pointer flex justify-between items-center gap-4 group/header">
                 
                 <div class="flex items-center gap-4 flex-grow">
                   <!-- Company Logo/Icon -->
-                  <div class="hidden sm:flex w-10 h-10 rounded-lg bg-retro-dark border border-white/10 items-center justify-center overflow-hidden flex-shrink-0 group-hover/header:border-retro-yellow/30 transition-colors">
+                  <div class="hidden sm:flex w-9 h-9 rounded-lg bg-retro-dark border border-white/10 items-center justify-center overflow-hidden flex-shrink-0 group-hover/header:border-retro-yellow/30 transition-colors">
                     @if (item.image) {
                       <img [src]="item.image" class="w-full h-full object-cover opacity-60 group-hover/header:opacity-100 transition-opacity" [alt]="item.company">
                     } @else {
-                      <ng-icon name="tablerBriefcase" class="text-retro-bright/20" size="20"></ng-icon>
+                      <ng-icon name="tablerBriefcase" class="text-retro-bright/20" size="18"></ng-icon>
                     }
                   </div>
 
                   <div class="flex-grow">
-                    <div class="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3 mb-1">
-                      <h3 class="text-lg font-bold transition-colors"
+                    <div class="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3 mb-0.5">
+                      <h3 class="text-base font-bold transition-colors"
                           [class.text-retro-yellow]="isExpanded($index)"
                           [class.text-gray-100]="!isExpanded($index)">
                         {{item.role}}
                       </h3>
                       <span class="text-[10px] font-mono text-retro-bright/40 uppercase tracking-widest hidden sm:block">/</span>
-                      <p class="text-sm font-mono uppercase tracking-widest"
+                      <p class="text-xs font-mono uppercase tracking-widest"
                          [class.text-retro-yellow/80]="isExpanded($index)"
                          [class.text-retro-bright/60]="!isExpanded($index)">
                         {{item.company}}
                       </p>
                     </div>
-                    <div class="sm:hidden text-[10px] font-mono text-retro-yellow/60 uppercase tracking-wider mt-1">
+                    <div class="sm:hidden text-[9px] font-mono text-retro-yellow/60 uppercase tracking-wider">
                       {{item.period}}
                     </div>
                   </div>
                 </div>
 
                 <div class="flex items-center gap-4">
-                  <span class="hidden sm:block text-[10px] font-mono text-retro-yellow/60 uppercase tracking-widest whitespace-nowrap">
+                  <span class="hidden sm:block text-[9px] font-mono text-retro-yellow/60 uppercase tracking-widest whitespace-nowrap">
                     {{item.period}}
                   </span>
                   <ng-icon [name]="isExpanded($index) ? 'tablerChevronUp' : 'tablerChevronDown'" 
-                           class="text-retro-bright/30 group-hover/header:text-retro-yellow transition-colors"
-                           size="20"></ng-icon>
+                           class="text-retro-bright/30 group-hover/header:text-retro-yellow transition-all duration-300"
+                           [style.transform]="isExpanded($index) ? 'rotate(0deg)' : 'rotate(0deg)'"
+                           size="18"></ng-icon>
                 </div>
               </div>
 
               <!-- Optimized Expansion using CSS Grid -->
-              <div class="grid"
+              <div class="grid transition-[grid-template-rows,opacity] duration-300 ease-in-out"
                    [class.grid-rows-[1fr]]="isExpanded($index)"
                    [class.grid-rows-[0fr]]="!isExpanded($index)"
                    [class.opacity-100]="isExpanded($index)"
                    [class.opacity-0]="!isExpanded($index)">
                 <div class="overflow-hidden">
-                  <div class="px-5 pb-6 sm:px-6 sm:pb-8 border-t border-white/5 pt-6">
-                    <p class="font-light text-base text-gray-400 leading-relaxed mb-8">
+                  <div class="px-5 pb-5 sm:px-6 sm:pb-6 border-t border-white/5 pt-5">
+                    <p class="font-light text-sm text-gray-400 leading-relaxed mb-6">
                       {{item.summary}}
                     </p>
                     
                     <div class="flex flex-wrap gap-2">
                       @for (tech of item.highlights; track $index) {
-                        <span class="text-[10px] font-mono uppercase tracking-wider px-3 py-1.5 rounded-lg bg-black/40 text-gray-400 border border-white/5 hover:border-retro-yellow/20 hover:text-retro-yellow/80 transition-all cursor-default">
+                        <span class="text-[9px] font-mono uppercase tracking-wider px-2.5 py-1 rounded-lg bg-black/40 text-gray-400 border border-white/5 hover:border-retro-yellow/20 hover:text-retro-yellow/80 transition-all cursor-default">
                           {{tech}}
                         </span>
                       }

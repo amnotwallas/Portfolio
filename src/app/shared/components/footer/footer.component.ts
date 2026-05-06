@@ -35,11 +35,13 @@ import { CommonModule } from "@angular/common";
         <!-- Tooltip CV No Disponible -->
         <div 
           *ngIf="showCvTooltip()"
-          class="absolute bottom-full mb-4 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-retro-bright text-retro-dark text-[10px] font-bold rounded uppercase tracking-widest shadow-xl whitespace-nowrap border border-retro-yellow/30"
+          class="absolute bottom-full mb-12 inset-x-0 flex justify-center z-[60] pointer-events-none"
         >
-          Not available yet!
-          <!-- Pequeña flecha del tooltip -->
-          <div class="absolute top-full left-1/2 -translate-x-1/2 border-8 border-transparent border-t-retro-bright"></div>
+          <div class="px-4 py-2 bg-retro-dark/95 backdrop-blur-md text-retro-yellow text-[10px] font-bold rounded-lg uppercase tracking-[0.2em] shadow-2xl border border-retro-yellow/30 animate-tooltip whitespace-nowrap relative">
+            <span class="opacity-50 mr-2">></span>Not available yet
+            <!-- Pequeña flecha del tooltip -->
+            <div class="absolute top-full left-1/2 -translate-x-1/2 border-[6px] border-transparent border-t-retro-yellow/30"></div>
+          </div>
         </div>
       </div>
 
@@ -66,11 +68,13 @@ import { CommonModule } from "@angular/common";
         <!-- Tooltip -->
         <div 
           *ngIf="isCopied()"
-          class="absolute bottom-full mb-4 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-retro-bright text-retro-dark text-[10px] font-bold rounded uppercase tracking-widest shadow-xl whitespace-nowrap border border-retro-yellow/30"
+          class="absolute bottom-full mb-12 inset-x-0 flex justify-center z-[60] pointer-events-none"
         >
-          Email Copied!
-          <!-- Pequeña flecha del tooltip -->
-          <div class="absolute top-full left-1/2 -translate-x-1/2 border-8 border-transparent border-t-retro-bright"></div>
+          <div class="px-4 py-2 bg-retro-dark/95 backdrop-blur-md text-retro-yellow text-[10px] font-bold rounded-lg uppercase tracking-[0.2em] shadow-2xl border border-retro-yellow/30 animate-tooltip whitespace-nowrap relative">
+            <span class="opacity-50 mr-2">></span>Email Copied!
+            <!-- Pequeña flecha del tooltip -->
+            <div class="absolute top-full left-1/2 -translate-x-1/2 border-[6px] border-transparent border-t-retro-yellow/30"></div>
+          </div>
         </div>
       </div>
 

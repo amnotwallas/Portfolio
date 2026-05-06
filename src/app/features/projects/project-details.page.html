@@ -1,55 +1,57 @@
-<main #mainCont class="relative flex flex-col min-h-screen pt-12 pb-32 px-6 md:px-8 lg:px-24 font-['Space_Grotesk'] text-gray-300 max-w-7xl mx-auto overflow-x-hidden pl-16 sm:pl-20 md:pl-24">
+<main #mainCont class="relative flex flex-col min-h-screen font-['Space_Grotesk'] text-gray-300 max-w-6xl mx-auto overflow-x-hidden">
   
-  <div>
-
+  <section class="min-h-screen flex flex-col justify-center px-6 md:px-12 lg:px-20 py-4 snap-start">
+    
     <!-- Back Button -->
-    <button (click)="goBack()" class="group mb-6 flex items-center gap-2 text-retro-yellow/60 hover:text-retro-yellow transition-colors font-mono text-xs uppercase tracking-widest w-fit">
-      <ng-icon name="tablerArrowLeft" size="14" class="group-hover:-translate-x-1 transition-transform"></ng-icon>
-      <span>Return to Grid</span>
-    </button>
+    <div class="mb-4">
+      <button (click)="goBack()" class="group flex items-center gap-2 text-retro-yellow/60 hover:text-retro-yellow transition-colors font-mono text-[10px] uppercase tracking-widest w-fit">
+        <ng-icon name="tablerArrowLeft" size="12" class="group-hover:-translate-x-1 transition-transform"></ng-icon>
+        <span>Return to Grid</span>
+      </button>
+    </div>
 
     @if (project) {
       <div class="transform-gpu will-change-transform">
-        <!-- Header: Compact & Direct -->
-        <header class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
-          <div class="space-y-4">
-            <div class="flex items-center gap-4">
-              <ng-icon name="tablerRocket" class="text-retro-yellow text-3xl md:text-4xl"></ng-icon>
-              <h1 class="text-3xl md:text-5xl font-bold text-retro-bright tracking-tight font-mono leading-tight"
+        <!-- Header: Ultra-Compact -->
+        <header class="mb-5 flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div class="space-y-1.5">
+            <div class="flex items-center gap-3">
+              <ng-icon name="tablerRocket" class="text-retro-yellow text-xl md:text-2xl"></ng-icon>
+              <h1 class="text-xl md:text-3xl font-bold text-retro-bright tracking-tight font-mono leading-tight"
                   [style.view-transition-name]="'project-title-' + project.slug">{{project.name}}</h1>
             </div>
             <div class="flex flex-wrap items-center gap-2">
-              <span class="px-2 py-1 rounded bg-retro-yellow/10 border border-retro-yellow/20 text-retro-yellow text-[10px] font-mono uppercase tracking-widest shadow-[0_0_10px_rgba(255,176,0,0.05)]">
+              <span class="px-1.5 py-0.5 rounded bg-retro-yellow/10 border border-retro-yellow/20 text-retro-yellow text-[8px] font-mono uppercase tracking-widest">
                 {{project.id}}
               </span>
-              <span class="px-2 py-1 rounded bg-white/5 border border-white/10 text-gray-400 text-[10px] font-mono uppercase tracking-widest">
+              <span class="px-1.5 py-0.5 rounded bg-white/5 border border-white/10 text-gray-400 text-[8px] font-mono uppercase tracking-widest">
                 {{project.period}}
               </span>
             </div>
           </div>
           
-          <div class="flex items-center gap-4">
+          <div class="flex items-center gap-3">
             @if (project.links.github) {
-              <a [href]="project.links.github" target="_blank" class="p-3 rounded-xl glass-effect text-retro-yellow hover:text-retro-bright transition-all" title="View Repository">
-                <ng-icon name="tablerBrandGithub" size="20"></ng-icon>
+              <a [href]="project.links.github" target="_blank" class="p-2 rounded-lg glass-effect text-retro-yellow hover:text-retro-bright transition-all" title="View Repository">
+                <ng-icon name="tablerBrandGithub" size="16"></ng-icon>
               </a>
             }
             @if (project.links.demo) {
-              <a [href]="project.links.demo" target="_blank" class="p-3 rounded-xl bg-retro-yellow text-retro-dark hover:bg-retro-bright transition-all" title="Launch Demo">
-                <ng-icon name="tablerExternalLink" size="20"></ng-icon>
+              <a [href]="project.links.demo" target="_blank" class="p-2 rounded-lg bg-retro-yellow text-retro-dark hover:bg-retro-bright transition-all" title="Launch Demo">
+                <ng-icon name="tablerExternalLink" size="16"></ng-icon>
               </a>
             }
           </div>
         </header>
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10">
           
           <!-- Main Content: Documentation & Overview -->
-          <div class="lg:col-span-7 space-y-12">
+          <div class="lg:col-span-7 space-y-6">
             
             <!-- Project Carousel -->
-            <section class="space-y-4">
-              <div class="relative group/carousel h-auto aspect-[4/3] overflow-hidden rounded-2xl border border-white/10 bg-retro-dark shadow-2xl transform-gpu cursor-zoom-in"
+            <div class="space-y-3">
+              <div class="relative group/carousel h-auto aspect-[4/3] overflow-hidden rounded-xl border border-white/10 bg-retro-dark shadow-xl transform-gpu cursor-zoom-in"
                    (click)="openLightbox()"
                    [style.view-transition-name]="'project-image-' + project.slug">
                 
@@ -57,7 +59,7 @@
                 <div class="relative w-full h-full">
                   @if (project.images && project.images.length > 0) {
                     @for (img of project.images; track $index) {
-                      <img *ngIf="resolvedImages[img]"
+                      <img *ngIf="projectIndex === $index && resolvedImages[img]"
                            [src]="resolvedImages[img]" 
                            loading="lazy"
                            (load)="onImageLoad(img)"
@@ -97,131 +99,126 @@
                   </div>
                 }
               </div>
-            </section>
+            </div>
 
             <!-- Description & Stack -->
-            <div class="grid grid-cols-1 gap-12">
-              <section class="space-y-4">
-                <h2 class="text-[10px] font-bold uppercase tracking-[0.3em] text-retro-yellow font-mono flex items-center gap-2">
+            <div class="grid grid-cols-1 gap-6">
+              <div class="space-y-3">
+                <h2 class="text-[9px] font-bold uppercase tracking-[0.3em] text-retro-yellow font-mono flex items-center gap-2">
                   <span class="w-2 h-px bg-retro-yellow/40"></span>
                   Overview
                 </h2>
-                <p class="text-xl leading-relaxed text-gray-300 font-light">
+                <p class="text-lg leading-relaxed text-gray-300 font-light line-clamp-4">
                   {{project.long_description}}
                 </p>
-              </section>
+              </div>
 
-              <section class="space-y-6">
-                <h2 class="text-[10px] font-bold uppercase tracking-[0.3em] text-retro-yellow font-mono flex items-center gap-2">
+              <div class="space-y-3">
+                <h2 class="text-[9px] font-bold uppercase tracking-[0.3em] text-retro-yellow font-mono flex items-center gap-2">
                   <span class="w-2 h-px bg-retro-yellow/40"></span>
                   Technology Stack
                 </h2>
                 <div class="flex flex-wrap gap-2">
                   @for (tech of project.stack; track $index) {
-                    <span class="text-[10px] font-mono px-3 py-1.5 rounded-lg border border-white/5 bg-white/5 text-gray-400 hover:text-retro-yellow hover:border-retro-yellow/20 transition-all uppercase tracking-wider">
+                    <span class="text-[9px] font-mono px-2.5 py-1 rounded-lg border border-white/5 bg-white/5 text-gray-400 hover:text-retro-yellow hover:border-retro-yellow/20 transition-all uppercase tracking-wider">
                       {{tech}}
                     </span>
                   }
                 </div>
-              </section>
+              </div>
             </div>
 
           </div>
 
           <!-- Sidebar: Metrics & Logic -->
-          <aside class="lg:col-span-5 space-y-8">
+          <aside class="lg:col-span-5 space-y-4">
             
             <!-- Quick Metrics Card -->
             <div class="grid grid-cols-3 gap-3">
-              <div class="p-4 rounded-2xl glass-effect border border-white/5 flex flex-col gap-1">
-                <span class="text-[9px] font-mono text-gray-500 uppercase tracking-widest">Status</span>
-                <span class="text-xs font-bold text-retro-yellow font-mono uppercase">{{project.metadata.status}}</span>
+              <div class="p-3 rounded-2xl glass-effect border border-white/5 flex flex-col gap-1">
+                <span class="text-[8px] font-mono text-gray-500 uppercase tracking-widest">Status</span>
+                <span class="text-[10px] font-bold text-retro-yellow font-mono uppercase">{{project.metadata.status}}</span>
               </div>
-              <div class="p-4 rounded-2xl glass-effect border border-white/5 flex flex-col gap-1">
-                <span class="text-[9px] font-mono text-gray-500 uppercase tracking-widest">Role</span>
-                <span class="text-xs font-bold text-retro-bright font-mono uppercase">{{project.metadata.role}}</span>
+              <div class="p-3 rounded-2xl glass-effect border border-white/5 flex flex-col gap-1">
+                <span class="text-[8px] font-mono text-gray-500 uppercase tracking-widest">Role</span>
+                <span class="text-[10px] font-bold text-retro-bright font-mono uppercase">{{project.metadata.role}}</span>
               </div>
-              <div class="p-4 rounded-2xl glass-effect border border-white/5 flex flex-col gap-1">
-                <span class="text-[9px] font-mono text-gray-500 uppercase tracking-widest">Type</span>
-                <span class="text-xs font-bold text-retro-bright font-mono uppercase">{{project.metadata.complexity}}</span>
+              <div class="p-3 rounded-2xl glass-effect border border-white/5 flex flex-col gap-1">
+                <span class="text-[8px] font-mono text-gray-500 uppercase tracking-widest">Type</span>
+                <span class="text-[10px] font-bold text-retro-bright font-mono uppercase">{{project.metadata.complexity}}</span>
               </div>
             </div>
 
             <!-- Challenges / Solutions -->
-            <div class="p-6 md:p-8 rounded-2xl glass-effect border border-white/5 space-y-8">
+            <div class="p-5 md:p-6 rounded-2xl glass-effect border border-white/5 space-y-5">
               @if (project.metadata.challenges) {
-                <div class="space-y-3">
-                  <h3 class="text-[10px] font-bold uppercase tracking-widest text-red-400/80 font-mono flex items-center gap-2">
-                    <ng-icon name="tablerAlertTriangle" size="14"></ng-icon>
+                <div class="space-y-2">
+                  <h3 class="text-[9px] font-bold uppercase tracking-widest text-red-400/80 font-mono flex items-center gap-2">
+                    <ng-icon name="tablerAlertTriangle" size="12"></ng-icon>
                     The Challenge
                   </h3>
-                  <p class="text-sm leading-relaxed text-gray-400 font-light">{{project.metadata.challenges}}</p>
+                  <p class="text-xs leading-relaxed text-gray-400 font-light">{{project.metadata.challenges}}</p>
                 </div>
               }
               @if (project.metadata.solutions) {
-                <div class="space-y-3">
-                  <h3 class="text-[10px] font-bold uppercase tracking-widest text-green-400/80 font-mono flex items-center gap-2">
-                    <ng-icon name="tablerCircleCheck" size="14"></ng-icon>
+                <div class="space-y-2">
+                  <h3 class="text-[9px] font-bold uppercase tracking-widest text-green-400/80 font-mono flex items-center gap-2">
+                    <ng-icon name="tablerCircleCheck" size="12"></ng-icon>
                     The Solution
                   </h3>
-                  <p class="text-sm leading-relaxed text-gray-400 font-light">{{project.metadata.solutions}}</p>
+                  <p class="text-xs leading-relaxed text-gray-400 font-light">{{project.metadata.solutions}}</p>
                 </div>
               }
             </div>
 
             <!-- Action Card -->
-            <div class="p-6 md:p-8 rounded-2xl bg-retro-yellow/5 border border-retro-yellow/10 space-y-6">
+            <div class="p-5 md:p-6 rounded-2xl bg-retro-yellow/5 border border-retro-yellow/10 space-y-4">
               @if (project.links.demo || project.links.github) {
-                <div class="space-y-2">
-                  <h3 class="text-lg font-bold text-retro-bright font-mono">Execute Module</h3>
-                  <p class="text-xs text-gray-500 font-light">Direct access to repository and live environment.</p>
+                <div class="space-y-1">
+                  <h3 class="text-base font-bold text-retro-bright font-mono">Execute Module</h3>
+                  <p class="text-[10px] text-gray-500 font-light">Direct access to live environment.</p>
                 </div>
-                <div class="flex flex-col gap-3">
+                <div class="flex flex-col gap-2">
                   @if (project.links.demo) {
-                    <a [href]="project.links.demo" target="_blank" class="flex items-center justify-center gap-3 w-full py-4 rounded-xl bg-retro-yellow text-retro-dark font-bold uppercase tracking-[0.2em] text-[10px] hover:bg-retro-bright transition-all">
+                    <a [href]="project.links.demo" target="_blank" class="flex items-center justify-center gap-3 w-full py-3 rounded-xl bg-retro-yellow text-retro-dark font-bold uppercase tracking-[0.2em] text-[9px] hover:bg-retro-bright transition-all">
                       <span>Launch Live</span>
-                      <ng-icon name="tablerExternalLink" size="16"></ng-icon>
+                      <ng-icon name="tablerExternalLink" size="14"></ng-icon>
                     </a>
                   }
                   @if (project.links.github) {
-                    <a [href]="project.links.github" target="_blank" class="flex items-center justify-center gap-3 w-full py-4 rounded-xl border border-white/10 text-retro-bright font-bold uppercase tracking-[0.2em] text-[10px] hover:bg-white/5 transition-all">
+                    <a [href]="project.links.github" target="_blank" class="flex items-center justify-center gap-3 w-full py-3 rounded-xl border border-white/10 text-retro-bright font-bold uppercase tracking-[0.2em] text-[9px] hover:bg-white/5 transition-all">
                       <span>Source Code</span>
-                      <ng-icon name="tablerBrandGithub" size="16"></ng-icon>
+                      <ng-icon name="tablerBrandGithub" size="14"></ng-icon>
                     </a>
                   }
                 </div>
               } @else {
-                <div class="space-y-4">
+                <div class="space-y-3">
                   <div class="flex items-center gap-2 text-retro-yellow">
-                    <ng-icon name="tablerLock" size="18"></ng-icon>
-                    <h3 class="text-sm font-bold font-mono uppercase tracking-widest">Restricted</h3>
+                    <ng-icon name="tablerLock" size="16"></ng-icon>
+                    <h3 class="text-xs font-bold font-mono uppercase tracking-widest">Restricted</h3>
                   </div>
-                  <p class="text-xs text-gray-400 font-light leading-relaxed">System architecture is proprietary. Source code is not public.</p>
-                  <a [href]="'mailto:' + cv.basics.email" class="flex items-center justify-center gap-3 w-full py-3 rounded-xl border border-retro-yellow/20 text-retro-yellow font-mono uppercase tracking-[0.2em] text-[9px] hover:bg-retro-yellow/5 transition-all">
+                  <p class="text-[10px] text-gray-400 font-light leading-relaxed">System architecture is proprietary.</p>
+                  <a [href]="'mailto:' + cv.basics.email" class="flex items-center justify-center gap-3 w-full py-2.5 rounded-xl border border-retro-yellow/20 text-retro-yellow font-mono uppercase tracking-[0.2em] text-[8px] hover:bg-retro-yellow/5 transition-all">
                     <span>Inquire</span>
-                    <ng-icon name="tablerMail" size="14"></ng-icon>
+                    <ng-icon name="tablerMail" size="12"></ng-icon>
                   </a>
                 </div>
               }
             </div>
 
             <!-- Next/Prev Navigation -->
-            <div class="flex flex-col gap-3">
+            <div class="flex flex-col gap-2">
               @if (nextProject) {
-                <a [routerLink]="['/project', nextProject.slug]" class="p-6 rounded-2xl glass-effect group relative overflow-hidden transition-all hover:border-retro-yellow/40">
+                <a [routerLink]="['/project', nextProject.slug]" class="p-4 rounded-2xl glass-effect group relative overflow-hidden transition-all hover:border-retro-yellow/40">
                   <div class="absolute inset-0 bg-gradient-to-r from-retro-yellow/0 to-retro-yellow/5 translate-x-full group-hover:translate-x-0 transition-transform duration-700"></div>
                   <div class="relative flex items-center justify-between">
                     <div>
-                      <span class="text-[9px] font-mono text-gray-500 uppercase tracking-widest block mb-1">Up Next</span>
-                      <span class="text-sm font-bold text-retro-bright group-hover:text-retro-yellow transition-colors">{{nextProject.name}}</span>
+                      <span class="text-[8px] font-mono text-gray-500 uppercase tracking-widest block mb-0.5">Up Next</span>
+                      <span class="text-xs font-bold text-retro-bright group-hover:text-retro-yellow transition-colors">{{nextProject.name}}</span>
                     </div>
                     <ng-icon name="tablerChevronRight" class="text-retro-yellow/40 group-hover:text-retro-yellow transition-all translate-x-2 group-hover:translate-x-0"></ng-icon>
                   </div>
-                </a>
-              }
-              @if (prevProject) {
-                <a [routerLink]="['/project', prevProject.slug]" class="px-6 py-4 rounded-xl border border-white/5 text-gray-500 hover:text-gray-300 transition-all text-center">
-                  <span class="text-[9px] font-mono uppercase tracking-[0.3em]">Previous: {{prevProject.name}}</span>
                 </a>
               }
             </div>
@@ -231,7 +228,7 @@
         </div>
       </div>
     }
-  </div>
+  </section>
 </main>
 
 <!-- Lightbox Modal -->

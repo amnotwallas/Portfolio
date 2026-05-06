@@ -17,7 +17,7 @@ import { Router } from '@angular/router';
     <!-- Floating Trigger Button -->
     <button 
       (click)="toggleWidget()"
-      class="fixed bottom-24 right-6 z-50 flex items-center justify-center w-14 h-14 rounded-2xl bg-retro-dark border-2 border-retro-yellow/30 text-retro-yellow shadow-[0_0_20px_rgba(250,204,21,0.2)] hover:shadow-[0_0_30px_rgba(250,204,21,0.4)] hover:border-retro-yellow transition-all duration-300 group"
+      class="fixed bottom-24 right-4 md:right-8 z-50 flex items-center justify-center w-14 h-14 rounded-2xl bg-retro-dark border-2 border-retro-yellow/30 text-retro-yellow shadow-[0_0_20px_rgba(250,204,21,0.2)] hover:shadow-[0_0_30px_rgba(250,204,21,0.4)] hover:border-retro-yellow transition-all duration-300 group"
       [class.opacity-0]="isOpen()"
       [class.pointer-events-none]="isOpen()">
       <ng-icon name="tablerTerminal" size="28" class="group-hover:scale-110 transition-transform"></ng-icon>
@@ -29,7 +29,7 @@ import { Router } from '@angular/router';
 
     <!-- Widget Container -->
     <div 
-      class="fixed bottom-24 right-6 z-50 w-[calc(100vw-3rem)] sm:w-96 glass-effect border-2 border-retro-yellow/20 rounded-2xl shadow-2xl transition-all duration-500 origin-bottom-right overflow-hidden flex flex-col"
+      class="fixed bottom-24 right-4 md:right-8 z-50 w-[calc(100vw-2rem)] sm:w-96 bg-retro-dark/95 border-2 border-retro-yellow/20 rounded-2xl shadow-2xl transition-all duration-500 origin-bottom-right overflow-hidden flex flex-col"
       [class.scale-0]="!isOpen()"
       [class.opacity-0]="!isOpen()"
       [class.pointer-events-none]="!isOpen()">

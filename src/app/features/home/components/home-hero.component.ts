@@ -8,15 +8,15 @@ import { PortfolioService } from '../../../core/services/portfolio.service';
   standalone: true,
   imports: [CommonModule, ScrambleDirective],
   template: `
-    <div class="w-full flex flex-col items-center text-center">
+    <div class="w-full flex flex-col items-center text-center px-6">
       <!-- Welcome Line -->
       <div class="mb-4 flex flex-col items-center">
-        <h1 class="text-4xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tighter leading-none mb-2 relative">
+        <h1 class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tighter leading-none mb-2 relative">
           <span class="font-extralight text-gray-400">Hi, I am </span>
           <br class="sm:hidden">
           
           <!-- Name Container with space reservation -->
-          <span class="relative inline-block">
+          <span class="relative inline-block mt-2 sm:mt-0">
             <!-- Invisible placeholder to reserve full width from start -->
             <span class="font-mono font-light opacity-0 select-none pointer-events-none" aria-hidden="true">{{firstName}}</span>
             
@@ -31,7 +31,7 @@ import { PortfolioService } from '../../../core/services/portfolio.service';
             </span>
 
             <!-- Minecraft Splash Text: Now truly stable -->
-            <div class="absolute -bottom-2 -right-8 sm:-right-12 md:-right-16 z-40 pointer-events-none origin-center">
+            <div class="absolute -bottom-5 right-0 sm:-bottom-1 sm:-right-12 md:-right-16 z-40 pointer-events-none origin-center">
               <span class="splash-text text-[10px] sm:text-xs md:text-sm lg:text-base uppercase">
                 {{ currentSplash }}
               </span>
@@ -56,8 +56,8 @@ import { PortfolioService } from '../../../core/services/portfolio.service';
       </div>
 
       <!-- Professional Pitch: Clean & Minimalist -->
-      <div class="max-w-2xl mx-auto px-6 border-l border-retro-yellow/20 py-1 text-left">
-        <p class="font-light text-base md:text-lg leading-relaxed text-gray-400">
+      <div class="max-w-2xl mx-auto px-6 sm:px-12 border-l border-retro-yellow/20 py-1 text-left">
+        <p class="font-light text-sm md:text-lg leading-relaxed text-gray-400">
           {{cv.basics.summary}}
         </p>
       </div>

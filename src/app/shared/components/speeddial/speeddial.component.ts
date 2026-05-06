@@ -97,13 +97,17 @@ export class SpeedDialComponent {
 
     if (item.fragment) {
       if (this.router.url.includes('/home')) {
-        this.scroller.scrollToAnchor(item.fragment);
+        // Direct scroll for local anchors to avoid snapping interference
+        const element = document.getElementById(item.fragment);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
         this.router.navigate([], { fragment: item.fragment, replaceUrl: true });
       } else {
         this.router.navigate(['/home'], { fragment: item.fragment });
       }
     } else {
-      this.scroller.scrollToPosition([0, 0]);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       this.router.navigate(['/home'], { fragment: undefined });
     }
   }

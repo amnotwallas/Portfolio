@@ -58,12 +58,18 @@ import { Subscription } from 'rxjs';
           </div>
           
           <div class="relative">
-            <p class="font-light text-sm text-gray-400 leading-relaxed transition-all duration-300"
-               [class.line-clamp-2]="!expandedProjects[projectIdx]"
-               [class.mb-4]="expandedProjects[projectIdx]"
-               [class.mb-2]="!expandedProjects[projectIdx]">
-              {{item.description}}
-            </p>
+            <div class="grid transition-[grid-template-rows,margin-bottom] duration-300 ease-in-out"
+                 [class.grid-rows-[1fr]]="expandedProjects[projectIdx]"
+                 [class.grid-rows-[0fr]]="!expandedProjects[projectIdx]"
+                 [class.mb-4]="expandedProjects[projectIdx]"
+                 [class.mb-2]="!expandedProjects[projectIdx]">
+              <div class="overflow-hidden">
+                <p class="font-light text-sm text-gray-400 leading-relaxed"
+                   [class.line-clamp-2]="!expandedProjects[projectIdx]">
+                  {{item.description}}
+                </p>
+              </div>
+            </div>
             
             <button (click)="toggleProject(projectIdx)" 
                     class="flex items-center gap-1 text-[10px] font-mono uppercase tracking-wider text-retro-yellow/60 hover:text-retro-yellow transition-colors mb-4">
