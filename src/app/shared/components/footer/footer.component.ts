@@ -21,7 +21,7 @@ import { CommonModule } from "@angular/common";
     CommonModule
   ],
   template: `
-    <footer class="FOOTER_APP fixed bottom-6 left-1/2 -translate-x-1/2 md:translate-x-0 md:left-auto md:right-10 md:bottom-10 flex items-center justify-center md:justify-start gap-1 md:gap-2 px-3 py-2 md:px-5 md:py-2.5 bg-[#161616] shadow-2xl rounded-xl print:hidden text-retro-font z-[100] border border-white/5 group/footer w-fit">
+    <footer class="FOOTER_APP fixed bottom-6 left-1/2 -translate-x-1/2 md:translate-x-0 md:left-auto md:right-10 md:bottom-10 flex items-center justify-center md:justify-start gap-1 md:gap-2 px-3 py-2 md:px-5 md:py-2.5 glass-effect shadow-2xl rounded-xl print:hidden text-retro-font z-[100] border border-white/5 group/footer w-fit">
 
       <!-- CV Button -->
       <div class="relative group/item flex items-center justify-center px-2 py-1">
@@ -69,7 +69,7 @@ import { CommonModule } from "@angular/common";
           class="flex items-center gap-2 text-[13px] font-mono font-bold hover:text-retro-yellow transition-all cursor-pointer outline-none border-none bg-transparent whitespace-nowrap"
         >
           <ng-icon [svg]="isCopied() ? icons.tablerCheck : icons.tablerMail" size="18" strokeWidth="2.5" class="text-retro-yellow/80 transition-all group-hover/item:text-retro-yellow" />
-          <span class="tracking-widest uppercase hidden md:inline">{{ isCopied() ? 'COPIED' : 'CONTACT' }}</span>
+          <span class="tracking-widest uppercase hidden md:inline-block w-[75px] text-left">{{ isCopied() ? 'COPIED' : 'CONTACT' }}</span>
         </button>
 
         <div *ngIf="isCopied()" class="absolute bottom-full mb-4 left-1/2 -translate-x-1/2 z-[110] pointer-events-none">
