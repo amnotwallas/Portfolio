@@ -8,6 +8,7 @@
   --color-retro-bright: #FACC15;  /* Blanco puro para títulos de alto impacto */
   --color-retro-font: #E0E0E0;    /* Gris muy claro para el cuerpo del texto (descansa la vista) */
   --color-footer-bg: #1A1A1A;     /* Fondo de la píldora del footer */
+  --color-minecraft: #55FF55; /* Classic Minecraft Green */
 
   /* Global Animation Variables */
   --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
@@ -101,7 +102,7 @@ body {
 
 .splash-text {
   font-family: 'Silkscreen', cursive;
-  color: #55FF55; /* Classic Minecraft Green */
+  color: var(--color-minecraft);
   text-shadow: 2px 2px 0px #003F00, 3px 3px 0px #000000;
   display: inline-block;
   animation: splash-pulse 0.8s ease-in-out infinite;
