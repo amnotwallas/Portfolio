@@ -1,12 +1,12 @@
-<main #mainCont class="relative flex flex-col min-h-screen font-['Space_Grotesk'] text-gray-300 max-w-6xl mx-auto overflow-x-hidden">
+<main #mainCont class="relative flex flex-col min-h-screen font-['Space_Grotesk'] text-retro-font max-w-6xl mx-auto overflow-x-hidden">
   
   <section class="min-h-screen flex flex-col justify-center px-6 md:px-12 lg:px-20 py-4 snap-start">
     
     <!-- Back Button -->
-    <div class="mb-4">
+    <div class="mb-6">
       <button (click)="goBack()" class="group flex items-center gap-2 text-retro-yellow/60 hover:text-retro-yellow transition-colors font-mono text-[10px] uppercase tracking-widest w-fit">
-        <ng-icon name="tablerArrowLeft" size="12" class="group-hover:-translate-x-1 transition-transform"></ng-icon>
-        <span>Return to Grid</span>
+        <ng-icon name="tablerArrowLeft" size="14" class="group-hover:-translate-x-1 transition-transform"></ng-icon>
+        <span class="border-b border-transparent group-hover:border-retro-yellow">Return to Grid</span>
       </button>
     </div>
 
@@ -14,125 +14,117 @@
       @if (cvSignal(); as cv) {
         <div class="transform-gpu will-change-transform" [class.opacity-0]="isChanging" class="transition-opacity duration-300">
           <!-- Header: Ultra-Compact -->
-          <header class="mb-5 flex flex-col md:flex-row md:items-end justify-between gap-4">
-            <div class="space-y-1.5">
-              <div class="flex items-center gap-3">
-                <ng-icon name="tablerRocket" class="text-retro-yellow text-xl md:text-2xl"></ng-icon>
-                <h1 class="text-xl md:text-3xl font-bold text-retro-bright tracking-tight font-mono leading-tight"
+          <header class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div class="space-y-3">
+              <div class="flex items-center gap-4">
+                <ng-icon name="tablerRocket" class="text-retro-yellow text-2xl md:text-3xl text-glow"></ng-icon>
+                <h1 class="text-2xl md:text-5xl font-bold text-retro-bright tracking-tight font-mono leading-tight text-glow-bright"
                     [style.view-transition-name]="'project-title-' + item.slug">{{item.name}}</h1>
               </div>
-              <div class="flex flex-wrap items-center gap-2">
-                <span class="px-1.5 py-0.5 rounded bg-retro-yellow/10 border border-retro-yellow/20 text-retro-yellow text-[8px] font-mono uppercase tracking-widest">
-                  {{item.id}}
+              <div class="flex flex-wrap items-center gap-3">
+                <span class="px-2 py-1 rounded-sm bg-retro-yellow text-retro-dark text-[9px] font-mono font-bold uppercase tracking-widest">
+                  MODULE_{{item.id}}
                 </span>
-                <span class="px-1.5 py-0.5 rounded bg-white/5 border border-white/10 text-gray-400 text-[8px] font-mono uppercase tracking-widest">
+                <span class="px-2 py-1 rounded-sm border border-retro-yellow/20 text-retro-yellow/80 text-[9px] font-mono uppercase tracking-widest">
                   {{item.period}}
                 </span>
               </div>
             </div>
             
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-4">
               @if (item.links.github) {
-                <a [href]="item.links.github" target="_blank" class="p-2 rounded-lg glass-effect text-retro-yellow hover:text-retro-bright transition-all" title="View Repository">
-                  <ng-icon name="tablerBrandGithub" size="16"></ng-icon>
+                <a [href]="item.links.github" target="_blank" class="p-3 rounded-lg glass-effect text-retro-yellow hover:text-retro-bright transition-all" title="View Repository">
+                  <ng-icon name="tablerBrandGithub" size="20"></ng-icon>
                 </a>
               }
               @if (item.links.demo) {
-                <a [href]="item.links.demo" target="_blank" class="p-2 rounded-lg bg-retro-yellow text-retro-dark hover:bg-retro-bright transition-all" title="Launch Demo">
-                  <ng-icon name="tablerExternalLink" size="16"></ng-icon>
+                <a [href]="item.links.demo" target="_blank" class="p-3 rounded-lg bg-retro-yellow text-retro-dark hover:bg-retro-bright transition-all shadow-[0_0_15px_rgba(255,176,0,0.2)]" title="Launch Demo">
+                  <ng-icon name="tablerExternalLink" size="20"></ng-icon>
                 </a>
               }
             </div>
           </header>
 
-          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
             
             <!-- Main Content: Documentation & Overview -->
-            <div class="lg:col-span-7 space-y-6">
+            <div class="lg:col-span-7 space-y-10">
               
               <!-- Project Carousel -->
-              <div class="space-y-3">
-                <div class="relative group/carousel h-auto aspect-[4/3] overflow-hidden rounded-xl border border-white/10 bg-retro-dark shadow-xl transform-gpu cursor-zoom-in"
-                    (click)="openLightbox()"
-                    [style.view-transition-name]="'project-image-' + item.slug">
-                  
-                  <!-- Images Container -->
-                  <div class="relative w-full h-full">
-                    @if (item.images && item.images.length > 0) {
-                      @for (img of item.images; track $index) {
-                        @if (projectIndex === $index) {
-                          <img [src]="resolvedImages[img]" 
-                              loading="lazy"
-                              (load)="onImageLoad(img)"
-                              class="absolute inset-0 w-full h-full object-cover object-top transition-all duration-700"
-                              [class.opacity-100]="imagesLoaded[img]"
-                              [class.opacity-0]="!imagesLoaded[img]"
-                              [class.z-10]="true"
-                              [alt]="item.name">
-                          
-                          @if (!imagesLoaded[img]) {
-                            <div class="absolute inset-0 skeleton opacity-20 z-20"></div>
-                          }
-                        }
-                      }
-                    } @else if (item.image) {
-                      @if (resolvedImages[item.image]) {
-                        <img [src]="resolvedImages[item.image]" 
+              <div class="relative group/carousel h-auto aspect-[4/3] overflow-hidden rounded-xl border border-retro-yellow/10 bg-retro-dark shadow-2xl transform-gpu cursor-zoom-in"
+                  (click)="openLightbox()"
+                  [style.view-transition-name]="'project-image-' + item.slug">
+                
+                <!-- Images Container -->
+                <div class="relative w-full h-full">
+                  @if (item.images && item.images.length > 0) {
+                    @for (img of item.images; track $index) {
+                      @if (projectIndex === $index) {
+                        <img [src]="resolvedImages[img]" 
                             loading="lazy"
-                            (load)="onImageLoad(item.image)"
-                            class="w-full h-full object-cover object-top transition-all"
-                            [class.opacity-0]="!imagesLoaded[item.image]"
-                            [class.opacity-90]="imagesLoaded[item.image]"
+                            (load)="onImageLoad(img)"
+                            class="absolute inset-0 w-full h-full object-cover object-top transition-all duration-700"
+                            [class.opacity-100]="imagesLoaded[img]"
+                            [class.opacity-0]="!imagesLoaded[img]"
+                            [class.z-10]="true"
                             [alt]="item.name">
-                        @if (!imagesLoaded[item.image]) {
-                          <div class="absolute inset-0 skeleton opacity-20"></div>
+                        
+                        @if (!imagesLoaded[img]) {
+                          <div class="absolute inset-0 skeleton z-20"></div>
                         }
-                      } @else {
-                        <div class="absolute inset-0 skeleton opacity-20"></div>
                       }
                     }
-                    <div class="absolute inset-0 z-20 pointer-events-none bg-gradient-to-t from-retro-dark/40 via-transparent to-transparent"></div>
-                  </div>
-
-                  <!-- Navigation Controls -->
-                  @if (item.images && item.images.length > 1) {
-                    <div class="absolute inset-x-0 bottom-6 z-30 flex justify-center opacity-0 group-hover/carousel:opacity-100 transition-all duration-300">
-                      <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/10">
-                        <button (click)="prevImage(); $event.stopPropagation()" class="p-1 hover:text-retro-yellow transition-colors"><ng-icon name="tablerChevronLeft" size="20"></ng-icon></button>
-                        <div class="w-px h-3 bg-white/10 mx-1"></div>
-                        @for (img of item.images; track $index) {
-                          <div class="h-1 rounded-full transition-all duration-300" 
-                              [class.w-4]="projectIndex === $index" [class.bg-retro-yellow]="projectIndex === $index"
-                              [class.w-1]="projectIndex !== $index" [class.bg-white/20]="projectIndex !== $index"></div>
-                        }
-                        <div class="w-px h-3 bg-white/10 mx-1"></div>
-                        <button (click)="nextImage(); $event.stopPropagation()" class="p-1 hover:text-retro-yellow transition-colors"><ng-icon name="tablerChevronRight" size="20"></ng-icon></button>
-                      </div>
-                    </div>
+                  } @else if (item.image) {
+                    @if (resolvedImages[item.image]) {
+                      <img [src]="resolvedImages[item.image]" 
+                          loading="lazy"
+                          (load)="onImageLoad(item.image)"
+                          class="w-full h-full object-cover object-top transition-all"
+                          [class.opacity-0]="!imagesLoaded[item.image]"
+                          [class.opacity-90]="imagesLoaded[item.image]"
+                          [alt]="item.name">
+                      @if (!imagesLoaded[item.image]) {
+                        <div class="absolute inset-0 skeleton"></div>
+                      }
+                    } @else {
+                      <div class="absolute inset-0 skeleton"></div>
+                    }
                   }
+                  <div class="absolute inset-0 z-20 pointer-events-none bg-gradient-to-t from-retro-dark/60 via-transparent to-transparent"></div>
                 </div>
+
+                <!-- Navigation Controls -->
+                @if (item.images && item.images.length > 1) {
+                  <div class="absolute inset-x-0 bottom-6 z-30 flex justify-center opacity-0 group-hover/carousel:opacity-100 transition-all duration-300">
+                    <div class="flex items-center gap-2 px-4 py-2 rounded-full bg-black/80 backdrop-blur-md border border-retro-yellow/20">
+                      <button (click)="prevImage(); $event.stopPropagation()" class="p-1 text-retro-yellow/60 hover:text-retro-yellow transition-colors"><ng-icon name="tablerChevronLeft" size="20"></ng-icon></button>
+                      <div class="w-px h-3 bg-retro-yellow/20 mx-1"></div>
+                      @for (img of item.images; track $index) {
+                        <div class="h-1 rounded-full transition-all duration-300" 
+                            [class.w-4]="projectIndex === $index" [class.bg-retro-yellow]="projectIndex === $index"
+                            [class.w-1]="projectIndex !== $index" [class.bg-retro-yellow/20]="projectIndex !== $index"></div>
+                      }
+                      <div class="w-px h-3 bg-retro-yellow/20 mx-1"></div>
+                      <button (click)="nextImage(); $event.stopPropagation()" class="p-1 text-retro-yellow/60 hover:text-retro-yellow transition-colors"><ng-icon name="tablerChevronRight" size="20"></ng-icon></button>
+                    </div>
+                  </div>
+                }
               </div>
 
               <!-- Description & Stack -->
-              <div class="grid grid-cols-1 gap-6">
-                <div class="space-y-3">
-                  <h2 class="text-[9px] font-bold uppercase tracking-[0.3em] text-retro-yellow font-mono flex items-center gap-2">
-                    <span class="w-2 h-px bg-retro-yellow/40"></span>
-                    Overview
-                  </h2>
-                  <p class="text-lg leading-relaxed text-gray-300 font-light line-clamp-4">
+              <div class="space-y-10">
+                <div class="space-y-4">
+                  <div class="section-header-block">01 // OVERVIEW</div>
+                  <p class="text-xl leading-relaxed text-retro-font/90 font-light">
                     {{item.long_description}}
                   </p>
                 </div>
 
-                <div class="space-y-3">
-                  <h2 class="text-[9px] font-bold uppercase tracking-[0.3em] text-retro-yellow font-mono flex items-center gap-2">
-                    <span class="w-2 h-px bg-retro-yellow/40"></span>
-                    Technology Stack
-                  </h2>
-                  <div class="flex flex-wrap gap-2">
+                <div class="space-y-4">
+                  <div class="section-header-block">02 // TECHNOLOGY STACK</div>
+                  <div class="flex flex-wrap gap-3">
                     @for (tech of item.stack; track $index) {
-                      <span class="text-[9px] font-mono px-2.5 py-1 rounded-lg border border-white/5 bg-white/5 text-gray-400 hover:text-retro-yellow hover:border-retro-yellow/20 transition-all uppercase tracking-wider">
+                      <span class="text-[10px] font-mono px-3 py-1.5 rounded-lg border border-retro-yellow/10 bg-retro-yellow/5 text-retro-yellow hover:bg-retro-yellow/10 hover:border-retro-yellow/30 transition-all uppercase tracking-widest">
                         {{tech}}
                       </span>
                     }
@@ -143,91 +135,91 @@
             </div>
 
             <!-- Sidebar: Metrics & Logic -->
-            <aside class="lg:col-span-5 space-y-4">
+            <aside class="lg:col-span-5 space-y-6">
               
               <!-- Quick Metrics Card -->
-              <div class="grid grid-cols-3 gap-3">
-                <div class="p-3 rounded-2xl glass-effect border border-white/5 flex flex-col gap-1">
-                  <span class="text-[8px] font-mono text-gray-500 uppercase tracking-widest">Status</span>
-                  <span class="text-[10px] font-bold text-retro-yellow font-mono uppercase">{{item.metadata.status}}</span>
+              <div class="grid grid-cols-3 gap-4">
+                <div class="p-4 rounded-xl glass-effect border border-retro-yellow/10 flex flex-col gap-1.5">
+                  <span class="text-[9px] font-mono text-retro-yellow/40 uppercase tracking-widest">Status</span>
+                  <span class="text-xs font-bold text-retro-yellow font-mono uppercase">{{item.metadata.status}}</span>
                 </div>
-                <div class="p-3 rounded-2xl glass-effect border border-white/5 flex flex-col gap-1">
-                  <span class="text-[8px] font-mono text-gray-500 uppercase tracking-widest">Role</span>
-                  <span class="text-[10px] font-bold text-retro-bright font-mono uppercase">{{item.metadata.role}}</span>
+                <div class="p-4 rounded-xl glass-effect border border-retro-yellow/10 flex flex-col gap-1.5">
+                  <span class="text-[9px] font-mono text-retro-yellow/40 uppercase tracking-widest">Role</span>
+                  <span class="text-xs font-bold text-retro-bright font-mono uppercase">{{item.metadata.role}}</span>
                 </div>
-                <div class="p-3 rounded-2xl glass-effect border border-white/5 flex flex-col gap-1">
-                  <span class="text-[8px] font-mono text-gray-500 uppercase tracking-widest">Type</span>
-                  <span class="text-[10px] font-bold text-retro-bright font-mono uppercase">{{item.metadata.complexity}}</span>
+                <div class="p-4 rounded-xl glass-effect border border-retro-yellow/10 flex flex-col gap-1.5">
+                  <span class="text-[9px] font-mono text-retro-yellow/40 uppercase tracking-widest">Tier</span>
+                  <span class="text-xs font-bold text-retro-bright font-mono uppercase">{{item.metadata.complexity}}</span>
                 </div>
               </div>
 
               <!-- Challenges / Solutions -->
-              <div class="p-5 md:p-6 rounded-2xl glass-effect border border-white/5 space-y-5">
+              <div class="p-6 md:p-8 rounded-2xl glass-effect border border-retro-yellow/10 space-y-8">
                 @if (item.metadata.challenges) {
-                  <div class="space-y-2">
-                    <h3 class="text-[9px] font-bold uppercase tracking-widest text-red-400/80 font-mono flex items-center gap-2">
-                      <ng-icon name="tablerAlertTriangle" size="12"></ng-icon>
-                      The Challenge
+                  <div class="space-y-3">
+                    <h3 class="text-[10px] font-bold uppercase tracking-widest text-red-400 font-mono flex items-center gap-2">
+                      <ng-icon name="tablerAlertTriangle" size="14"></ng-icon>
+                      System Conflict
                     </h3>
-                    <p class="text-xs leading-relaxed text-gray-400 font-light">{{item.metadata.challenges}}</p>
+                    <p class="text-sm leading-relaxed text-retro-font/70 font-light border-l-2 border-red-400/20 pl-4">{{item.metadata.challenges}}</p>
                   </div>
                 }
                 @if (item.metadata.solutions) {
-                  <div class="space-y-2">
-                    <h3 class="text-[9px] font-bold uppercase tracking-widest text-green-400/80 font-mono flex items-center gap-2">
-                      <ng-icon name="tablerCircleCheck" size="12"></ng-icon>
-                      The Solution
+                  <div class="space-y-3">
+                    <h3 class="text-[10px] font-bold uppercase tracking-widest text-green-400 font-mono flex items-center gap-2">
+                      <ng-icon name="tablerCircleCheck" size="14"></ng-icon>
+                      Resolution Protocol
                     </h3>
-                    <p class="text-xs leading-relaxed text-gray-400 font-light">{{item.metadata.solutions}}</p>
+                    <p class="text-sm leading-relaxed text-retro-font/70 font-light border-l-2 border-green-400/20 pl-4">{{item.metadata.solutions}}</p>
                   </div>
                 }
               </div>
 
               <!-- Action Card -->
-              <div class="p-5 md:p-6 rounded-2xl bg-retro-yellow/5 border border-retro-yellow/10 space-y-4">
+              <div class="p-6 md:p-8 rounded-2xl bg-retro-yellow/5 border border-retro-yellow/20 space-y-6">
                 @if (item.links.demo || item.links.github) {
-                  <div class="space-y-1">
-                    <h3 class="text-base font-bold text-retro-bright font-mono">Execute Module</h3>
-                    <p class="text-[10px] text-gray-500 font-light">Direct access to live environment.</p>
+                  <div class="space-y-2">
+                    <h3 class="text-lg font-bold text-retro-bright font-mono text-glow">EXECUTE MODULE</h3>
+                    <p class="text-xs text-retro-yellow/40 font-light uppercase tracking-wider">Establish direct connection to environment.</p>
                   </div>
-                  <div class="flex flex-col gap-2">
+                  <div class="flex flex-col gap-3">
                     @if (item.links.demo) {
-                      <a [href]="item.links.demo" target="_blank" class="flex items-center justify-center gap-3 w-full py-3 rounded-xl bg-retro-yellow text-retro-dark font-bold uppercase tracking-[0.2em] text-[9px] hover:bg-retro-bright transition-all">
-                        <span>Launch Live</span>
-                        <ng-icon name="tablerExternalLink" size="14"></ng-icon>
+                      <a [href]="item.links.demo" target="_blank" class="flex items-center justify-center gap-3 w-full py-4 rounded-xl bg-retro-yellow text-retro-dark font-bold uppercase tracking-[0.2em] text-[10px] hover:bg-retro-bright hover:shadow-[0_0_20px_rgba(255,176,0,0.3)] transition-all">
+                        <span>Initiate Live Demo</span>
+                        <ng-icon name="tablerExternalLink" size="16"></ng-icon>
                       </a>
                     }
                     @if (item.links.github) {
-                      <a [href]="item.links.github" target="_blank" class="flex items-center justify-center gap-3 w-full py-3 rounded-xl border border-white/10 text-retro-bright font-bold uppercase tracking-[0.2em] text-[9px] hover:bg-white/5 transition-all">
-                        <span>Source Code</span>
-                        <ng-icon name="tablerBrandGithub" size="14"></ng-icon>
+                      <a [href]="item.links.github" target="_blank" class="flex items-center justify-center gap-3 w-full py-4 rounded-xl border border-retro-yellow/30 text-retro-yellow font-bold uppercase tracking-[0.2em] text-[10px] hover:bg-retro-yellow/10 transition-all">
+                        <span>Decrypt Source</span>
+                        <ng-icon name="tablerBrandGithub" size="16"></ng-icon>
                       </a>
                     }
                   </div>
                 } @else {
-                  <div class="space-y-3">
-                    <div class="flex items-center gap-2 text-retro-yellow">
-                      <ng-icon name="tablerLock" size="16"></ng-icon>
-                      <h3 class="text-xs font-bold font-mono uppercase tracking-widest">Restricted</h3>
+                  <div class="space-y-4">
+                    <div class="flex items-center gap-3 text-retro-yellow">
+                      <ng-icon name="tablerLock" size="20"></ng-icon>
+                      <h3 class="text-sm font-bold font-mono uppercase tracking-widest">Data Restricted</h3>
                     </div>
-                    <p class="text-[10px] text-gray-400 font-light leading-relaxed">System architecture is proprietary.</p>
-                    <a [href]="'mailto:' + cv.basics.email" class="flex items-center justify-center gap-3 w-full py-2.5 rounded-xl border border-retro-yellow/20 text-retro-yellow font-mono uppercase tracking-[0.2em] text-[8px] hover:bg-retro-yellow/5 transition-all">
-                      <span>Inquire</span>
-                      <ng-icon name="tablerMail" size="12"></ng-icon>
+                    <p class="text-xs text-retro-font/50 font-light leading-relaxed">This project is under a non-disclosure protocol. Technical details are available upon authorized request.</p>
+                    <a [href]="'mailto:' + cv.basics.email" class="flex items-center justify-center gap-3 w-full py-3 rounded-xl border border-retro-yellow/20 text-retro-yellow font-mono uppercase tracking-[0.2em] text-[10px] hover:bg-retro-yellow/5 transition-all">
+                      <span>Request Access</span>
+                      <ng-icon name="tablerMail" size="14"></ng-icon>
                     </a>
                   </div>
                 }
               </div>
 
               <!-- Next/Prev Navigation -->
-              <div class="flex flex-col gap-2">
+              <div class="flex flex-col gap-3">
                 @if (adjacents().next; as nextProject) {
-                  <a [routerLink]="['/project', nextProject.slug]" class="p-4 rounded-2xl glass-effect group relative overflow-hidden transition-all hover:border-retro-yellow/40">
+                  <a [routerLink]="['/project', nextProject.slug]" class="p-5 rounded-2xl glass-effect group relative overflow-hidden transition-all hover:border-retro-yellow/40">
                     <div class="absolute inset-0 bg-gradient-to-r from-retro-yellow/0 to-retro-yellow/5 translate-x-full group-hover:translate-x-0 transition-transform duration-700"></div>
                     <div class="relative flex items-center justify-between">
                       <div>
-                        <span class="text-[8px] font-mono text-gray-500 uppercase tracking-widest block mb-0.5">Up Next</span>
-                        <span class="text-xs font-bold text-retro-bright group-hover:text-retro-yellow transition-colors">{{nextProject.name}}</span>
+                        <span class="text-[9px] font-mono text-retro-yellow/40 uppercase tracking-widest block mb-1">Next Sequence</span>
+                        <span class="text-sm font-bold text-retro-bright group-hover:text-retro-yellow transition-colors">{{nextProject.name}}</span>
                       </div>
                       <ng-icon name="tablerChevronRight" class="text-retro-yellow/40 group-hover:text-retro-yellow transition-all translate-x-2 group-hover:translate-x-0"></ng-icon>
                     </div>
@@ -242,39 +234,37 @@
       }
     } @else {
       <!-- Skeletons for the entire page while data is loading -->
-      <div class="animate-pulse space-y-8">
-        <div class="flex flex-col md:flex-row justify-between gap-4">
-          <div class="space-y-2">
-            <div class="skeleton w-64 h-8 opacity-20"></div>
-            <div class="flex gap-2">
-              <div class="skeleton w-16 h-4 opacity-10"></div>
-              <div class="skeleton w-24 h-4 opacity-10"></div>
+      <div class="animate-pulse space-y-10">
+        <div class="flex flex-col md:flex-row justify-between gap-6">
+          <div class="space-y-4">
+            <div class="skeleton w-80 h-12"></div>
+            <div class="flex gap-3">
+              <div class="skeleton w-24 h-6"></div>
+              <div class="skeleton w-32 h-6"></div>
             </div>
           </div>
-          <div class="flex gap-2">
-            <div class="skeleton w-10 h-10 rounded-lg opacity-10"></div>
-            <div class="skeleton w-10 h-10 rounded-lg opacity-10"></div>
+          <div class="flex gap-4">
+            <div class="skeleton w-12 h-12 rounded-lg"></div>
+            <div class="skeleton w-12 h-12 rounded-lg"></div>
           </div>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
-          <div class="lg:col-span-7 space-y-6">
-            <div class="skeleton aspect-[4/3] rounded-xl opacity-10"></div>
-            <div class="space-y-2">
-              <div class="skeleton w-24 h-3 opacity-20"></div>
-              <div class="skeleton w-full h-4 opacity-10"></div>
-              <div class="skeleton w-full h-4 opacity-10"></div>
-              <div class="skeleton w-3/4 h-4 opacity-10"></div>
+          <div class="lg:col-span-7 space-y-10">
+            <div class="skeleton aspect-[4/3] rounded-xl"></div>
+            <div class="space-y-4">
+              <div class="skeleton w-32 h-6"></div>
+              <div class="skeleton w-full h-32"></div>
             </div>
           </div>
-          <div class="lg:col-span-5 space-y-4">
-            <div class="grid grid-cols-3 gap-3">
-              <div class="skeleton h-16 rounded-2xl opacity-10"></div>
-              <div class="skeleton h-16 rounded-2xl opacity-10"></div>
-              <div class="skeleton h-16 rounded-2xl opacity-10"></div>
+          <div class="lg:col-span-5 space-y-6">
+            <div class="grid grid-cols-3 gap-4">
+              <div class="skeleton h-20 rounded-2xl"></div>
+              <div class="skeleton h-20 rounded-2xl"></div>
+              <div class="skeleton h-20 rounded-2xl"></div>
             </div>
-            <div class="skeleton h-48 rounded-2xl opacity-10"></div>
-            <div class="skeleton h-32 rounded-2xl opacity-10"></div>
+            <div class="skeleton h-64 rounded-2xl"></div>
+            <div class="skeleton h-48 rounded-2xl"></div>
           </div>
         </div>
       </div>

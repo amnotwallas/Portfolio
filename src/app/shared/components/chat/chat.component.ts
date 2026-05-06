@@ -17,37 +17,37 @@ import { Router } from '@angular/router';
     <!-- Floating Trigger Button -->
     <button 
       (click)="toggleWidget()"
-      class="fixed bottom-24 right-4 md:right-8 z-50 flex items-center justify-center w-14 h-14 rounded-2xl bg-retro-dark border-2 border-retro-yellow/30 text-retro-yellow shadow-[0_0_20px_rgba(250,204,21,0.2)] hover:shadow-[0_0_30px_rgba(250,204,21,0.4)] hover:border-retro-yellow transition-all duration-300 group"
+      class="fixed bottom-24 right-4 md:right-8 z-50 flex items-center justify-center w-14 h-14 rounded-2xl bg-[#0A0A0A] border border-white/10 text-retro-yellow shadow-2xl hover:border-retro-yellow/40 transition-all duration-300 group"
       [class.opacity-0]="isOpen()"
       [class.pointer-events-none]="isOpen()">
       <ng-icon name="tablerTerminal" size="28" class="group-hover:scale-110 transition-transform"></ng-icon>
       <span class="absolute -top-1 -right-1 flex h-3 w-3">
-        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-retro-yellow opacity-75"></span>
-        <span class="relative inline-flex rounded-full h-3 w-3 bg-retro-yellow"></span>
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-minecraft opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-3 w-3 bg-minecraft shadow-[0_0_8px_rgba(85,255,85,0.6)]"></span>
       </span>
     </button>
 
     <!-- Widget Container -->
     <div 
-      class="fixed bottom-24 right-4 md:right-8 z-50 w-[calc(100vw-2rem)] sm:w-96 bg-retro-dark/95 border-2 border-retro-yellow/20 rounded-2xl shadow-2xl transition-all duration-500 origin-bottom-right overflow-hidden flex flex-col"
+      class="fixed bottom-24 right-4 md:right-8 z-50 w-[calc(100vw-2rem)] sm:w-96 bg-[#0A0A0A]/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl transition-all duration-500 origin-bottom-right overflow-hidden flex flex-col"
       [class.scale-0]="!isOpen()"
       [class.opacity-0]="!isOpen()"
       [class.pointer-events-none]="!isOpen()">
       
       <!-- Header -->
-      <div class="flex items-center justify-between p-4 border-b border-white/10 bg-retro-yellow/5">
+      <div class="flex items-center justify-between p-4 border-b border-white/5 bg-[#121212]">
         <div class="flex items-center gap-2">
-          <div class="w-2 h-2 rounded-full bg-retro-yellow animate-pulse"></div>
-          <span class="font-mono text-[10px] font-bold text-retro-yellow uppercase tracking-widest">WALTER_AI // NEURAL_CORE</span>
+          <div class="w-2 h-2 rounded-full bg-minecraft animate-pulse shadow-[0_0_10px_rgba(85,255,85,0.8)]"></div>
+          <span class="font-mono text-[10px] font-bold text-retro-font/60 uppercase tracking-[0.2em]">WALTER_AI // NEURAL_CORE</span>
         </div>
-        <button (click)="toggleWidget()" class="text-retro-bright/40 hover:text-retro-yellow transition-colors">
+        <button (click)="toggleWidget()" class="text-retro-font/20 hover:text-retro-yellow transition-colors">
           <ng-icon name="tablerX" size="18"></ng-icon>
         </button>
       </div>
 
       <!-- Chat Area -->
-      <div class="flex-grow p-5 flex flex-col gap-4">
-        <p #chatResponseEl class="font-mono text-xs text-retro-bright/80 min-h-[4em] leading-relaxed uppercase tracking-tight">
+      <div class="flex-grow p-6 flex flex-col gap-6">
+        <p #chatResponseEl class="font-mono text-xs text-retro-font/90 min-h-[5em] leading-relaxed uppercase tracking-tight">
           @if (cvSignal(); as cv) {
             {{cv.terminal.welcome_message}}
           } @else {
@@ -57,9 +57,9 @@ import { Router } from '@angular/router';
         
         <!-- Input Area -->
         <form (submit)="onChatSubmit()" 
-              class="flex items-center gap-2 border-b border-white/10 focus-within:border-retro-yellow transition-all pb-1 group"
+              class="flex items-center gap-3 border-b border-white/10 focus-within:border-retro-yellow/40 transition-all pb-2 group"
               [class.animate-pulse-gold]="isProcessing()">
-          <span class="font-mono text-retro-yellow text-[10px] font-bold whitespace-nowrap uppercase">
+          <span class="font-mono text-retro-yellow text-[10px] font-bold whitespace-nowrap uppercase opacity-40">
             >
           </span>
           <input 
@@ -69,21 +69,22 @@ import { Router } from '@angular/router';
             name="query"
             autocomplete="off"
             placeholder="TYPE_CMD..."
-            class="flex-grow bg-transparent border-none outline-none font-mono text-xs text-retro-bright placeholder:text-gray-700 tracking-wider"
+            class="flex-grow bg-transparent border-none outline-none font-mono text-xs text-retro-font placeholder:text-white/10 tracking-wider"
           >
           <button 
             type="submit" 
             [disabled]="isProcessing() || !userQuery.trim()"
-            class="text-retro-yellow/40 hover:text-retro-yellow disabled:opacity-30 transition-colors"
+            class="p-2.5 rounded-xl bg-retro-yellow text-retro-dark shadow-[0_0_15px_rgba(255,176,0,0.3)] hover:bg-retro-bright hover:shadow-[0_0_20px_rgba(255,176,0,0.5)] transition-all flex items-center justify-center disabled:bg-white/5 disabled:text-white/20 disabled:shadow-none disabled:border border-white/5"
+            title="Execute Command"
           >
-            <ng-icon name="tablerArrowUp" size="16"></ng-icon>
+            <ng-icon name="tablerArrowUp" size="20" class="font-bold"></ng-icon>
           </button>
         </form>
       </div>
 
       <!-- Footer Info -->
-      <div class="px-4 py-2 border-t border-white/5 bg-black/20">
-        <p class="font-mono text-[8px] text-retro-yellow/30 uppercase tracking-[0.2em] text-center">
+      <div class="px-4 py-3 border-t border-white/5 bg-black/40">
+        <p class="font-mono text-[8px] text-white/10 uppercase tracking-[0.3em] text-center">
           CORE_STATUS: OPERATIONAL // V.2.1.0
         </p>
       </div>
