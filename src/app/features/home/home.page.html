@@ -1,12 +1,12 @@
 <main class="min-h-screen">
     <!-- Hero Section (Full Viewport) -->
-    <section class="min-h-screen flex items-center justify-center pt-20 snap-start">
+    <section class="min-h-screen flex items-center justify-center pt-20">
         <app-home-hero [firstName]="firstName" [activeTitle]="activeTitle"></app-home-hero>
     </section>
     
     <div class="container mx-auto px-6">
         <!-- Experience Section (Full Viewport) -->
-        <section id="experience" class="min-h-screen flex items-center justify-center py-20 snap-start">
+        <section id="experience" class="min-h-screen flex items-center justify-center py-20">
             <div class="w-full">
                 @defer (on viewport; prefetch on idle) {
                     <app-home-experience class="w-full"></app-home-experience>
@@ -17,7 +17,7 @@
         </section>
 
         <!-- Projects Section (Full Viewport) -->
-        <section id="projects" class="min-h-screen flex flex-col justify-center py-24 snap-start">
+        <section id="projects" class="min-h-screen flex flex-col justify-center py-24">
             <div class="w-full">
                 @defer (on viewport; prefetch on idle) {
                     <app-home-projects class="w-full"></app-home-projects>

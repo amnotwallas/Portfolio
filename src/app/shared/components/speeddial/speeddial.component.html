@@ -1,5 +1,5 @@
 <!-- Contenedor ajustado -->
-<div class="fixed top-0 left-0 transition-all z-50 print:hidden"
+<div class="fixed top-0 left-0 transition-[width,height] duration-500 z-50 print:hidden"
      [class.w-80]="open()" [class.h-80]="open()"
      [class.w-20]="!open()" [class.h-20]="!open()"
      (mouseleave)="onMouseLeave()">
@@ -8,7 +8,7 @@
   <button id="thething"
     (mouseenter)="onMouseEnter()"
     (click)="toggle()"
-    class="glass-effect text-retro-bright absolute top-6 left-6 md:top-10 md:left-10 w-12 h-12 rounded-xl flex items-center justify-center z-20 transition-all duration-300 group overflow-hidden"
+    class="glass-effect text-retro-bright absolute top-6 left-6 md:top-10 md:left-10 w-12 h-12 rounded-xl flex items-center justify-center z-20 transition-[border-color,transform] duration-300 group overflow-hidden"
     [class.border-retro-yellow/50]="open()"
     [class.border-retro-yellow/10]="!open()"
   >
@@ -25,18 +25,18 @@
   </button>
 
   <!-- Área de los botones -->
-  <div class="absolute top-6 left-6 md:top-10 md:left-10 z-10" [style.visibility]="open() ? 'visible' : 'hidden'">
+  <div class="absolute top-6 left-6 md:top-10 md:left-10 z-10" [class.pointer-events-none]="!open()">
     @for (item of icons.keys(); track $index; let i = $index) {
       
       @if (icons.get(item)?.icon) {
-        <div class="absolute w-10 h-10 transition-all duration-500 flex items-center justify-center"
+        <div class="absolute w-10 h-10 transition-[transform,opacity] duration-500 flex items-center justify-center will-change-[transform,opacity]"
              [style.transform]="open() ? 'translate(' + positions()[i].x + 'px,' + positions()[i].y + 'px)' : 'translate(0,0)'"
              [style.opacity]="open() ? 1 : 0"
              [style.transition-delay]="(i * 30) + 'ms'">
           
           <button
             appMagnetic [magneticStrength]="0.3" [magneticRadius]="50"
-            class="group w-10 h-10 glass-effect text-retro-bright/70 rounded-lg flex items-center justify-center transition-all hover:text-retro-yellow hover:border-retro-yellow/40 hover:scale-110"
+            class="group w-10 h-10 glass-effect text-retro-bright/70 rounded-lg flex items-center justify-center transition-[color,border-color,transform] hover:text-retro-yellow hover:border-retro-yellow/40 hover:scale-110"
             (click)="navigateTo(icons.get(item))"
           >
               <ng-icon
@@ -45,7 +45,7 @@
               />
 
               <!-- Tooltip Estilo Terminal -->
-              <span class="absolute left-full ml-4 px-2 py-1 bg-retro-dark/90 backdrop-blur-md text-retro-yellow text-[9px] font-mono rounded border border-retro-yellow/20 opacity-0 group-hover:opacity-100 transition-all duration-150 pointer-events-none whitespace-nowrap uppercase tracking-[0.2em] translate-x-[-4px] group-hover:translate-x-0">
+              <span class="absolute left-full ml-4 px-2 py-1 bg-retro-dark/90 backdrop-blur-md text-retro-yellow text-[9px] font-mono rounded border border-retro-yellow/20 opacity-0 group-hover:opacity-100 transition-[opacity,transform] duration-150 pointer-events-none whitespace-nowrap uppercase tracking-[0.2em] translate-x-[-4px] group-hover:translate-x-0">
                 <span class="text-retro-yellow/40 mr-1">></span>{{ icons.get(item)?.label }}
               </span>
           </button>
@@ -53,7 +53,7 @@
       } @else {
         <!-- Separador sutil -->
         <div
-          class="absolute w-1 h-1 bg-retro-yellow/20 rounded-full transition-all duration-500"
+          class="absolute w-1 h-1 bg-retro-yellow/20 rounded-full transition-[transform,opacity] duration-500"
           [style.transform]="open() ? 'translate(' + (positions()[i].x + 18) + 'px,' + (positions()[i].y + 18) + 'px)' : 'translate(0,0)'"
           [style.opacity]="open() ? 1 : 0"
           [style.transition-delay]="(i * 10) + 'ms'"

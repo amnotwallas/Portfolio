@@ -18,9 +18,14 @@
 }
 
 html {
-  /* Scroll Snap optimized for smoothness */
-  scroll-snap-type: y proximity;
+  /* Scroll Snap optimized for responsiveness */
+  scroll-snap-type: y mandatory;
   scroll-behavior: smooth;
+}
+
+section {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
 }
 
 body {
@@ -99,10 +104,11 @@ body {
   color: #55FF55; /* Classic Minecraft Green */
   text-shadow: 2px 2px 0px #003F00, 3px 3px 0px #000000;
   display: inline-block;
-  animation: splash-pulse 0.5s ease-in-out infinite;
+  animation: splash-pulse 0.8s ease-in-out infinite;
   pointer-events: none;
   white-space: nowrap;
   letter-spacing: -0.02em;
+  will-change: transform;
 }
 
 @keyframes slide-to-top {
