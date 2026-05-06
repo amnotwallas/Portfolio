@@ -17,25 +17,29 @@ import { PortfolioService } from '../../../core/services/portfolio.service';
           
           <!-- Name Container with space reservation -->
           <span class="relative inline-block mt-2 sm:mt-0">
-            <!-- Invisible placeholder to reserve full width from start -->
-            <span class="font-mono font-light opacity-0 select-none pointer-events-none" aria-hidden="true">{{firstName}}</span>
-            
-            <!-- Real animated name -->
-            <span class="glitch-wrapper absolute left-0 top-0 w-full">
-              <span class="font-mono font-light text-retro-bright text-glow cursor-blink animate-typing inline-block glitch-text" 
-                    [attr.data-text]="firstName"
-                    [style.width.ch]="firstName.length"
-                    [style.animation-timing-function]="'steps(' + firstName.length + ', end)'">
-                {{firstName}}
+            @if (firstName) {
+              <!-- Invisible placeholder to reserve full width from start -->
+              <span class="font-mono font-light opacity-0 select-none pointer-events-none" aria-hidden="true">{{firstName}}</span>
+              
+              <!-- Real animated name -->
+              <span class="glitch-wrapper absolute left-0 top-0 w-full">
+                <span class="font-mono font-light text-retro-bright text-glow cursor-blink animate-typing inline-block glitch-text" 
+                      [attr.data-text]="firstName"
+                      [style.width.ch]="firstName.length"
+                      [style.animation-timing-function]="'steps(' + firstName.length + ', end)'">
+                  {{firstName}}
+                </span>
               </span>
-            </span>
 
-            <!-- Minecraft Splash Text: Now truly stable -->
-            <div class="absolute -bottom-5 right-0 sm:-bottom-1 sm:-right-12 md:-right-16 z-40 pointer-events-none origin-center">
-              <span class="splash-text text-[10px] sm:text-xs md:text-sm lg:text-base uppercase">
-                {{ currentSplash }}
-              </span>
-            </div>
+              <!-- Minecraft Splash Text: Now truly stable -->
+              <div class="absolute -bottom-5 right-0 sm:-bottom-1 sm:-right-12 md:-right-16 z-40 pointer-events-none origin-center">
+                <span class="splash-text text-[10px] sm:text-xs md:text-sm lg:text-base uppercase">
+                  {{ currentSplash }}
+                </span>
+              </div>
+            } @else {
+              <span class="skeleton skeleton-inline w-[8ch] h-[1em] opacity-30"></span>
+            }
           </span>
         </h1>
       </div>
@@ -48,18 +52,30 @@ import { PortfolioService } from '../../../core/services/portfolio.service';
            <p class="font-mono font-medium uppercase tracking-[0.2em] md:tracking-[0.4em] text-xs md:text-sm lg:text-base opacity-0 select-none pointer-events-none whitespace-nowrap" aria-hidden="true">
              Crafting Intelligent Solutions
            </p>
-           <p [appScramble]="activeTitle" 
-              class="absolute left-0 top-0 w-full font-mono font-medium uppercase tracking-[0.2em] md:tracking-[0.4em] text-xs md:text-sm lg:text-base text-glow whitespace-nowrap"
-              style="color: var(--color-retro-yellow);">
-           </p>
+           @if (activeTitle) {
+             <p [appScramble]="activeTitle" 
+                class="absolute left-0 top-0 w-full font-mono font-medium uppercase tracking-[0.2em] md:tracking-[0.4em] text-xs md:text-sm lg:text-base text-glow whitespace-nowrap"
+                style="color: var(--color-retro-yellow);">
+             </p>
+           } @else {
+             <div class="skeleton w-48 h-4 opacity-20"></div>
+           }
         </div>
       </div>
 
       <!-- Professional Pitch: Clean & Minimalist -->
       <div class="max-w-2xl mx-auto px-6 sm:px-12 border-l border-retro-yellow/20 py-1 text-left">
-        <p class="font-light text-sm md:text-lg leading-relaxed text-gray-400">
-          {{cv.basics.summary}}
-        </p>
+        @if (cv(); as data) {
+          <p class="font-light text-sm md:text-lg leading-relaxed text-gray-400">
+            {{data.basics.summary}}
+          </p>
+        } @else {
+          <div class="space-y-2">
+            <div class="skeleton skeleton-text w-full opacity-10"></div>
+            <div class="skeleton skeleton-text w-[90%] opacity-10"></div>
+            <div class="skeleton skeleton-text w-[80%] opacity-10"></div>
+          </div>
+        }
       </div>
     </div>
   `,
@@ -67,7 +83,7 @@ import { PortfolioService } from '../../../core/services/portfolio.service';
 })
 export class HomeHeroComponent implements OnInit {
   private portfolioService = inject(PortfolioService);
-  cv = this.portfolioService.portfolio;
+  cv = this.portfolioService.portfolioDataSignal;
 
   @Input() firstName: string = '';
   @Input() activeTitle: string = '';

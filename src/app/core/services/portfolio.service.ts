@@ -14,10 +14,10 @@ export class PortfolioService {
   // Cache for resolved Blob URLs to avoid redundant fetches and memory leaks
   private resolvedImagesCache = new Map<string, string>();
   
-  private portfolioDataSignal = signal<PortfolioData | null>(this.getCachedData());
+  public portfolioDataSignal = signal<PortfolioData | null>(this.getCachedData());
 
-  get portfolio(): PortfolioData {
-    return this.portfolioDataSignal() as PortfolioData;
+  get portfolio(): PortfolioData | null {
+    return this.portfolioDataSignal();
   }
 
   get isLoaded(): boolean {
@@ -25,17 +25,11 @@ export class PortfolioService {
   }
 
   /**
-   * APP_INITIALIZER logic: Ensures we have AT LEAST the cache before showing anything.
-   * If no cache, it waits for the API.
+   * APP_INITIALIZER logic: Triggers fetch but doesn't block if we want to show skeletons.
    */
-  async init() {
-    if (this.portfolioDataSignal()) {
-      // If we have cache, we don't block the app start, but we update in background
-      this.fetchRemoteData().catch(() => {}); 
-      return;
-    }
-    // If no cache, block app start until first fetch (ensures no empty screen)
-    await this.fetchRemoteData();
+  init() {
+    // We trigger the fetch in background to allow skeletons/cache to show immediately
+    this.fetchRemoteData().catch(() => {});
   }
 
   private async fetchRemoteData() {

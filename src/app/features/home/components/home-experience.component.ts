@@ -19,102 +19,119 @@ import { Subscription } from 'rxjs';
         <h2 class="text-lg font-bold uppercase tracking-[0.2em] text-retro-bright font-mono">Experience</h2>
         <div class="h-[1px] flex-grow bg-retro-muted group-hover:bg-retro-yellow/30 transition-colors"></div>
       </div>
-      <div class="relative space-y-6">
-        <!-- Vertical Line (Only if more than 1 item) -->
-        @if (cv.work.length > 1) {
-          <div class="absolute left-[11px] top-7 bottom-7 w-[2px] bg-[#FFB000] z-0 opacity-30"></div>
-        }
+      
+      @if (cvSignal(); as cv) {
+        <div class="relative space-y-6">
+          <!-- Vertical Line (Only if more than 1 item) -->
+          @if (cv.work.length > 1) {
+            <div class="absolute left-[11px] top-7 bottom-7 w-[2px] bg-[#FFB000] z-0 opacity-30"></div>
+          }
 
-        @for (item of cv.work; track $index) {
-          <div class="relative pl-14 sm:pl-20" 
-               [id]="'experience-' + (item.company | lowercase)">
-            <!-- Timeline Dot -->
-            <div class="absolute left-0 top-7 w-6 h-6 flex items-center justify-center -translate-x-[1px] z-10 bg-[#0D0D0D]">
-              <div class="w-3.5 h-3.5 rounded-full bg-[#0D0D0D] border-2"
-                   [class.border-retro-yellow]="isExpanded($index)"
-                   [class.border-retro-muted]="!isExpanded($index)">
-                @if (isExpanded($index)) {
-                  <div class="absolute inset-[3px] rounded-full bg-retro-yellow shadow-[0_0_10px_rgba(250,204,21,0.6)]"></div>
-                }
+          @for (item of cv.work; track $index) {
+            <div class="relative pl-14 sm:pl-20" 
+                [id]="'experience-' + (item.company | lowercase)">
+              <!-- Timeline Dot -->
+              <div class="absolute left-0 top-7 w-6 h-6 flex items-center justify-center -translate-x-[1px] z-10 bg-[#0D0D0D]">
+                <div class="w-3.5 h-3.5 rounded-full bg-[#0D0D0D] border-2"
+                    [class.border-retro-yellow]="isExpanded($index)"
+                    [class.border-retro-muted]="!isExpanded($index)">
+                  @if (isExpanded($index)) {
+                    <div class="absolute inset-[3px] rounded-full bg-retro-yellow shadow-[0_0_10px_rgba(250,204,21,0.6)]"></div>
+                  }
+                </div>
               </div>
-            </div>
 
-            <!-- Accordion Item -->
-            <div class="glass-effect rounded-xl border overflow-hidden transform-gpu"
-                 [class.border-retro-yellow/30]="isExpanded($index)"
-                 [class.border-white/5]="!isExpanded($index)">
-              
-              <!-- Header -->
-              <div (click)="toggleItem($index)" 
-                   class="p-4 sm:p-5 cursor-pointer flex justify-between items-center gap-4 group/header">
+              <!-- Accordion Item -->
+              <div class="glass-effect rounded-xl border overflow-hidden transform-gpu"
+                  [class.border-retro-yellow/30]="isExpanded($index)"
+                  [class.border-white/5]="!isExpanded($index)">
                 
-                <div class="flex items-center gap-4 flex-grow">
-                  <!-- Company Logo/Icon -->
-                  <div class="hidden sm:flex w-9 h-9 rounded-lg bg-retro-dark border border-white/10 items-center justify-center overflow-hidden flex-shrink-0 group-hover/header:border-retro-yellow/30 transition-colors">
-                    @if (item.image) {
-                      <img [src]="item.image" class="w-full h-full object-cover opacity-60 group-hover/header:opacity-100 transition-opacity" [alt]="item.company">
-                    } @else {
-                      <ng-icon name="tablerBriefcase" class="text-retro-bright/20" size="18"></ng-icon>
-                    }
-                  </div>
-
-                  <div class="flex-grow">
-                    <div class="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3 mb-0.5">
-                      <h3 class="text-base font-bold transition-colors"
-                          [class.text-retro-yellow]="isExpanded($index)"
-                          [class.text-gray-100]="!isExpanded($index)">
-                        {{item.role}}
-                      </h3>
-                      <span class="text-[10px] font-mono text-retro-bright/40 uppercase tracking-widest hidden sm:block">/</span>
-                      <p class="text-xs font-mono uppercase tracking-widest"
-                         [class.text-retro-yellow/80]="isExpanded($index)"
-                         [class.text-retro-bright/60]="!isExpanded($index)">
-                        {{item.company}}
-                      </p>
-                    </div>
-                    <div class="sm:hidden text-[9px] font-mono text-retro-yellow/60 uppercase tracking-wider">
-                      {{item.period}}
-                    </div>
-                  </div>
-                </div>
-
-                <div class="flex items-center gap-4">
-                  <span class="hidden sm:block text-[9px] font-mono text-retro-yellow/60 uppercase tracking-widest whitespace-nowrap">
-                    {{item.period}}
-                  </span>
-                  <ng-icon [name]="isExpanded($index) ? 'tablerChevronUp' : 'tablerChevronDown'" 
-                           class="text-retro-bright/30 group-hover/header:text-retro-yellow transition-all duration-300"
-                           [style.transform]="isExpanded($index) ? 'rotate(0deg)' : 'rotate(0deg)'"
-                           size="18"></ng-icon>
-                </div>
-              </div>
-
-              <!-- Optimized Expansion using CSS Grid -->
-              <div class="grid transition-[grid-template-rows,opacity] duration-300 ease-in-out"
-                   [class.grid-rows-[1fr]]="isExpanded($index)"
-                   [class.grid-rows-[0fr]]="!isExpanded($index)"
-                   [class.opacity-100]="isExpanded($index)"
-                   [class.opacity-0]="!isExpanded($index)">
-                <div class="overflow-hidden">
-                  <div class="px-5 pb-5 sm:px-6 sm:pb-6 border-t border-white/5 pt-5">
-                    <p class="font-light text-sm text-gray-400 leading-relaxed mb-6">
-                      {{item.summary}}
-                    </p>
-                    
-                    <div class="flex flex-wrap gap-2">
-                      @for (tech of item.highlights; track $index) {
-                        <span class="text-[9px] font-mono uppercase tracking-wider px-2.5 py-1 rounded-lg bg-black/40 text-gray-400 border border-white/5 hover:border-retro-yellow/20 hover:text-retro-yellow/80 transition-all cursor-default">
-                          {{tech}}
-                        </span>
+                <!-- Header -->
+                <div (click)="toggleItem($index)" 
+                    class="p-4 sm:p-5 cursor-pointer flex justify-between items-center gap-4 group/header">
+                  
+                  <div class="flex items-center gap-4 flex-grow">
+                    <!-- Company Logo/Icon -->
+                    <div class="hidden sm:flex w-9 h-9 rounded-lg bg-retro-dark border border-white/10 items-center justify-center overflow-hidden flex-shrink-0 group-hover/header:border-retro-yellow/30 transition-colors">
+                      @if (item.image) {
+                        <img [src]="item.image" class="w-full h-full object-cover opacity-60 group-hover/header:opacity-100 transition-opacity" [alt]="item.company">
+                      } @else {
+                        <ng-icon name="tablerBriefcase" class="text-retro-bright/20" size="18"></ng-icon>
                       }
                     </div>
+
+                    <div class="flex-grow">
+                      <div class="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3 mb-0.5">
+                        <h3 class="text-base font-bold transition-colors"
+                            [class.text-retro-yellow]="isExpanded($index)"
+                            [class.text-gray-100]="!isExpanded($index)">
+                          {{item.role}}
+                        </h3>
+                        <span class="text-[10px] font-mono text-retro-bright/40 uppercase tracking-widest hidden sm:block">/</span>
+                        <p class="text-xs font-mono uppercase tracking-widest"
+                          [class.text-retro-yellow/80]="isExpanded($index)"
+                          [class.text-retro-bright/60]="!isExpanded($index)">
+                          {{item.company}}
+                        </p>
+                      </div>
+                      <div class="sm:hidden text-[9px] font-mono text-retro-yellow/60 uppercase tracking-wider">
+                        {{item.period}}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="flex items-center gap-4">
+                    <span class="hidden sm:block text-[9px] font-mono text-retro-yellow/60 uppercase tracking-widest whitespace-nowrap">
+                      {{item.period}}
+                    </span>
+                    <ng-icon [name]="isExpanded($index) ? 'tablerChevronUp' : 'tablerChevronDown'" 
+                            class="text-retro-bright/30 group-hover/header:text-retro-yellow transition-all duration-300"
+                            size="18"></ng-icon>
+                  </div>
+                </div>
+
+                <!-- Optimized Expansion using CSS Grid -->
+                <div class="grid transition-[grid-template-rows,opacity] duration-300 ease-in-out"
+                    [class.grid-rows-[1fr]]="isExpanded($index)"
+                    [class.grid-rows-[0fr]]="!isExpanded($index)"
+                    [class.opacity-100]="isExpanded($index)"
+                    [class.opacity-0]="!isExpanded($index)">
+                  <div class="overflow-hidden">
+                    <div class="px-5 pb-5 sm:px-6 sm:pb-6 border-t border-white/5 pt-5">
+                      <p class="font-light text-sm text-gray-400 leading-relaxed mb-6">
+                        {{item.summary}}
+                      </p>
+                      
+                      <div class="flex flex-wrap gap-2">
+                        @for (tech of item.highlights; track $index) {
+                          <span class="text-[9px] font-mono uppercase tracking-wider px-2.5 py-1 rounded-lg bg-black/40 text-gray-400 border border-white/5 hover:border-retro-yellow/20 hover:text-retro-yellow/80 transition-all cursor-default">
+                            {{tech}}
+                          </span>
+                        }
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        }
-      </div>
+          }
+        </div>
+      } @else {
+        <!-- Skeletons if no data -->
+        <div class="relative space-y-6">
+          @for (i of [1,2,3]; track i) {
+            <div class="relative pl-14 sm:pl-20">
+              <div class="absolute left-0 top-7 w-6 h-6 flex items-center justify-center -translate-x-[1px] z-10 bg-[#0D0D0D]">
+                <div class="w-3.5 h-3.5 rounded-full border-2 border-retro-muted"></div>
+              </div>
+              <div class="glass-effect rounded-xl border border-white/5 p-5">
+                <div class="skeleton-title opacity-20"></div>
+                <div class="skeleton-text w-3/4 opacity-10"></div>
+              </div>
+            </div>
+          }
+        </div>
+      }
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -123,7 +140,8 @@ export class HomeExperienceComponent implements OnInit, OnDestroy {
   private portfolioService = inject(PortfolioService);
   private uiService = inject(UiService);
   private cdr = inject(ChangeDetectorRef);
-  cv = this.portfolioService.portfolio;
+  
+  cvSignal = this.portfolioService.portfolioDataSignal;
 
   expandedIndex = signal<number | null>(0);
   highlightedExp: string | null = null;
@@ -132,19 +150,20 @@ export class HomeExperienceComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.sub.add(
       this.uiService.highlight$.subscribe(event => {
-        if (event.type === 'EXPERIENCE') {
+        const data = this.cvSignal();
+        if (event.type === 'EXPERIENCE' && data) {
           let targetId = event.id.toLowerCase();
           
           // Find index by exact match or partial match
-          let index = this.cv.work.findIndex(w => w.company.toLowerCase() === targetId);
+          let index = data.work.findIndex(w => w.company.toLowerCase() === targetId);
           
           if (index === -1) {
             // Try fuzzy match (contains)
-            index = this.cv.work.findIndex(w => w.company.toLowerCase().includes(targetId));
+            index = data.work.findIndex(w => w.company.toLowerCase().includes(targetId));
           }
 
           if (index !== -1) {
-            const actualCompanyId = this.cv.work[index].company.toLowerCase();
+            const actualCompanyId = data.work[index].company.toLowerCase();
             this.highlightedExp = actualCompanyId;
             this.expandedIndex.set(index);
             this.cdr.markForCheck();

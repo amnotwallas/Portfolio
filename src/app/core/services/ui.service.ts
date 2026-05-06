@@ -31,9 +31,9 @@ export class UiService {
     const id = target.toLowerCase();
     const el = document.getElementById(id);
     if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     } else {
-      this.router.navigate(['/'], { fragment: id });
+      this.router.navigate(['/home'], { fragment: id });
     }
   }
 }

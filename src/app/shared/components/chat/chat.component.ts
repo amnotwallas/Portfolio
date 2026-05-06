@@ -48,7 +48,11 @@ import { Router } from '@angular/router';
       <!-- Chat Area -->
       <div class="flex-grow p-5 flex flex-col gap-4">
         <p #chatResponseEl class="font-mono text-xs text-retro-bright/80 min-h-[4em] leading-relaxed uppercase tracking-tight">
-          {{cv.terminal.welcome_message}}
+          @if (cvSignal(); as cv) {
+            {{cv.terminal.welcome_message}}
+          } @else {
+            INITIALIZING_NEURAL_LINK...
+          }
         </p>
         
         <!-- Input Area -->
@@ -99,7 +103,7 @@ export class ChatComponent implements AfterViewInit {
 
   userQuery = '';
   isProcessing = this.chatService.isProcessing;
-  cv = this.portfolioService.portfolio;
+  cvSignal = this.portfolioService.portfolioDataSignal;
   isOpen = signal(false);
 
   private processedTokens = new Set<string>();
@@ -149,7 +153,7 @@ export class ChatComponent implements AfterViewInit {
       const decoder = new TextDecoder();
       let fullText = "";
 
-      const NAV_REGEX = /\[NAV:(EXPERIENCE|PROJECTS)\]/g;
+      const NAV_REGEX = /\[NAV:(.+?)\]/g;
       const HIGHLIGHT_REGEX = /\[HIGHLIGHT:(PROJECT|EXPERIENCE):(.+?)\]/g;
       const PARTIAL_TOKEN_REGEX = /\[[^\]]*$/; // Oculta cualquier corchete no cerrado al final
 

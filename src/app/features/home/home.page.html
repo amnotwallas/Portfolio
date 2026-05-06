@@ -1,9 +1,9 @@
 <main class="min-h-screen">
     <!-- Hero Section (Full Viewport) -->
     <section class="min-h-screen flex items-center justify-center pt-20">
-        <app-home-hero [firstName]="firstName" [activeTitle]="activeTitle"></app-home-hero>
+        <app-home-hero [firstName]="firstName()" [activeTitle]="activeTitle"></app-home-hero>
     </section>
-    
+
     <div class="container mx-auto px-6">
         <!-- Experience Section (Full Viewport) -->
         <section id="experience" class="min-h-screen flex items-center justify-center py-12 snap-start">
@@ -11,7 +11,17 @@
                 @defer (on viewport; prefetch on idle) {
                     <app-home-experience class="w-full"></app-home-experience>
                 } @placeholder {
-                    <div class="h-[70vh] w-full bg-retro-dark opacity-5"></div>
+                    <div class="w-full max-w-4xl mx-auto py-12 px-6">
+                        <div class="flex items-center gap-3 mb-10">
+                            <div class="skeleton w-8 h-8 rounded opacity-20"></div>
+                            <div class="skeleton w-48 h-6 opacity-20"></div>
+                            <div class="h-[1px] flex-grow bg-retro-muted opacity-20"></div>
+                        </div>
+                        <div class="space-y-6">
+                            <div class="skeleton w-full h-24 rounded-xl opacity-10"></div>
+                            <div class="skeleton w-full h-24 rounded-xl opacity-10"></div>
+                        </div>
+                    </div>
                 }
             </div>
         </section>
@@ -22,9 +32,19 @@
                 @defer (on viewport; prefetch on idle) {
                     <app-home-projects class="w-full"></app-home-projects>
                 } @placeholder {
-                    <div class="h-[70vh] w-full bg-retro-dark opacity-5"></div>
+                    <div class="w-full max-w-5xl mx-auto py-20 px-6">
+                        <div class="flex items-center gap-3 mb-12">
+                            <div class="skeleton w-8 h-8 rounded opacity-20"></div>
+                            <div class="skeleton w-48 h-6 opacity-20"></div>
+                            <div class="h-[1px] flex-grow bg-retro-muted opacity-20"></div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div class="skeleton w-full aspect-[4/3] rounded-xl opacity-10"></div>
+                            <div class="skeleton w-full aspect-[4/3] rounded-xl opacity-10"></div>
+                        </div>
+                    </div>
                 }
             </div>
         </section>
     </div>
-        </main>
+</main>

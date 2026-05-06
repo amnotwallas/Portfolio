@@ -85,7 +85,7 @@ export class Footer implements OnInit, OnDestroy {
   private portfolioService = inject(PortfolioService);
   private routerSubscription: any;
   
-  get portfolio(): PortfolioData { return this.portfolioService.portfolio; }
+  get portfolio(): PortfolioData | null { return this.portfolioService.portfolio; }
   
   readonly icons = {
     tablerMail,
@@ -103,7 +103,8 @@ export class Footer implements OnInit, OnDestroy {
   currentUrl = signal('');
 
   getProfileUrl(network: string): string {
-    return this.portfolio.basics.profiles.find((p: Profile) => p.network === network)?.url || '#';
+    const profiles = this.portfolio?.basics.profiles || [];
+    return profiles.find((p: Profile) => p.network === network)?.url || '#';
   }
 
   handleCvClick() {
@@ -120,8 +121,10 @@ export class Footer implements OnInit, OnDestroy {
 
   copyEmail() {
     if (this.isCopied()) return;
+    const email = this.portfolio?.basics.email;
+    if (!email) return;
 
-    navigator.clipboard.writeText(this.portfolio.basics.email).then(() => {
+    navigator.clipboard.writeText(email).then(() => {
       this.isCopied.set(true);
       setTimeout(() => {
         this.isCopied.set(false);

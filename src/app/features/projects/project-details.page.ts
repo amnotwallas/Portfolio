@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, inject, ChangeDetectionStrategy, ChangeDetectorRef, ViewChild, ElementRef, HostListener } from "@angular/core";
+import { Component, OnInit, OnDestroy, inject, ChangeDetectionStrategy, ChangeDetectorRef, ViewChild, ElementRef, HostListener, signal, computed, effect } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { ActivatedRoute, RouterModule, Router } from "@angular/router";
 import { NgIcon, provideIcons } from "@ng-icons/core";
@@ -19,7 +19,7 @@ import {
   tablerX,
   tablerZoomIn
 } from "@ng-icons/tabler-icons";
-import { PortfolioData, Project } from "../../shared/models/portfolio.model";
+import { Project } from "../../shared/models/portfolio.model";
 import { PortfolioService } from "../../core/services/portfolio.service";
 import { interval, Subscription } from "rxjs";
 
@@ -55,11 +55,33 @@ export class ProjectDetailsPage implements OnInit, OnDestroy {
 
   @ViewChild('mainCont') mainCont!: ElementRef<HTMLElement>;
 
-  cv = this.portfolioService.portfolio;
-  project: Project | null = null;
-  prevProject: Project | null = null;
-  nextProject: Project | null = null;
-  projectIndex: number = 0;
+  cvSignal = this.portfolioService.portfolioDataSignal;
+  slug = signal<string | null>(null);
+
+  project = computed(() => {
+    const s = this.slug();
+    const data = this.cvSignal();
+    if (s && data) {
+      return data.projects.find(p => p.slug === s) || null;
+    }
+    return null;
+  });
+
+  adjacents = computed(() => {
+    const p = this.project();
+    const data = this.cvSignal();
+    if (p && data) {
+      const projects = data.projects;
+      const index = projects.findIndex(item => item.slug === p.slug);
+      return {
+        prev: projects[index - 1] || null,
+        next: projects[index + 1] || null
+      };
+    }
+    return { prev: null, next: null };
+  });
+
+  projectIndex = 0;
   imagesLoaded: { [key: string]: boolean } = {};
   
   // Lightbox state
@@ -72,17 +94,28 @@ export class ProjectDetailsPage implements OnInit, OnDestroy {
   private subscription = new Subscription();
   private autoPlaySubscription: Subscription | null = null;
 
+  constructor() {
+    // React to project changes (data arrival or navigation)
+    effect(() => {
+      const p = this.project();
+      if (p) {
+        this.onProjectAvailable(p);
+      }
+    });
+  }
+
   async ngOnInit() {
     this.subscription.add(
       this.route.paramMap.subscribe(params => {
-        const slug = params.get('slug');
-        if (slug) {
+        const s = params.get('slug');
+        if (s) {
           this.isChanging = true;
           this.cdr.markForCheck();
           
           // Small delay to allow fade out
           setTimeout(() => {
-            this.loadProject(slug);
+            this.slug.set(s);
+            window.scrollTo({ top: 0, behavior: 'instant' });
           }, 300);
         } else {
           this.router.navigate(['/home']);
@@ -91,32 +124,22 @@ export class ProjectDetailsPage implements OnInit, OnDestroy {
     );
   }
 
-  private async loadProject(slug: string) {
-    window.scrollTo({ top: 0, behavior: 'instant' });
-    this.project = this.portfolioService.getProjectBySlug(slug) || null;
-    
-    if (!this.project) {
-      this.router.navigate(['/home']);
-      return;
-    }
-
+  private async onProjectAvailable(project: Project) {
     // Reset carousel and states
     this.projectIndex = 0;
     this.imagesLoaded = {};
-    const adjacents = this.portfolioService.getAdjacentProjects(slug);
-    this.prevProject = adjacents.prev;
-    this.nextProject = adjacents.next;
 
     // Resolve secure images for the gallery
-    const imagesToResolve = [...(this.project.images || [])];
-    if (this.project.image && !imagesToResolve.includes(this.project.image)) {
-      imagesToResolve.push(this.project.image);
+    const imagesToResolve = [...(project.images || [])];
+    if (project.image && !imagesToResolve.includes(project.image)) {
+      imagesToResolve.push(project.image);
     }
     
     const resolutionPromises = imagesToResolve.map(async (img) => {
       if (this.resolvedImages[img]) return; // Already resolved
       const resolvedUrl = await this.portfolioService.getSecureImage(img);
       this.resolvedImages[img] = resolvedUrl;
+      this.cdr.markForCheck();
     });
     
     // Clear and restart autoplay
@@ -131,7 +154,8 @@ export class ProjectDetailsPage implements OnInit, OnDestroy {
   }
 
   private startAutoPlay() {
-    if ((this.project?.images?.length ?? 0) > 1) {
+    const p = this.project();
+    if (p && (p.images?.length ?? 0) > 1) {
       this.autoPlaySubscription = interval(5000).subscribe(() => {
         this.nextImage();
       });
@@ -143,15 +167,17 @@ export class ProjectDetailsPage implements OnInit, OnDestroy {
   }
 
   nextImage() {
-    if (this.project?.images?.length) {
-      this.projectIndex = (this.projectIndex + 1) % this.project.images.length;
+    const p = this.project();
+    if (p?.images?.length) {
+      this.projectIndex = (this.projectIndex + 1) % p.images.length;
       this.cdr.markForCheck();
     }
   }
 
   prevImage() {
-    if (this.project?.images?.length) {
-      this.projectIndex = (this.projectIndex - 1 + this.project.images.length) % this.project.images.length;
+    const p = this.project();
+    if (p?.images?.length) {
+      this.projectIndex = (this.projectIndex - 1 + p.images.length) % p.images.length;
       this.cdr.markForCheck();
     }
   }
