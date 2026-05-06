@@ -21,23 +21,20 @@ import { CommonModule } from "@angular/common";
     CommonModule
   ],
   template: `
-    <footer class="FOOTER_APP fixed bottom-4 right-4 md:bottom-8 md:right-8 flex gap-2 md:gap-3.5 items-center px-3 py-1.5 md:px-4 md:py-2 bg-[#0F0F0F]/90 backdrop-blur-xl rounded-xl shadow-2xl print:hidden text-retro-font z-50 border border-white/5 group/footer">
+    <footer class="FOOTER_APP fixed bottom-6 left-1/2 -translate-x-1/2 md:translate-x-0 md:left-auto md:right-10 md:bottom-10 flex items-center justify-center md:justify-start gap-1 md:gap-2 px-3 py-2 md:px-5 md:py-2.5 bg-[#161616] shadow-2xl rounded-xl print:hidden text-retro-font z-[100] border border-white/5 group/footer w-fit">
 
-      <div class="relative flex items-center">
+      <!-- CV Button -->
+      <div class="relative group/item flex items-center justify-center px-2 py-1">
         <button 
           (click)="handleCvClick()"
-          class="flex gap-1.5 items-center text-xs font-mono font-bold hover:text-retro-yellow transition-all cursor-pointer outline-none border-none bg-transparent whitespace-nowrap group/btn"
+          class="flex items-center gap-2 text-[13px] font-mono font-bold hover:text-retro-yellow transition-all cursor-pointer outline-none border-none bg-transparent whitespace-nowrap"
         >
-          <ng-icon [svg]="icons.tablerCloudDownload" size="16" strokeWidth="2.5" class="text-retro-yellow/40 group-hover/btn:text-retro-yellow transition-all" />
-          <span class="tracking-tight border-b border-transparent group-hover/btn:border-retro-yellow/40">CV</span>
+          <ng-icon [svg]="icons.tablerCloudDownload" size="18" strokeWidth="2.5" class="text-retro-yellow/80 group-hover/item:text-retro-yellow transition-all" />
+          <span class="tracking-widest uppercase hidden md:inline">CV</span>
         </button>
 
-        <!-- Tooltip -->
-        <div 
-          *ngIf="showCvTooltip()"
-          class="absolute bottom-full mb-10 inset-x-0 flex justify-center z-[60] pointer-events-none"
-        >
-          <div class="px-3 py-1.5 bg-[#1A1A1A] text-retro-yellow text-[9px] font-mono font-bold rounded-md border border-retro-yellow/20 animate-tooltip whitespace-nowrap shadow-2xl">
+        <div *ngIf="showCvTooltip()" class="absolute bottom-full mb-4 left-1/2 -translate-x-1/2 z-[110] pointer-events-none">
+          <div class="px-4 py-2 bg-[#0A0A0A] text-retro-yellow text-[11px] font-mono font-bold rounded-xl border border-retro-yellow/30 animate-tooltip whitespace-nowrap shadow-2xl">
             STATUS: NOT_LINKED
           </div>
         </div>
@@ -45,35 +42,39 @@ import { CommonModule } from "@angular/common";
 
       <div class="w-px h-3 bg-white/10 mx-1"></div>
 
-      <a class="flex gap-1.5 items-center text-xs font-mono font-bold hover:text-retro-yellow transition-all group/link" [href]="getProfileUrl('LinkedIn')" target="_blank">
-        <ng-icon [svg]="icons.tablerBrandLinkedin" size="16" strokeWidth="2.5" class="text-retro-yellow/40 group-hover/link:text-retro-yellow transition-all" />
-        <span class="tracking-tight">LINKEDIN</span>
-      </a>
-
-      <a class="flex gap-1.5 items-center text-xs font-mono font-bold hover:text-retro-yellow transition-all group/link" [href]="getProfileUrl('GitHub')" target="_blank">
-        <ng-icon [svg]="icons.tablerBrandGithub" size="16" strokeWidth="2.5" class="text-retro-yellow/40 group-hover/link:text-retro-yellow transition-all" />
-        <span class="tracking-tight">GITHUB</span>
-      </a>
+      <!-- LinkedIn -->
+      <div class="relative group/item flex items-center justify-center px-2 py-1">
+        <a class="flex items-center gap-2 text-[13px] font-mono font-bold hover:text-retro-yellow transition-all whitespace-nowrap" [href]="getProfileUrl('LinkedIn')" target="_blank">
+          <ng-icon [svg]="icons.tablerBrandLinkedin" size="18" strokeWidth="2.5" class="text-retro-yellow/80 group-hover/item:text-retro-yellow transition-all" />
+          <span class="tracking-widest hidden md:inline">LINKEDIN</span>
+        </a>
+      </div>
 
       <div class="w-px h-3 bg-white/10 mx-1"></div>
 
-      <!-- Botón de Mail -->
-      <div class="relative flex items-center">
+      <!-- GitHub -->
+      <div class="relative group/item flex items-center justify-center px-2 py-1">
+        <a class="flex items-center gap-2 text-[13px] font-mono font-bold hover:text-retro-yellow transition-all whitespace-nowrap" [href]="getProfileUrl('GitHub')" target="_blank">
+          <ng-icon [svg]="icons.tablerBrandGithub" size="18" strokeWidth="2.5" class="text-retro-yellow/80 group-hover/item:text-retro-yellow transition-all" />
+          <span class="tracking-widest hidden md:inline">GITHUB</span>
+        </a>
+      </div>
+
+      <div class="w-px h-3 bg-white/10 mx-1"></div>
+
+      <!-- Contact Button -->
+      <div class="relative group/item flex items-center justify-center px-2 py-1">
         <button 
           (click)="copyEmail()"
-          class="flex gap-1.5 items-center text-xs font-mono font-bold hover:text-retro-yellow transition-all cursor-pointer outline-none border-none bg-transparent group/btn"
+          class="flex items-center gap-2 text-[13px] font-mono font-bold hover:text-retro-yellow transition-all cursor-pointer outline-none border-none bg-transparent whitespace-nowrap"
         >
-          <ng-icon [svg]="isCopied() ? icons.tablerCheck : icons.tablerMail" size="16" strokeWidth="2.5" class="text-retro-yellow/40 group-hover/btn:text-retro-yellow transition-all" />
-          <span class="tracking-tight">{{ isCopied() ? 'COPIED' : 'CONTACT' }}</span>
+          <ng-icon [svg]="isCopied() ? icons.tablerCheck : icons.tablerMail" size="18" strokeWidth="2.5" class="text-retro-yellow/80 transition-all group-hover/item:text-retro-yellow" />
+          <span class="tracking-widest uppercase hidden md:inline">{{ isCopied() ? 'COPIED' : 'CONTACT' }}</span>
         </button>
 
-        <!-- Tooltip -->
-        <div 
-          *ngIf="isCopied()"
-          class="absolute bottom-full mb-10 inset-x-0 flex justify-center z-[60] pointer-events-none"
-        >
-          <div class="px-3 py-1.5 bg-[#1A1A1A] text-retro-yellow text-[9px] font-mono font-bold rounded-md border border-retro-yellow/20 animate-tooltip whitespace-nowrap shadow-2xl">
-            LOG: EMAIL_SAVED
+        <div *ngIf="isCopied()" class="absolute bottom-full mb-4 left-1/2 -translate-x-1/2 z-[110] pointer-events-none">
+          <div class="px-4 py-2 bg-[#0A0A0A] text-retro-yellow text-[11px] font-mono font-bold rounded-xl border border-retro-yellow/20 animate-tooltip whitespace-nowrap shadow-2xl">
+            LOG: EMAIL_COPIED
           </div>
         </div>
       </div>
@@ -119,17 +120,48 @@ export class Footer implements OnInit, OnDestroy {
     }
   }
 
-  copyEmail() {
+  async copyEmail() {
     if (this.isCopied()) return;
     const email = this.portfolio?.basics.email;
     if (!email) return;
 
-    navigator.clipboard.writeText(email).then(() => {
-      this.isCopied.set(true);
-      setTimeout(() => {
-        this.isCopied.set(false);
-      }, 2000);
-    });
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(email);
+        this.handleCopySuccess();
+      } else {
+        throw new Error('Clipboard API not available');
+      }
+    } catch (err) {
+      this.fallbackCopyText(email);
+    }
+  }
+
+  private fallbackCopyText(text: string) {
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-9999px';
+    textArea.style.top = '0';
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    
+    try {
+      const successful = document.execCommand('copy');
+      if (successful) this.handleCopySuccess();
+    } catch (err) {
+      console.error('Fallback copy failed', err);
+    }
+    
+    document.body.removeChild(textArea);
+  }
+
+  private handleCopySuccess() {
+    this.isCopied.set(true);
+    setTimeout(() => {
+      this.isCopied.set(false);
+    }, 2000);
   }
 
   ngOnInit() {
