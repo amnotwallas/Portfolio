@@ -93,3 +93,15 @@ export interface PortfolioData {
   education: Education[];
   languages: Language[];
 }
+
+export interface ChatAction {
+  type: 'navigation' | 'highlight';
+  target?: string;
+  element_type?: 'PROJECT' | 'EXPERIENCE';
+  item_id?: string;
+}
+
+export interface ChatResponse {
+  message: string;
+  actions: ChatAction[];
+}

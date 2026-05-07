@@ -7,6 +7,7 @@ import { ChatService } from '../../../core/services/chat.service';
 import { PortfolioService } from '../../../core/services/portfolio.service';
 import { UiService } from '../../../core/services/ui.service';
 import { Router } from '@angular/router';
+import { ChatResponse, ChatAction } from '../../models/portfolio.model';
 
 @Component({
   selector: 'app-chat',
@@ -107,8 +108,6 @@ export class ChatComponent implements AfterViewInit {
   cvSignal = this.portfolioService.portfolioDataSignal;
   isOpen = signal(false);
 
-  private processedTokens = new Set<string>();
-
   ngAfterViewInit() {}
 
   private getChatContext() {
@@ -143,7 +142,6 @@ export class ChatComponent implements AfterViewInit {
 
     const context = this.getChatContext();
     this.userQuery = '';
-    this.processedTokens.clear();
     this.chatResponseEl.nativeElement.textContent = "[WALTER_AI]: PROCESSING_COMMAND...";
 
     try {
@@ -153,75 +151,48 @@ export class ChatComponent implements AfterViewInit {
       const reader = body.getReader();
       const decoder = new TextDecoder();
       let fullText = "";
-
-      const NAV_REGEX = /\[NAV:(.+?)\]/g;
-      const HIGHLIGHT_REGEX = /\[HIGHLIGHT:(PROJECT|EXPERIENCE):(.+?)\]/g;
-      const PARTIAL_TOKEN_REGEX = /\[[^\]]*$/; // Oculta cualquier corchete no cerrado al final
+      let partialLine = "";
 
       while (true) {
         const { done, value } = await reader.read();
-        if (done) break;
+        if (done && !partialLine) break;
         
-        const chunk = decoder.decode(value);
-        const lines = chunk.split('\n');
+        const chunk = done ? "" : decoder.decode(value, { stream: true });
+        const lines = (partialLine + chunk).split('\n');
+        partialLine = lines.pop() || "";
         
         for (const line of lines) {
-          if (line.startsWith('data: ')) {
-            const content = line.replace('data: ', '');
-            fullText += content;
+          const trimmedLine = line.trim();
+          if (!trimmedLine || !trimmedLine.startsWith('data: ')) continue;
+
+          try {
+            const jsonStr = trimmedLine.replace('data: ', '').trim();
+            const data: ChatResponse = JSON.parse(jsonStr);
             
-            // 1. Process Highlights
-            const hMatch = fullText.match(HIGHLIGHT_REGEX);
-            if (hMatch) {
-              for (const fullToken of hMatch) {
-                if (!this.processedTokens.has(fullToken)) {
-                  const match = fullToken.match(/:(.+?):(.+?)\]/);
-                  if (match) {
-                    const [_, type, id] = match;
-                    this.uiService.triggerHighlight(type as any, id);
-                    this.processedTokens.add(fullToken);
-                  }
-                }
-              }
+            if (data.message) {
+              fullText += data.message;
+              this.chatResponseEl.nativeElement.textContent = fullText + "_";
             }
 
-            // 2. Process Navigation
-            const nMatch = fullText.match(NAV_REGEX);
-            if (nMatch) {
-              for (const fullToken of nMatch) {
-                if (!this.processedTokens.has(fullToken)) {
-                  const match = fullToken.match(/:(.+?)\]/);
-                  if (match) {
-                    const target = match[1];
-                    this.uiService.navigate(target);
-                    this.processedTokens.add(fullToken);
-                  }
-                }
-              }
+            if (data.actions && data.actions.length > 0) {
+              // Si hay múltiples acciones en un fragmento, procesarlas
+              // Nota: handleAction ya maneja la lógica de prioridad
+              data.actions.forEach(action => this.handleAction(action));
             }
 
-            // 3. Silent Cleaning for UI (proactivo con fragmentos)
-            const displayText = fullText
-              .replace(HIGHLIGHT_REGEX, '')
-              .replace(NAV_REGEX, '')
-              .replace(PARTIAL_TOKEN_REGEX, '')
-              .trim();
-
-            this.chatResponseEl.nativeElement.textContent = displayText + "_";
-            await new Promise(resolve => setTimeout(resolve, 15)); 
+            await new Promise(resolve => setTimeout(resolve, 15));
+          } catch (e) {
+            console.error('Error parsing chat stream line:', e, line);
           }
         }
+
+        if (done) break;
       }
 
       // Final cleanup
-      const finalContent = fullText
-        .replace(HIGHLIGHT_REGEX, '')
-        .replace(NAV_REGEX, '')
-        .trim();
-      
-      this.chatResponseEl.nativeElement.textContent = finalContent;
+      this.chatResponseEl.nativeElement.textContent = fullText;
       this.chatService.addToHistory('user', query);
-      this.chatService.addToHistory('assistant', finalContent);
+      this.chatService.addToHistory('assistant', fullText);
 
     } catch (error: any) {
       if (error.message === 'TOO_MANY_REQUESTS') {
@@ -232,6 +203,23 @@ export class ChatComponent implements AfterViewInit {
     } finally {
       this.chatService.setProcessing(false);
       this.cdr.markForCheck();
+    }
+  }
+
+  private handleAction(action: ChatAction) {
+    switch (action.type) {
+      case 'navigation':
+        if (action.target) {
+          // Pequeña optimización: no navegar si es redundante con un highlight inminente
+          // (aunque triggerHighlight ya llama a navigate)
+          this.uiService.navigate(action.target);
+        }
+        break;
+      case 'highlight':
+        if (action.element_type && action.item_id) {
+          this.uiService.triggerHighlight(action.element_type, action.item_id);
+        }
+        break;
     }
   }
 }

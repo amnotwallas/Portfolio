@@ -23,8 +23,11 @@ import { Subscription } from 'rxjs';
         <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
           @for (item of cv.projects; track $index; let projectIdx = $index) {
           <div 
-            [id]="'project-' + item.slug"
-            class="p-8 rounded-xl glass-effect group/project shadow-2xl relative overflow-hidden flex flex-col border border-retro-yellow/10 hover:border-retro-yellow/30 transition-all duration-500"
+            [id]="getProjectElementId(item.slug)"
+            class="p-8 rounded-xl glass-effect group/project shadow-2xl relative overflow-hidden flex flex-col border transition-all duration-500"
+            [class.border-retro-yellow/30]="isHighlighted(item.slug)"
+            [class.border-retro-yellow/10]="!isHighlighted(item.slug)"
+            [class.shadow-[0_0_40px_rgba(255,176,0,0.15)]]="isHighlighted(item.slug)"
           >
             
             <!-- Project Image Container -->
@@ -56,6 +59,8 @@ import { Subscription } from 'rxjs';
 
             <div class="flex justify-between items-start mb-4 gap-4">
               <h3 class="text-2xl font-bold text-retro-font group-hover/project:text-retro-bright group-hover/project:text-glow-bright transition-all font-mono tracking-tight"
+                  [class.text-retro-bright]="isHighlighted(item.slug)"
+                  [class.text-glow-bright]="isHighlighted(item.slug)"
                   [style.view-transition-name]="'project-title-' + item.slug">{{item.name}}</h3>
               @if (item.links.github) {
                 <a [href]="item.links.github" target="_blank" class="text-retro-yellow/40 hover:text-retro-bright transition-colors flex-shrink-0">
@@ -98,18 +103,6 @@ import { Subscription } from 'rxjs';
           </div>
           }
         </div>
-      } @else {
-        <!-- Skeletons if no data -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-          @for (i of [1,2,3,4]; track i) {
-            <div class="p-8 rounded-xl glass-effect border border-retro-yellow/10 flex flex-col">
-              <div class="mb-8 aspect-[4/3] rounded-lg skeleton"></div>
-              <div class="h-8 w-64 skeleton mb-4"></div>
-              <div class="h-4 w-full skeleton mb-2"></div>
-              <div class="h-4 w-2/3 skeleton mb-6"></div>
-            </div>
-          }
-        </div>
       }
     </div>
   `,
@@ -125,12 +118,10 @@ export class HomeProjectsComponent implements OnInit, OnDestroy {
   expandedProjects: { [key: number]: boolean } = {};
   imagesLoaded: { [key: string]: boolean } = {};
   resolvedImages: { [key: string]: string } = {};
-
-  highlightedProject: string | null = null;
+  highlightedProjectId: string | null = null;
   private sub = new Subscription();
 
   constructor() {
-    // Re-resolve images whenever data becomes available
     effect(() => {
       const data = this.cvSignal();
       if (data) {
@@ -142,31 +133,52 @@ export class HomeProjectsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.sub.add(
       this.uiService.highlight$.subscribe(event => {
-        const data = this.cvSignal();
-        if (event.type === 'PROJECT' && data) {
-          let targetId = event.id;
-          let el = document.getElementById('project-' + targetId);
-
-          if (!el) {
-            const matchedProject = data.projects.find(p => p.slug.includes(targetId));
-            if (matchedProject) {
-              targetId = matchedProject.slug;
-              el = document.getElementById('project-' + targetId);
-            }
-          }
-
-          if (el) {
-            this.highlightedProject = targetId;
-            this.cdr.markForCheck();
-            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            setTimeout(() => {
-              this.highlightedProject = null;
-              this.cdr.markForCheck();
-            }, 5000);
-          }
+        if (event.type === 'PROJECT') {
+          this.processHighlight(event.id);
         }
       })
     );
+  }
+
+  getProjectElementId(slug: string): string {
+    return 'project-' + slug.toLowerCase().trim();
+  }
+
+  isHighlighted(slug: string): boolean {
+    return this.highlightedProjectId === this.getProjectElementId(slug);
+  }
+
+  private processHighlight(id: string) {
+    const data = this.cvSignal();
+    if (!data) {
+      setTimeout(() => this.processHighlight(id), 500);
+      return;
+    }
+
+    const targetId = id.toLowerCase().trim();
+    const project = data.projects.find(p => 
+      p.slug === targetId || 
+      p.slug.includes(targetId) || 
+      p.name.toLowerCase().includes(targetId)
+    );
+
+    if (project) {
+      const elementId = this.getProjectElementId(project.slug);
+      this.highlightedProjectId = elementId;
+      this.cdr.markForCheck();
+
+      setTimeout(() => {
+        const el = document.getElementById(elementId);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 300);
+
+      setTimeout(() => {
+        this.highlightedProjectId = null;
+        this.cdr.markForCheck();
+      }, 5000);
+    }
   }
 
   private async resolveAllImages(data: any) {
