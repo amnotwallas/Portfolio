@@ -1,4 +1,4 @@
-import { Component, inject, ChangeDetectorRef, ChangeDetectionStrategy, OnInit, OnDestroy, effect } from '@angular/core';
+import { Component, inject, ChangeDetectorRef, ChangeDetectionStrategy, OnInit, OnDestroy, effect, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -25,11 +25,18 @@ import { Subscription } from 'rxjs';
           <div 
             [id]="getProjectElementId(item.slug)"
             class="p-8 rounded-xl glass-effect group/project shadow-2xl relative overflow-hidden flex flex-col border transition-all duration-500"
-            [class.border-retro-yellow/30]="isHighlighted(item.slug)"
-            [class.border-retro-yellow/10]="!isHighlighted(item.slug)"
-            [class.shadow-[0_0_40px_rgba(255,176,0,0.15)]]="isHighlighted(item.slug)"
+            [class.animate-neural-highlight]="isHighlighted(item.slug)"
+            [class.border-retro-yellow/40]="!isHighlighted(item.slug)"
+            [class.scale-[1.02]]="isHighlighted(item.slug)"
+            [class.z-20]="isHighlighted(item.slug)"
           >
             
+            @if (isHighlighted(item.slug)) {
+              <div class="absolute top-2 right-4 font-mono text-[8px] text-retro-yellow animate-pulse tracking-widest uppercase z-30">
+                Neural_Focus_Active
+              </div>
+            }
+
             <!-- Project Image Container -->
             <div class="relative mb-8 aspect-[4/3] overflow-hidden rounded-lg border border-retro-yellow/20 bg-retro-dark shadow-inner"
                 [style.view-transition-name]="'project-image-' + item.slug">
@@ -118,7 +125,7 @@ export class HomeProjectsComponent implements OnInit, OnDestroy {
   expandedProjects: { [key: number]: boolean } = {};
   imagesLoaded: { [key: string]: boolean } = {};
   resolvedImages: { [key: string]: string } = {};
-  highlightedProjectId: string | null = null;
+  highlightedProjectId = signal<string | null>(null);
   private sub = new Subscription();
 
   constructor() {
@@ -145,7 +152,7 @@ export class HomeProjectsComponent implements OnInit, OnDestroy {
   }
 
   isHighlighted(slug: string): boolean {
-    return this.highlightedProjectId === this.getProjectElementId(slug);
+    return this.highlightedProjectId() === this.getProjectElementId(slug);
   }
 
   private processHighlight(id: string) {
@@ -159,25 +166,33 @@ export class HomeProjectsComponent implements OnInit, OnDestroy {
     const project = data.projects.find(p => 
       p.slug === targetId || 
       p.slug.includes(targetId) || 
-      p.name.toLowerCase().includes(targetId)
+      p.name.toLowerCase().includes(targetId) ||
+      p.id === targetId
     );
 
     if (project) {
       const elementId = this.getProjectElementId(project.slug);
-      this.highlightedProjectId = elementId;
+      
+      // Reset first to force re-animation
+      this.highlightedProjectId.set(null);
       this.cdr.markForCheck();
 
       setTimeout(() => {
-        const el = document.getElementById(elementId);
-        if (el) {
-          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-      }, 300);
-
-      setTimeout(() => {
-        this.highlightedProjectId = null;
+        this.highlightedProjectId.set(elementId);
         this.cdr.markForCheck();
-      }, 5000);
+
+        setTimeout(() => {
+          const el = document.getElementById(elementId);
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }, 100);
+
+        setTimeout(() => {
+          this.highlightedProjectId.set(null);
+          this.cdr.markForCheck();
+        }, 6000);
+      }, 50);
     }
   }
 

@@ -47,16 +47,6 @@ body {
   overflow-x: hidden;
 }
 
-/* CRT Vignette - More subtle */
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: radial-gradient(circle, transparent 50%, rgba(0,0,0,0.3) 150%);
-  pointer-events: none;
-  z-index: 99;
-}
-
 /* Refined Glows */
 .text-glow {
   text-shadow: 0 0 10px rgba(255, 176, 0, 0.25);
