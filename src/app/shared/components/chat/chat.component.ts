@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, inject, AfterViewInit, ChangeDetectorRef, signal, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ElementRef, ViewChild, inject, AfterViewInit, ChangeDetectorRef, signal, ChangeDetectionStrategy, HostListener, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -15,6 +15,36 @@ import { ChatResponse, ChatAction } from '../../models/portfolio.model';
   imports: [CommonModule, FormsModule, NgIcon],
   providers: [provideIcons({ tablerArrowUp, tablerTerminal, tablerX })],
   template: `
+    <!-- Proactive Tooltip -->
+    <div 
+      (click)="suggestQuery(currentSuggestion())"
+      class="fixed bottom-40 right-4 md:right-8 z-50 group cursor-pointer transition-all duration-500 transform origin-right"
+      [class.scale-0]="!showTooltip() || isOpen()"
+      [class.opacity-0]="!showTooltip() || isOpen()"
+      [class.translate-x-10]="!showTooltip() || isOpen()">
+      <div class="relative bg-[#0A0A0A] border border-retro-yellow/30 px-4 py-3 rounded-xl shadow-[0_0_20px_rgba(255,176,0,0.15)] backdrop-blur-md">
+        <!-- Decoration bits -->
+        <div class="absolute -top-1 -left-1 w-2 h-2 border-t border-l border-retro-yellow/50"></div>
+        <div class="absolute -bottom-1 -right-1 w-2 h-2 border-b border-r border-retro-yellow/50"></div>
+        
+        <div class="flex items-center gap-3">
+          <div class="flex flex-col">
+            <span class="font-mono text-[9px] text-retro-yellow/50 uppercase tracking-widest mb-1">WALTER_AI // TIP</span>
+            <p class="font-mono text-[11px] text-retro-font leading-tight uppercase">
+              {{currentSuggestion().label}}
+              <span class="inline-block w-1.5 h-3 bg-retro-yellow animate-pulse ml-0.5 align-middle"></span>
+            </p>
+          </div>
+          <div class="w-8 h-8 rounded-lg bg-retro-yellow/10 flex items-center justify-center text-retro-yellow group-hover:bg-retro-yellow group-hover:text-retro-dark transition-colors">
+            <ng-icon name="tablerArrowUp" size="16" class="rotate-45"></ng-icon>
+          </div>
+        </div>
+        
+        <!-- Tooltip Arrow -->
+        <div class="absolute -bottom-2 right-6 w-4 h-4 bg-[#0A0A0A] border-r border-b border-retro-yellow/30 rotate-45"></div>
+      </div>
+    </div>
+
     <!-- Floating Trigger Button -->
     <button 
       (click)="toggleWidget()"
@@ -93,7 +123,7 @@ import { ChatResponse, ChatAction } from '../../models/portfolio.model';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ChatComponent implements AfterViewInit {
+export class ChatComponent implements AfterViewInit, OnDestroy {
   private chatService = inject(ChatService);
   private portfolioService = inject(PortfolioService);
   private uiService = inject(UiService);
@@ -107,8 +137,177 @@ export class ChatComponent implements AfterViewInit {
   isProcessing = this.chatService.isProcessing;
   cvSignal = this.portfolioService.portfolioDataSignal;
   isOpen = signal(false);
+  
+  showTooltip = signal(false);
+  currentSuggestion = signal<{label: string, query: string}>({label: '', query: ''});
+  private tooltipTimeout: any;
+  private rotationInterval: any;
 
-  ngAfterViewInit() {}
+  @HostListener('window:scroll', [])
+  onWindowScroll() {
+    this.showTooltip.set(false);
+    clearTimeout(this.tooltipTimeout);
+    clearInterval(this.rotationInterval);
+
+    if (this.isOpen()) return;
+
+    this.tooltipTimeout = setTimeout(() => {
+      this.checkSectionAndShowTooltip();
+      this.startRotation();
+    }, 1500);
+  }
+
+  ngAfterViewInit() {
+    this.tooltipTimeout = setTimeout(() => {
+      if (!this.isOpen()) {
+        this.checkSectionAndShowTooltip();
+        this.startRotation();
+      }
+    }, 3000);
+  }
+
+  ngOnDestroy() {
+    clearTimeout(this.tooltipTimeout);
+    clearInterval(this.rotationInterval);
+  }
+
+  private startRotation() {
+    clearInterval(this.rotationInterval);
+    this.rotationInterval = setInterval(() => {
+      if (this.showTooltip() && !this.isOpen()) {
+        this.showTooltip.set(false);
+        this.cdr.markForCheck();
+        
+        setTimeout(() => {
+          this.checkSectionAndShowTooltip(true);
+        }, 600);
+      }
+    }, 10000);
+  }
+
+  private checkSectionAndShowTooltip(isRotation = false) {
+    const experienceEl = document.getElementById('experience');
+    const projectsEl = document.getElementById('projects');
+
+    const phrases = {
+      hero: [
+        {
+          label: '¿Qué hace Walter?',
+          query: '¿Qué puedes hacer?'
+        },
+        {
+          label: '¿Qué tecnologías usa?',
+          query: 'Muéstrame tu stack técnico'
+        },
+        {
+          label: '¿Trabaja con AI?',
+          query: 'Cuéntame tu experiencia en AI'
+        },
+        {
+          label: '¿Buscas un Backend Engineer?',
+          query: '¿Por qué eres buen Backend Engineer?'
+        }
+      ],
+      experience: [
+        {
+          label: '¿Te muestro mi experiencia?',
+          query: 'Muéstrame tu experiencia'
+        },
+        {
+          label: '¿Qué has logrado?',
+          query: '¿Cuáles son tus mayores logros?'
+        },
+        {
+          label: '¿Cómo ha sido tu trayectoria?',
+          query: 'Cuéntame tu trayectoria'
+        },
+        {
+          label: '¿Cuál es tu fuerte?',
+          query: '¿Cuál es tu mayor fortaleza técnica?'
+        }
+      ],
+
+      projects: [
+        {
+          label: '¿Quieres ver retos interesantes?',
+          query: 'Cuéntame retos técnicos difíciles'
+        },
+        {
+          label: '¿Cómo escalaste tus proyectos?',
+          query: '¿Cómo escalaste tus aplicaciones?'
+        },
+        {
+          label: '¿Qué tecnologías usas?',
+          query: '¿Qué tecnologías usas normalmente?'
+        },
+        {
+          label: '¿Te enseño arquitectura compleja?',
+          query: 'Muéstrame arquitecturas complejas'
+        }
+      ],
+
+      project_details: [
+        {
+          label: '¿Qué usaste aquí?',
+          query: '¿Qué tecnologías usaste en este proyecto?'
+        },
+        {
+          label: '¿Cuál fue el reto más difícil?',
+          query: '¿Cuál fue el mayor reto de este proyecto?'
+        },
+        {
+          label: '¿Quieres ver la arquitectura?',
+          query: 'Explícame la arquitectura del proyecto'
+        },
+        {
+          label: '¿Hubo bugs interesantes?',
+          query: 'Cuéntame bugs interesantes de este proyecto'
+        }
+      ]
+    };
+
+    const getRandom = (arr: any[]) => arr[Math.floor(Math.random() * arr.length)];
+
+    if (!experienceEl && !projectsEl) {
+      if (this.router.url.includes('/project/')) {
+        this.currentSuggestion.set(getRandom(phrases.project_details));
+        this.showTooltip.set(true);
+        this.cdr.markForCheck();
+      }
+      return;
+    }
+
+    const scrollPos = window.scrollY + window.innerHeight / 2;
+    let newSuggestion = { label: '', query: '' };
+
+    if (projectsEl && scrollPos > projectsEl.offsetTop) {
+      newSuggestion = getRandom(phrases.projects);
+    } else if (experienceEl && scrollPos > experienceEl.offsetTop) {
+      newSuggestion = getRandom(phrases.experience);
+    } else {
+      newSuggestion = getRandom(phrases.hero);
+    }
+
+    if (isRotation && newSuggestion.label === this.currentSuggestion().label) {
+      this.checkSectionAndShowTooltip(true);
+      return;
+    }
+
+    this.currentSuggestion.set(newSuggestion);
+    this.showTooltip.set(true);
+    this.cdr.markForCheck();
+  }
+
+  suggestQuery(suggestion: {label: string, query: string}) {
+    this.showTooltip.set(false);
+    if (!this.isOpen()) {
+      this.toggleWidget();
+    }
+    this.userQuery = suggestion.query; // Enviamos el comando interno, no el label
+    setTimeout(() => {
+      this.onChatSubmit();
+    }, 600);
+  }
 
   private getChatContext() {
     const url = this.router.url;
@@ -132,7 +331,14 @@ export class ChatComponent implements AfterViewInit {
   toggleWidget() {
     this.isOpen.update(v => !v);
     if (this.isOpen()) {
+      // Si se abre, limpiar todo lo del tooltip
+      this.showTooltip.set(false);
+      clearTimeout(this.tooltipTimeout);
+      clearInterval(this.rotationInterval);
       setTimeout(() => this.chatInput.nativeElement.focus(), 100);
+    } else {
+      // Si se cierra, re-activar la lógica de sugerencias proactivas
+      this.onWindowScroll(); 
     }
   }
 
