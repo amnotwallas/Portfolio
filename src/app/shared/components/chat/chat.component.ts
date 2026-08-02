@@ -69,7 +69,7 @@ import { ChatResponse, ChatAction } from '../../models/portfolio.model';
       <div class="flex items-center justify-between p-4 border-b border-white/5 bg-[#121212]">
         <div class="flex items-center gap-2">
           <div class="w-2 h-2 rounded-full bg-minecraft animate-pulse shadow-[0_0_10px_rgba(85,255,85,0.8)]"></div>
-          <span class="font-mono text-[10px] font-bold text-retro-font/60 uppercase tracking-[0.2em]">WALTER_AI // NEURAL_CORE</span>
+          <span class="font-mono text-[10px] font-bold text-retro-font/60 uppercase tracking-[0.2em]">WALTER_AI</span>
         </div>
         <button (click)="toggleWidget()" class="text-retro-font/20 hover:text-retro-yellow transition-colors">
           <ng-icon name="tablerX" size="18"></ng-icon>
@@ -79,7 +79,7 @@ import { ChatResponse, ChatAction } from '../../models/portfolio.model';
       <!-- Chat Area -->
       <div class="flex-grow p-6 flex flex-col gap-6">
         <p #chatResponseEl class="font-mono text-xs text-retro-font/90 min-h-[5em] leading-relaxed uppercase tracking-tight">
-            INITIALIZING_NEURAL_LINK...
+            INITIALIZING_LINK...
         </p>
         
         <!-- Input Area -->
@@ -400,7 +400,7 @@ export class ChatComponent implements AfterViewInit, OnDestroy {
       if (error.message === 'TOO_MANY_REQUESTS') {
         this.chatResponseEl.nativeElement.textContent = "SYSTEM_OVERLOAD: TOO_MANY_REQUESTS. SLOW_DOWN.";
       } else {
-        this.chatResponseEl.nativeElement.textContent = "CONNECTION_ERROR: UNABLE_TO_REACH_NEURAL_CORE.";
+        this.chatResponseEl.nativeElement.textContent = "CONNECTION_ERROR: UNABLE_TO_REACH_WALTER_AI.";
       }
     } finally {
       this.chatService.setProcessing(false);

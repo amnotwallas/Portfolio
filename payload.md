@@ -1,6 +1,6 @@
 # Chat API Payload Documentation
 
-Este documento detalla el esquema de datos utilizado para la comunicación entre el frontend y el backend (Neural Core).
+Este documento detalla el esquema de datos utilizado para la comunicación entre el frontend y el backend (Core).
 
 ## 1. Request Payload (Entrada)
 

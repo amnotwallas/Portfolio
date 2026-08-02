@@ -38,7 +38,7 @@ Images and professional documents are served through an authenticated asset pipe
 - **Styling:** Tailwind CSS v4, PrimeNG v21.
 - **Animations:** CSS-based Glitch engine, Scramble Directive for terminal effects.
 
-### Backend (The "Neural Core")
+### Backend (The "Core")
 - **Language:** Python 3.11+
 - **Framework:** FastAPI (RESTful API, SSE, Secure Streaming)
 - **Security:** API Key Middleware, CORS Policy Management.
