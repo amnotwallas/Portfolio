@@ -79,11 +79,7 @@ import { ChatResponse, ChatAction } from '../../models/portfolio.model';
       <!-- Chat Area -->
       <div class="flex-grow p-6 flex flex-col gap-6">
         <p #chatResponseEl class="font-mono text-xs text-retro-font/90 min-h-[5em] leading-relaxed uppercase tracking-tight">
-          @if (cvSignal(); as cv) {
-            {{cv.terminal.welcome_message}}
-          } @else {
             INITIALIZING_NEURAL_LINK...
-          }
         </p>
         
         <!-- Input Area -->

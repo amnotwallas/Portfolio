@@ -11,7 +11,6 @@ export interface SystemConfig {
 }
 
 export interface TerminalConfig {
-  welcome_message: string;
   command_suggestions: string[];
   boot_sequence: string[];
 }
