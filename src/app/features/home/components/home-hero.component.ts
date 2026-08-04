@@ -15,8 +15,8 @@ const SCRAMBLE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
         <div class="inline-block text-left mb-2">
           <div class="font-[var(--font-display)] text-xl font-medium text-[var(--ink-soft)] mb-2">{{ langService.t().heroPre }}</div>
           <div class="relative inline-block mb-5">
-            <h1 class="font-[var(--font-display)] font-bold leading-none m-0 text-[var(--ink)]" style="font-size: clamp(48px, 9vw, 104px); letter-spacing: -0.03em;">
-              {{ data.basics.name }}
+            <h1 style="font-family: 'Space Grotesk', sans-serif; font-size: clamp(48px, 9vw, 104px); font-weight: 700; letter-spacing: -0.03em; line-height: 1; margin: 0; color: var(--ink);">
+              {{ displayName(data.basics.name) }}
             </h1>
             @if (data.system.status) {
               <div class="absolute -top-4.5 -right-17 rotate-[-8deg]" style="animation: splashPop 1.6s ease-in-out infinite;">
@@ -111,6 +111,14 @@ export class HomeHeroComponent implements OnDestroy {
         this.scrambleTimeout = setTimeout(() => this.runScramble(), 2400);
       }
     }, 35);
+  }
+
+  /** Strip middle names: keep first word + last two words.
+   *  'Walter Jahir Ambriz Reyna' → 'Walter Ambriz Reyna' */
+  displayName(fullName: string): string {
+    const parts = fullName.trim().split(/\s+/);
+    if (parts.length <= 3) return fullName;
+    return `${parts[0]} ${parts.slice(-2).join(' ')}`;
   }
 
   scrollTo(id: string) {
