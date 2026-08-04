@@ -48,7 +48,7 @@ export class HomeSkillsComponent {
     return data.skills.map((s, i) => ({
       name: s.category,
       items: s.items,
-      span: SPANS[i % BENTO_VARS.length],
+      span: SPANS[i % SPANS.length],
       bg: BENTO_VARS[i % BENTO_VARS.length]
     }));
   });
