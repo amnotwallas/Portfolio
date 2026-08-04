@@ -44,6 +44,8 @@ export interface WorkExperience {
   summary: string;
   image?: string;
   highlights: string[];
+  tags?: string[];
+  metrics?: string[];
 }
 
 export interface ProjectMetadata {
@@ -64,6 +66,7 @@ export interface Project {
   images: string[];
   stack: string[];
   period: string;
+  highlights?: string[];
   links: {
     github: string;
     demo: string | null;
