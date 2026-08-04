@@ -4,9 +4,10 @@
     "label": "Backend & AI Engineer",
     "hero_titles": [
       "AI & Backend Engineer",
-      "Building with LLMs & Python",
+      "FastAPI + Python",
+      "LLM Systems Builde",
       "System Architecture & APIs",
-      "Crafting Intelligent Solutions"
+      "Multiagent Orchestration"
     ],
     "summary": "Backend & AI Engineer, Mexico. I build production systems with LLMs using Python and FastAPI. I love creating agents, connecting models to real data, and solving hard problems with AI. Passionate about learning and shipping things that work.",
     "email": "walterardev@gmail.com",

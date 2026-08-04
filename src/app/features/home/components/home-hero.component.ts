@@ -29,8 +29,8 @@ const SCRAMBLE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
           </div>
         </div>
 
-        <div class="h-10 flex items-center justify-center mb-7.5">
-          <span class="font-[var(--font-mono)] font-medium text-[var(--color-accent)]" style="font-size: clamp(14px, 2.4vw, 20px);">
+        <div style="height: 40px; display: flex; align-items: center; justify-content: center; margin-bottom: 30px;">
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: clamp(14px, 2.4vw, 20px); font-weight: 500; color: #3B4CF0; letter-spacing: 0.02em;">
             {{ scrambleDisplay() }}<span style="animation: blinkCursor 1s step-end infinite;">|</span>
           </span>
         </div>
