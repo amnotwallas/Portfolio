@@ -1,97 +1,117 @@
-import { Component, Input, inject, ChangeDetectionStrategy, OnInit } from '@angular/core';
+import { Component, inject, signal, computed, effect, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ScrambleDirective } from '../../../shared/directives/scramble.directive';
 import { PortfolioService } from '../../../core/services/portfolio.service';
+import { LanguageService } from '../../../core/services/language.service';
+
+const SCRAMBLE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
 @Component({
   selector: 'app-home-hero',
   standalone: true,
-  imports: [CommonModule, ScrambleDirective],
+  imports: [CommonModule],
   template: `
     <div class="w-full flex flex-col items-center text-center px-6">
-      <!-- Welcome Line -->
-      <div class="mb-4 flex flex-col items-center">
-        <h1 class="text-5xl sm:text-6xl md:text-7xl lg:text-9xl tracking-tighter leading-none mb-6 relative">
-          <span class="font-extralight text-retro-font/40">Hi, I am </span>
-          <br class="sm:hidden">
-          
-          <!-- Name Container: STABLE WRAPPER -->
-          <span class="relative inline-block mt-2 sm:mt-0">
-            @if (firstName) {
-              <!-- Invisible placeholder to reserve full width -->
-              <span class="font-mono font-light opacity-0 select-none pointer-events-none" aria-hidden="true">{{firstName}}</span>
-              
-              <!-- Animated Name (Absolute to avoid pushing layout) -->
-              <span class="absolute left-0 top-0 flex items-baseline">
-                <span class="font-mono font-light text-retro-bright text-glow-bright animate-typing inline-block" 
-                      [style.width.ch]="firstName.length"
-                      [style.animation-timing-function]="'steps(' + firstName.length + ', end)'">
-                  {{firstName}}
-                </span>
-              </span>
-
-              <!-- Minecraft Splash Text: Anchored to the STABLE wrapper -->
-              <div class="absolute -bottom-6 right-0 sm:-bottom-2 sm:-right-16 md:-right-20 z-40 pointer-events-none origin-center">
-                <span class="splash-text text-[10px] sm:text-xs md:text-sm lg:text-base tracking-widest uppercase">
-                  {{ currentSplash }}
+      @if (cv(); as data) {
+        <div class="inline-block text-left mb-2">
+          <div class="font-[var(--font-display)] text-xl font-medium text-[var(--ink-soft)] mb-2">{{ langService.t.heroPre }}</div>
+          <div class="relative inline-block mb-5">
+            <h1 class="font-[var(--font-display)] font-bold leading-none m-0 text-[var(--ink)]" style="font-size: clamp(48px, 9vw, 104px); letter-spacing: -0.03em;">
+              {{ data.basics.name }}
+            </h1>
+            @if (data.system.status) {
+              <div class="absolute -top-4.5 -right-17 rotate-[-8deg]" style="animation: splashPop 1.6s ease-in-out infinite;">
+                <span class="font-[var(--font-display)] font-bold text-xs tracking-wide bg-[var(--color-lime)] text-[#15151A] neo-border rounded-lg px-2.5 py-1.5 neo-shadow whitespace-nowrap inline-block">
+                  {{ data.system.status }}
                 </span>
               </div>
-            } @else {
-              <span class="skeleton skeleton-inline w-[8ch] h-[1em] opacity-30"></span>
             }
-          </span>
-        </h1>
-      </div>
-      
-      <!-- Dynamic Title -->
-      <div class="h-10 mb-10 flex items-center justify-center w-full overflow-hidden">
-        <span class="font-mono text-base md:text-lg mr-4 text-retro-yellow/30">>></span>
-        <div class="relative inline-flex items-center">
-           <p class="font-mono font-medium uppercase tracking-[0.3em] md:tracking-[0.5em] text-xs md:text-sm lg:text-xl opacity-0 select-none pointer-events-none whitespace-nowrap" aria-hidden="true">
-             Crafting Intelligent Solutions
-           </p>
-           @if (activeTitle) {
-             <p [appScramble]="activeTitle" 
-                class="absolute left-0 top-0 w-full font-mono font-medium uppercase tracking-[0.3em] md:tracking-[0.5em] text-xs md:text-sm lg:text-xl text-glow whitespace-nowrap"
-                style="color: var(--color-retro-yellow);">
-             </p>
-           } @else {
-             <div class="skeleton w-64 h-6"></div>
-           }
-        </div>
-      </div>
-
-      <!-- Professional Pitch -->
-      <div class="max-w-3xl mx-auto px-8 sm:px-14 border-l-2 border-retro-yellow/20 py-3 text-left bg-white/2 rounded-r-2xl backdrop-blur-sm">
-        @if (cv(); as data) {
-          <p class="font-light text-base md:text-xl leading-relaxed text-retro-font/90">
-            {{data.basics.summary}}
-          </p>
-        } @else {
-          <div class="space-y-3">
-            <div class="skeleton w-full h-4"></div>
-            <div class="skeleton w-[90%] h-4"></div>
-            <div class="skeleton w-[80%] h-4"></div>
           </div>
-        }
-      </div>
+        </div>
+
+        <div class="h-10 flex items-center justify-center mb-7.5">
+          <span class="font-[var(--font-mono)] font-medium text-[var(--color-accent)]" style="font-size: clamp(14px, 2.4vw, 20px);">
+            {{ scrambleDisplay() }}<span style="animation: blinkCursor 1s step-end infinite;">|</span>
+          </span>
+        </div>
+
+        <div class="max-w-[640px] px-7 py-5.5 rounded-[20px] glass-card border-l-4 border-l-[var(--ink)]">
+          <p class="m-0 text-[17px] leading-relaxed text-[var(--ink-soft)]">{{ data.basics.summary }}</p>
+        </div>
+
+        <div class="flex gap-3.5 mt-8 flex-wrap justify-center">
+          <button (click)="scrollTo('projects')"
+                  class="font-[var(--font-display)] font-bold text-[15px] bg-[var(--ink)] text-[var(--bg)] neo-border rounded-full px-6.5 py-3.5 neo-shadow-lime">
+            {{ langService.t.ctaPrimary }}
+          </button>
+          <button (click)="scrollTo('contact')"
+                  class="font-[var(--font-display)] font-bold text-[15px] glass-card text-[var(--ink)] rounded-full px-6.5 py-3.5">
+            {{ langService.t.ctaSecondary }}
+          </button>
+        </div>
+      } @else {
+        <div class="space-y-4 w-full max-w-lg">
+          <div class="skeleton w-3/4 h-16 mx-auto rounded-xl"></div>
+          <div class="skeleton w-1/2 h-6 mx-auto rounded-lg"></div>
+          <div class="skeleton w-full h-24 rounded-2xl"></div>
+        </div>
+      }
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HomeHeroComponent implements OnInit {
+export class HomeHeroComponent implements OnDestroy {
   private portfolioService = inject(PortfolioService);
+  langService = inject(LanguageService);
+
   cv = this.portfolioService.portfolioDataSignal;
+  scrambleDisplay = signal('');
 
-  @Input() firstName: string = '';
-  @Input() activeTitle: string = '';
+  private phraseIndex = 0;
+  private scrambleInterval: any;
+  private scrambleTimeout: any;
 
-  splashPhrases = [
-    'Available for work!',
-  ];
-  currentSplash = '';
+  constructor() {
+    effect(() => {
+      const data = this.cv();
+      if (data && data.skills.length && !this.scrambleInterval && !this.scrambleTimeout) {
+        this.runScramble();
+      }
+    });
+  }
 
-  ngOnInit() {
-    this.currentSplash = this.splashPhrases[Math.floor(Math.random() * this.splashPhrases.length)];
+  private runScramble() {
+    const data = this.cv();
+    if (!data) return;
+    const phrases = data.skills.map(s => s.category);
+    const target = phrases[this.phraseIndex % phrases.length];
+    let frame = 0;
+    const totalFrames = 18;
+    clearInterval(this.scrambleInterval);
+    this.scrambleInterval = setInterval(() => {
+      frame++;
+      const reveal = Math.floor((frame / totalFrames) * target.length);
+      let out = '';
+      for (let i = 0; i < target.length; i++) {
+        if (target[i] === ' ') { out += ' '; continue; }
+        out += i < reveal ? target[i] : SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
+      }
+      this.scrambleDisplay.set(out);
+      if (frame >= totalFrames) {
+        clearInterval(this.scrambleInterval);
+        this.scrambleDisplay.set(target);
+        this.phraseIndex++;
+        this.scrambleTimeout = setTimeout(() => this.runScramble(), 2400);
+      }
+    }, 35);
+  }
+
+  scrollTo(id: string) {
+    const el = document.getElementById(id);
+    if (el) window.scrollTo({ top: el.offsetTop - 90, behavior: 'smooth' });
+  }
+
+  ngOnDestroy() {
+    clearInterval(this.scrambleInterval);
+    clearTimeout(this.scrambleTimeout);
   }
 }
