@@ -14,9 +14,9 @@ interface NavItem { id: string; label: string; }
   providers: [provideIcons({ tablerSun, tablerMoon })],
   template: `
     <nav class="fixed top-0 left-0 right-0 z-[100] flex justify-center px-6 pt-4 pointer-events-none">
-      <div class="pointer-events-auto w-full max-w-[1020px] flex items-center justify-between gap-2 pl-5 pr-2 py-2 rounded-full neo-border transition-shadow"
-           [class.glass-card]="true"
-           [class.shadow-[0_6px_0_rgba(0,0,0,0.1)]]="scrolled()">
+      <div class="pointer-events-auto w-full max-w-[1020px] flex items-center justify-between gap-2 pl-5 pr-2 py-2.5 rounded-full neo-border transition-all backdrop-filter backdrop-blur-[14px]"
+           [style.background]="scrolled() ? (themeService.isDark() ? 'rgba(28,28,32,0.75)' : 'rgba(255,255,255,0.70)') : (themeService.isDark() ? 'rgba(28,28,32,0.4)' : 'rgba(255,255,255,0.35)')"
+           [style.boxShadow]="scrolled() ? '0 6px 0 rgba(0,0,0,0.1)' : 'none'">
         <button (click)="scrollToTop()" class="font-[var(--font-display)] font-bold text-lg tracking-tight flex items-center gap-2 text-[var(--ink)]">
           <span class="w-2.5 h-2.5 rounded-[3px] bg-[var(--color-accent)] rotate-45 inline-block"></span>
           WA
@@ -25,10 +25,10 @@ interface NavItem { id: string; label: string; }
         <div class="flex items-center gap-0.5">
           @for (item of items; track item.id) {
             <button (click)="scrollTo(item.id)"
-                    class="relative px-3.5 py-2 rounded-full text-[13px] font-[var(--font-display)] font-medium transition-colors"
-                    [class.bg-[var(--ink)]]="active() === item.id"
-                    [class.text-[var(--bg)]]="active() === item.id"
-                    [class.text-[var(--ink)]]="active() !== item.id">
+                    class="relative px-3.5 py-2 rounded-full text-[13px] font-[var(--font-display)] font-medium"
+                    style="transition: all 0.25s cubic-bezier(0.34,1.56,0.64,1);"
+                    [style.background]="active() === item.id ? 'var(--ink)' : 'transparent'"
+                    [style.color]="active() === item.id ? 'var(--bg)' : 'var(--ink)'">
               {{ item.label }}
             </button>
           }
@@ -46,7 +46,10 @@ interface NavItem { id: string; label: string; }
             <span [class.opacity-100]="langService.currentLang() === 'es'" [class.opacity-35]="langService.currentLang() !== 'es'">ES</span>
           </button>
           <a href="https://amnotwallas.github.io/Portfolio/" target="_blank" rel="noopener"
-             class="font-[var(--font-display)] font-bold text-[13px] text-[#15151A] bg-[var(--color-lime)] neo-border rounded-full px-4 py-2 neo-shadow whitespace-nowrap">
+             style="font-family: var(--font-display); font-weight: 700; font-size: 13px; color: #15151A;
+                    background: var(--color-lime); border: 2px solid var(--ink);
+                    border-radius: 9999px; padding: 8px 16px;
+                    box-shadow: 3px 3px 0 var(--ink); white-space: nowrap;">
             {{ langService.t().resumeLabel }}
           </a>
         </div>

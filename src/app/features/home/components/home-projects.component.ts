@@ -22,18 +22,17 @@ import { Subscription } from 'rxjs';
       <div class="flex items-baseline justify-between mb-8 flex-wrap gap-3">
         <h2 class="font-[var(--font-display)] font-bold m-0 text-[var(--ink)]" style="font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.02em;">{{ langService.t().projectsTitle }}</h2>
         <div class="flex gap-2.5">
-          <button (click)="prev()" class="w-10.5 h-10.5 rounded-full neo-border bg-[var(--card-bg)] flex items-center justify-center neo-shadow"><ng-icon name="tablerChevronLeft" size="16"></ng-icon></button>
-          <button (click)="next()" class="w-10.5 h-10.5 rounded-full neo-border bg-[var(--card-bg)] flex items-center justify-center neo-shadow"><ng-icon name="tablerChevronRight" size="16"></ng-icon></button>
+          <button (click)="prev()" class="w-10.5 h-10.5 rounded-full neo-border bg-[var(--card-bg)] flex items-center justify-center hover:scale-110" style="box-shadow: 2px 2px 0 var(--ink); transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1);"><ng-icon name="tablerChevronLeft" size="16"></ng-icon></button>
+          <button (click)="next()" class="w-10.5 h-10.5 rounded-full neo-border bg-[var(--card-bg)] flex items-center justify-center hover:scale-110" style="box-shadow: 2px 2px 0 var(--ink); transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1);"><ng-icon name="tablerChevronRight" size="16"></ng-icon></button>
         </div>
       </div>
 
       @if (cvSignal(); as cv) {
         <div class="overflow-hidden rounded-[24px]">
-          <div class="flex transition-transform duration-500" [style.transform]="'translateX(-' + (index() * 100) + '%)'">
+          <div class="flex" style="transition: transform 0.55s cubic-bezier(0.22,1,0.36,1);" [style.transform]="'translateX(-' + (index() * 100) + '%)'">
             @for (item of cv.projects; track item.slug) {
               <div [id]="getProjectElementId(item.slug)" class="min-w-full p-1">
-                <div class="grid grid-cols-[1.1fr_1fr] rounded-[22px] neo-border-thick overflow-hidden glass-card neo-shadow"
-                     [class.animate-pulse]="isHighlighted(item.slug)">
+                <div class="grid grid-cols-[1.1fr_1fr] rounded-[22px] neo-border-thick overflow-hidden glass-card" style="box-shadow: 6px 6px 0 var(--ink);" [class.animate-pulse]="isHighlighted(item.slug)">
                   <div class="relative min-h-[260px] flex items-center justify-center border-r-2.5 border-[var(--ink)]"
                        [style.background]="'repeating-linear-gradient(135deg, var(--stripe-a), var(--stripe-a) 10px, var(--stripe-b) 10px, var(--stripe-b) 20px)'">
                     @if (resolvedImages[item.image]) {
