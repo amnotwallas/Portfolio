@@ -7,6 +7,7 @@ export interface Profile {
 export interface Basics {
   name: string;
   label: string;
+  hero_titles?: string[];
   summary: string;
   email: string;
   website: string;

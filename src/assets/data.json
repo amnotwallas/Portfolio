@@ -2,6 +2,12 @@
   "basics": {
     "name": "Walter Ambriz Reyna",
     "label": "Backend & AI Engineer",
+    "hero_titles": [
+      "AI & Backend Engineer",
+      "Building with LLMs & Python",
+      "System Architecture & APIs",
+      "Crafting Intelligent Solutions"
+    ],
     "summary": "Backend & AI Engineer, Mexico. I build production systems with LLMs using Python and FastAPI. I love creating agents, connecting models to real data, and solving hard problems with AI. Passionate about learning and shipping things that work.",
     "email": "walterardev@gmail.com",
     "website": "https://amnotwallas.github.io/Portfolio/",
@@ -100,7 +106,7 @@
       ],
       "metrics": [
         "400+ active users on production AI infrastructure",
-        "300+ wearable devices integrated via Junction API"
+        "300+ wearable devices"
       ]
     },
     {

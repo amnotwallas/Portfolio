@@ -83,13 +83,17 @@ export class HomeHeroComponent implements OnDestroy {
   private runScramble() {
     const data = this.cv();
     if (!data) return;
-    // Build identity phrases: basics label + unique work roles
-    const phrases: string[] = [];
-    if (data.basics.label) phrases.push(data.basics.label);
-    data.work.forEach(job => {
-      if (job.role && !phrases.includes(job.role)) phrases.push(job.role);
-    });
-    // Fallback to skill categories if nothing available
+    // Use hero_titles from data.json if defined, otherwise fallback to label and work roles
+    const phrases: string[] = data.basics.hero_titles && data.basics.hero_titles.length > 0
+      ? data.basics.hero_titles
+      : [];
+
+    if (phrases.length === 0) {
+      if (data.basics.label) phrases.push(data.basics.label);
+      data.work.forEach(job => {
+        if (job.role && !phrases.includes(job.role)) phrases.push(job.role);
+      });
+    }
     if (phrases.length === 0) data.skills.forEach(s => phrases.push(s.category));
 
     const target = phrases[this.phraseIndex % phrases.length];
