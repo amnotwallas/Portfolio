@@ -16,11 +16,11 @@ import { Subscription } from 'rxjs';
   template: `
     <div id="projects" class="w-full max-w-[980px] mx-auto py-5 px-6 pb-28">
       <div class="flex items-center gap-3 mb-11">
-        <span class="font-[var(--font-mono)] text-[11px] font-bold tracking-[0.2em] uppercase text-[var(--color-accent)]">{{ langService.t.projectsEyebrow }}</span>
+        <span class="font-[var(--font-mono)] text-[11px] font-bold tracking-[0.2em] uppercase text-[var(--color-accent)]">{{ langService.t().projectsEyebrow }}</span>
         <div class="flex-grow h-0.5 bg-[var(--ink)] opacity-15"></div>
       </div>
       <div class="flex items-baseline justify-between mb-8 flex-wrap gap-3">
-        <h2 class="font-[var(--font-display)] font-bold m-0 text-[var(--ink)]" style="font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.02em;">{{ langService.t.projectsTitle }}</h2>
+        <h2 class="font-[var(--font-display)] font-bold m-0 text-[var(--ink)]" style="font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.02em;">{{ langService.t().projectsTitle }}</h2>
         <div class="flex gap-2.5">
           <button (click)="prev()" class="w-10.5 h-10.5 rounded-full neo-border bg-[var(--card-bg)] flex items-center justify-center neo-shadow"><ng-icon name="tablerChevronLeft" size="16"></ng-icon></button>
           <button (click)="next()" class="w-10.5 h-10.5 rounded-full neo-border bg-[var(--card-bg)] flex items-center justify-center neo-shadow"><ng-icon name="tablerChevronRight" size="16"></ng-icon></button>
@@ -52,7 +52,7 @@ import { Subscription } from 'rxjs';
                       }
                     </div>
                     <div class="flex gap-2.5 mt-1.5 flex-wrap">
-                      <a [routerLink]="['/project', item.slug]" class="font-[var(--font-display)] font-bold text-[13.5px] bg-[var(--ink)] text-[var(--bg)] neo-border rounded-full px-4.5 py-2.5">{{ langService.t.viewCaseLabel }}</a>
+                      <a [routerLink]="['/project', item.slug]" class="font-[var(--font-display)] font-bold text-[13.5px] bg-[var(--ink)] text-[var(--bg)] neo-border rounded-full px-4.5 py-2.5">{{ langService.t().viewCaseLabel }}</a>
                       @if (item.links.github) {
                         <a [href]="item.links.github" target="_blank" rel="noopener" class="font-[var(--font-display)] font-bold text-[13.5px] glass-card text-[var(--ink)] rounded-full px-4.5 py-2.5">GitHub</a>
                       }

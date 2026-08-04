@@ -20,8 +20,8 @@ import { ChatResponse, ChatAction } from '../../models/portfolio.model';
       <div class="fixed bottom-22 right-5.5 z-[199] w-[min(360px,90vw)] rounded-[20px] glass-card neo-border neo-shadow overflow-hidden flex flex-col" style="animation: fadeUp 0.35s ease;">
         <div class="bg-[#15151A] text-[#FAFAF7] px-4 py-3.5 flex items-center justify-between">
           <div>
-            <div class="font-[var(--font-display)] font-bold text-[13.5px]">{{ langService.t.chatTitle }}</div>
-            <div class="font-[var(--font-mono)] text-[10px] text-[var(--color-lime)]">{{ langService.t.chatSubtitle }}</div>
+            <div class="font-[var(--font-display)] font-bold text-[13.5px]">{{ langService.t().chatTitle }}</div>
+            <div class="font-[var(--font-mono)] text-[10px] text-[var(--color-lime)]">{{ langService.t().chatSubtitle }}</div>
           </div>
           <button (click)="uiService.toggleChat()" class="w-6 h-6 flex items-center justify-center text-[#FAFAF7]">
             <ng-icon name="tablerX" size="14"></ng-icon>
@@ -30,7 +30,7 @@ import { ChatResponse, ChatAction } from '../../models/portfolio.model';
 
         <div class="p-4 max-h-64 overflow-y-auto flex flex-col gap-2.5">
           <p #chatResponseEl class="font-[var(--font-body)] text-[13px] text-[var(--ink)] leading-relaxed m-0 min-h-[3em]">
-            {{ langService.t.chatEmptyState }}
+            {{ langService.t().chatEmptyState }}
           </p>
         </div>
 
@@ -46,7 +46,7 @@ import { ChatResponse, ChatAction } from '../../models/portfolio.model';
 
         <form (submit)="onChatSubmit()" class="flex items-center gap-2.5 px-4 py-3 border-t border-[var(--glass-border)]">
           <input #chatInput type="text" [(ngModel)]="userQuery" name="query" autocomplete="off"
-                 [placeholder]="langService.t.chatPlaceholder"
+                 [placeholder]="langService.t().chatPlaceholder"
                  class="flex-grow bg-transparent border-none outline-none font-[var(--font-body)] text-[13px] text-[var(--ink)]">
           <button type="submit" [disabled]="isProcessing() || !userQuery.trim()"
                   class="p-2.5 rounded-full bg-[var(--color-accent)] text-white disabled:opacity-30">

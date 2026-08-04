@@ -28,7 +28,7 @@ import { tablerBrandGithub, tablerBrandLinkedin, tablerMail, tablerCheck, tabler
           <ng-icon [svg]="isCopied() ? icons.tablerCheck : icons.tablerMail" size="18"></ng-icon>
         </button>
       }
-      <button (click)="uiService.toggleChat()" [title]="langService.t.chatTitle" class="relative w-11.5 h-11.5 rounded-[14px] flex items-center justify-center bg-[#15151A] text-[#FAFAF7]">
+      <button (click)="uiService.toggleChat()" [title]="langService.t().chatTitle" class="relative w-11.5 h-11.5 rounded-[14px] flex items-center justify-center bg-[#15151A] text-[#FAFAF7]">
         <ng-icon [svg]="icons.tablerMessageCircle" size="18"></ng-icon>
         <span class="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-[#4ADE80] border-2 border-[var(--bg)]"></span>
       </button>

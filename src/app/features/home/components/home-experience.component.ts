@@ -12,10 +12,10 @@ import { Subscription } from 'rxjs';
   template: `
     <div id="experience" class="w-full max-w-[900px] mx-auto py-12 px-6">
       <div class="flex items-center gap-3 mb-11">
-        <span class="font-[var(--font-mono)] text-[11px] font-bold tracking-[0.2em] uppercase text-[var(--color-accent)]">{{ langService.t.experienceEyebrow }}</span>
+        <span class="font-[var(--font-mono)] text-[11px] font-bold tracking-[0.2em] uppercase text-[var(--color-accent)]">{{ langService.t().experienceEyebrow }}</span>
         <div class="flex-grow h-0.5 bg-[var(--ink)] opacity-15"></div>
       </div>
-      <h2 class="font-[var(--font-display)] font-bold mb-12 text-[var(--ink)]" style="font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.02em;">{{ langService.t.experienceTitle }}</h2>
+      <h2 class="font-[var(--font-display)] font-bold mb-12 text-[var(--ink)]" style="font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.02em;">{{ langService.t().experienceTitle }}</h2>
 
       @if (cvSignal(); as cv) {
         @for (job of cv.work; track $index) {

@@ -47,7 +47,7 @@ interface NavItem { id: string; label: string; }
           </button>
           <a href="https://amnotwallas.github.io/Portfolio/" target="_blank" rel="noopener"
              class="font-[var(--font-display)] font-bold text-[13px] text-[#15151A] bg-[var(--color-lime)] neo-border rounded-full px-4 py-2 neo-shadow whitespace-nowrap">
-            {{ langService.t.resumeLabel }}
+            {{ langService.t().resumeLabel }}
           </a>
         </div>
       </div>
@@ -64,7 +64,7 @@ export class NavComponent implements OnInit, OnDestroy {
   private observer?: IntersectionObserver;
 
   get items(): NavItem[] {
-    const t = this.langService.t.nav;
+    const t = this.langService.t().nav;
     return [
       { id: 'home', label: t.home },
       { id: 'experience', label: t.experience },

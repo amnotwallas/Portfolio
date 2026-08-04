@@ -6,7 +6,7 @@
     <div class="mb-6">
       <button (click)="goBack()" class="group flex items-center gap-2 text-[var(--ink-soft)] hover:text-[var(--ink)] transition-colors font-[var(--font-display)] font-bold text-sm w-fit">
         <ng-icon name="tablerArrowLeft" size="16" class="group-hover:-translate-x-1 transition-transform"></ng-icon>
-        <span class="border-b border-transparent group-hover:border-[var(--ink)]">{{ langService.t.backToPortfolio }}</span>
+        <span class="border-b border-transparent group-hover:border-[var(--ink)]">{{ langService.t().backToPortfolio }}</span>
       </button>
     </div>
 
@@ -109,14 +109,14 @@
               <!-- Overview & Stack -->
               <div class="space-y-10">
                 <div class="space-y-4">
-                  <h2 class="font-[var(--font-display)] text-[22px] font-bold m-0 mb-2 text-[var(--ink)]">{{ langService.t.overviewLabel }}</h2>
+                  <h2 class="font-[var(--font-display)] text-[22px] font-bold m-0 mb-2 text-[var(--ink)]">{{ langService.t().overviewLabel }}</h2>
                   <p class="text-[16px] leading-relaxed text-[var(--ink-soft)] m-0">
                     {{item.long_description}}
                   </p>
                 </div>
 
                 <div class="space-y-4">
-                  <h2 class="font-[var(--font-display)] text-[22px] font-bold m-0 mb-2 text-[var(--ink)]">{{ langService.t.stackLabel }}</h2>
+                  <h2 class="font-[var(--font-display)] text-[22px] font-bold m-0 mb-2 text-[var(--ink)]">{{ langService.t().stackLabel }}</h2>
                   <div class="flex flex-wrap gap-3">
                     @for (tech of item.stack; track $index) {
                       <span class="font-[var(--font-mono)] text-[11px] px-3 py-1.5 rounded-lg bg-[var(--chip-bg)] border border-[var(--chip-border)] text-[var(--ink)] uppercase tracking-wide">
@@ -128,7 +128,7 @@
 
                 @if (item.highlights?.length) {
                   <div class="space-y-4">
-                    <h2 class="font-[var(--font-display)] text-[22px] font-bold m-0 mb-2 text-[var(--ink)]">{{ langService.t.highlightsLabel }}</h2>
+                    <h2 class="font-[var(--font-display)] text-[22px] font-bold m-0 mb-2 text-[var(--ink)]">{{ langService.t().highlightsLabel }}</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
                       @for (h of item.highlights; track $index) {
                         <div class="p-4.5 rounded-2xl neo-border bg-[var(--card-bg)] shadow-[3px_3px_0_rgba(21,21,26,0.15)] text-sm leading-relaxed text-[var(--ink-soft)]">{{ h }}</div>
@@ -143,7 +143,7 @@
                       <div class="p-6 rounded-[18px] glass-card space-y-2.5">
                         <h3 class="font-[var(--font-mono)] text-[11px] font-bold uppercase tracking-widest text-[var(--color-accent)] flex items-center gap-2 m-0">
                           <ng-icon name="tablerAlertTriangle" size="14"></ng-icon>
-                          {{ langService.t.challengeLabel }}
+                          {{ langService.t().challengeLabel }}
                         </h3>
                         <p class="text-sm leading-relaxed text-[var(--ink-soft)] m-0">{{item.metadata.challenges}}</p>
                       </div>
@@ -152,7 +152,7 @@
                       <div class="p-6 rounded-[18px] glass-card space-y-2.5">
                         <h3 class="font-[var(--font-mono)] text-[11px] font-bold uppercase tracking-widest text-[var(--color-accent)] flex items-center gap-2 m-0">
                           <ng-icon name="tablerCircleCheck" size="14"></ng-icon>
-                          {{ langService.t.solutionLabel }}
+                          {{ langService.t().solutionLabel }}
                         </h3>
                         <p class="text-sm leading-relaxed text-[var(--ink-soft)] m-0">{{item.metadata.solutions}}</p>
                       </div>
@@ -240,7 +240,7 @@
           <!-- Back to portfolio CTA -->
           <div class="text-center py-16">
             <button (click)="goBack()" class="inline-flex items-center gap-2 font-[var(--font-display)] font-bold text-sm bg-[var(--color-lime)] text-[#15151A] neo-border rounded-full px-7 py-3.5 neo-shadow">
-              {{ langService.t.backToPortfolio }}
+              {{ langService.t().backToPortfolio }}
             </button>
           </div>
         </div>

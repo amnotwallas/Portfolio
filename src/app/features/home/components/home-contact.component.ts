@@ -11,7 +11,7 @@ import { Profile } from '../../../shared/models/portfolio.model';
   template: `
     @if (cv(); as data) {
       <section id="contact" class="relative z-[1] py-22.5 px-6 pb-40 text-center bg-[#15151A] text-[#FAFAF7]">
-        <h2 class="font-[var(--font-display)] font-bold m-0 mb-4.5" style="font-size: clamp(30px, 5vw, 54px); letter-spacing: -0.02em;">{{ langService.t.contactTitle }}</h2>
+        <h2 class="font-[var(--font-display)] font-bold m-0 mb-4.5" style="font-size: clamp(30px, 5vw, 54px); letter-spacing: -0.02em;">{{ langService.t().contactTitle }}</h2>
         <div class="flex gap-3.5 justify-center flex-wrap mb-12.5">
           @if (data.basics.email) {
             <a [href]="'mailto:' + data.basics.email" class="font-[var(--font-display)] font-bold text-[15px] bg-[var(--color-lime)] text-[#15151A] neo-border rounded-full px-6.5 py-3.5 shadow-[4px_4px_0_#FAFAF7]">{{ data.basics.email }}</a>

@@ -13,10 +13,10 @@ const BENTO_VARS = ['--bento-1', '--bento-2', '--bento-3', '--bento-4', '--bento
   template: `
     <div id="skills" class="w-full max-w-[980px] mx-auto py-5 px-6 pb-24">
       <div class="flex items-center gap-3 mb-11">
-        <span class="font-[var(--font-mono)] text-[11px] font-bold tracking-[0.2em] uppercase text-[var(--color-accent)]">{{ langService.t.skillsEyebrow }}</span>
+        <span class="font-[var(--font-mono)] text-[11px] font-bold tracking-[0.2em] uppercase text-[var(--color-accent)]">{{ langService.t().skillsEyebrow }}</span>
         <div class="flex-grow h-0.5 bg-[var(--ink)] opacity-15"></div>
       </div>
-      <h2 class="font-[var(--font-display)] font-bold mb-8 text-[var(--ink)]" style="font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.02em;">{{ langService.t.skillsTitle }}</h2>
+      <h2 class="font-[var(--font-display)] font-bold mb-8 text-[var(--ink)]" style="font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.02em;">{{ langService.t().skillsTitle }}</h2>
 
       <div class="grid grid-cols-6 gap-4" style="grid-auto-rows: minmax(120px, auto);">
         @for (cat of categories(); track cat.name) {

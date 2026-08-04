@@ -13,7 +13,7 @@ const SCRAMBLE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
     <div class="w-full flex flex-col items-center text-center px-6">
       @if (cv(); as data) {
         <div class="inline-block text-left mb-2">
-          <div class="font-[var(--font-display)] text-xl font-medium text-[var(--ink-soft)] mb-2">{{ langService.t.heroPre }}</div>
+          <div class="font-[var(--font-display)] text-xl font-medium text-[var(--ink-soft)] mb-2">{{ langService.t().heroPre }}</div>
           <div class="relative inline-block mb-5">
             <h1 class="font-[var(--font-display)] font-bold leading-none m-0 text-[var(--ink)]" style="font-size: clamp(48px, 9vw, 104px); letter-spacing: -0.03em;">
               {{ data.basics.name }}
@@ -41,11 +41,11 @@ const SCRAMBLE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
         <div class="flex gap-3.5 mt-8 flex-wrap justify-center">
           <button (click)="scrollTo('projects')"
                   class="font-[var(--font-display)] font-bold text-[15px] bg-[var(--ink)] text-[var(--bg)] neo-border rounded-full px-6.5 py-3.5 neo-shadow-lime">
-            {{ langService.t.ctaPrimary }}
+            {{ langService.t().ctaPrimary }}
           </button>
           <button (click)="scrollTo('contact')"
                   class="font-[var(--font-display)] font-bold text-[15px] glass-card text-[var(--ink)] rounded-full px-6.5 py-3.5">
-            {{ langService.t.ctaSecondary }}
+            {{ langService.t().ctaSecondary }}
           </button>
         </div>
       } @else {

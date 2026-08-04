@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, computed, signal } from '@angular/core';
 
 export type Language = 'en' | 'es';
 
@@ -69,7 +69,5 @@ export class LanguageService {
     this.currentLang.update(lang => lang === 'en' ? 'es' : 'en');
   }
 
-  get t() {
-    return this.translations[this.currentLang()];
-  }
+  t = computed(() => this.translations[this.currentLang()]);
 }
