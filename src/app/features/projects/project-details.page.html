@@ -74,9 +74,9 @@
                       <img [src]="resolvedImages[item.image]"
                           loading="lazy"
                           (load)="onImageLoad(item.image)"
-                          class="w-full h-full object-cover object-top transition-all"
+                          class="w-full h-full object-contain p-2 transition-all"
                           [class.opacity-0]="!imagesLoaded[item.image]"
-                          [class.opacity-90]="imagesLoaded[item.image]"
+                          [class.opacity-100]="imagesLoaded[item.image]"
                           [alt]="item.name">
                       @if (!imagesLoaded[item.image]) {
                         <div class="absolute inset-0 skeleton"></div>
@@ -85,7 +85,6 @@
                       <div class="absolute inset-0 skeleton"></div>
                     }
                   }
-                  <div class="absolute inset-0 z-20 pointer-events-none bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
                 </div>
 
                 <!-- Navigation Controls -->
