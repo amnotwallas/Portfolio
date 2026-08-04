@@ -1,13 +1,15 @@
 <div class="ambient-blob-1"></div>
 <div class="ambient-blob-2"></div>
 
-<app-nav/>
+@if (!isProjectRoute()) {
+  <app-nav/>
+}
 
 @defer (on idle) {
   <app-chat/>
 }
 
-<main class="main">
+<main class="main" [class.lang-fade]="langService.isTransitioning()">
   <router-outlet />
 </main>
 

@@ -69,8 +69,12 @@ export class LanguageService {
     }
   };
 
+  isTransitioning = signal(false);
+
   toggleLanguage() {
     this.currentLang.update(lang => lang === 'en' ? 'es' : 'en');
+    this.isTransitioning.set(true);
+    setTimeout(() => this.isTransitioning.set(false), 350);
   }
 
   t = computed(() => this.translations[this.currentLang()]);

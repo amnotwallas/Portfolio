@@ -33,10 +33,10 @@ import { Subscription } from 'rxjs';
             @for (item of cv.projects; track item.slug) {
               <div [id]="getProjectElementId(item.slug)" class="min-w-full p-1">
                 <div class="grid grid-cols-[1.1fr_1fr] rounded-[22px] neo-border-thick overflow-hidden glass-card" style="box-shadow: 6px 6px 0 var(--ink);" [class.animate-pulse]="isHighlighted(item.slug)">
-                  <div class="relative min-h-[260px] flex items-center justify-center border-r-2.5 border-[var(--ink)]"
+                  <div class="relative min-h-[260px] aspect-[4/3] flex items-center justify-center border-r-2.5 border-[var(--ink)] overflow-hidden"
                        [style.background]="'repeating-linear-gradient(135deg, var(--stripe-a), var(--stripe-a) 10px, var(--stripe-b) 10px, var(--stripe-b) 20px)'">
                     @if (resolvedImages[item.image]) {
-                      <img [src]="resolvedImages[item.image]" [alt]="item.name" class="w-full h-full object-cover" />
+                      <img [src]="resolvedImages[item.image]" [alt]="item.name" class="w-full h-full object-cover aspect-[4/3]" />
                     }
                     <span class="absolute top-3.5 left-3.5 font-[var(--font-display)] font-bold text-[11px] tracking-wide bg-[var(--color-lime)] text-[#15151A] neo-border rounded-full px-3 py-1.5">
                       {{ item.metadata.status }}
@@ -50,10 +50,22 @@ import { Subscription } from 'rxjs';
                         <span class="font-[var(--font-mono)] text-[10.5px] px-2.5 py-1 rounded-md bg-[var(--chip-bg)] border border-[var(--chip-border)] text-[var(--ink)]">{{ s }}</span>
                       }
                     </div>
-                    <div class="flex gap-2.5 mt-1.5 flex-wrap">
-                      <a [routerLink]="['/project', item.slug]" class="font-[var(--font-display)] font-bold text-[13.5px] bg-[var(--ink)] text-[var(--bg)] neo-border rounded-full px-4.5 py-2.5">{{ langService.t().viewCaseLabel }}</a>
+                    <div class="flex gap-2.5 mt-1.5 flex-wrap items-center">
+                      <a [routerLink]="['/project', item.slug]"
+                         style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 13.5px;
+                                background: #C6FF6B; color: #15151A; border: 2px solid var(--ink);
+                                border-radius: 9999px; padding: 10px 18px; box-shadow: 3px 3px 0 var(--ink);"
+                         class="hover:scale-[1.03] transition-transform inline-block">
+                        {{ langService.t().viewCaseLabel }}
+                      </a>
                       @if (item.links.github) {
-                        <a [href]="item.links.github" target="_blank" rel="noopener" class="font-[var(--font-display)] font-bold text-[13.5px] glass-card text-[var(--ink)] rounded-full px-4.5 py-2.5">GitHub</a>
+                        <a [href]="item.links.github" target="_blank" rel="noopener"
+                           style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 13.5px;
+                                  background: var(--glass); color: var(--ink); border: 2px solid var(--ink);
+                                  border-radius: 9999px; padding: 10px 18px;"
+                           class="hover:scale-[1.03] transition-transform inline-block">
+                          GitHub
+                        </a>
                       }
                     </div>
                   </div>
