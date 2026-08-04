@@ -1,123 +1,67 @@
-import { Component, inject, signal, ChangeDetectionStrategy, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NgIcon, provideIcons } from '@ng-icons/core';
-import { tablerBriefcase, tablerChevronDown, tablerChevronUp } from '@ng-icons/tabler-icons';
 import { PortfolioService } from '../../../core/services/portfolio.service';
 import { UiService } from '../../../core/services/ui.service';
+import { LanguageService } from '../../../core/services/language.service';
 import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home-experience',
   standalone: true,
-  imports: [CommonModule, NgIcon],
-  providers: [provideIcons({ tablerBriefcase, tablerChevronDown, tablerChevronUp })],
+  imports: [CommonModule],
   template: `
-    <div class="w-full max-w-4xl mx-auto py-12 px-6 group">
-      <div class="flex items-center gap-4 mb-12">
-        <div class="section-header-block">JOURNAL // EXPERIENCE</div>
-        <div class="h-[1px] flex-grow bg-retro-yellow/10 group-hover:bg-retro-yellow/30 transition-colors"></div>
+    <div id="experience" class="w-full max-w-[900px] mx-auto py-12 px-6">
+      <div class="flex items-center gap-3 mb-11">
+        <span class="font-[var(--font-mono)] text-[11px] font-bold tracking-[0.2em] uppercase text-[var(--color-accent)]">{{ langService.t.experienceEyebrow }}</span>
+        <div class="flex-grow h-0.5 bg-[var(--ink)] opacity-15"></div>
       </div>
-      
-      @if (cvSignal(); as cv) {
-        <div class="relative space-y-8">
-          @if (cv.work.length > 1) {
-            <div class="absolute left-[11px] top-7 bottom-7 w-[2px] bg-retro-yellow z-0 opacity-20 shadow-[0_0_10px_rgba(255,176,0,0.1)]"></div>
-          }
+      <h2 class="font-[var(--font-display)] font-bold mb-12 text-[var(--ink)]" style="font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.02em;">{{ langService.t.experienceTitle }}</h2>
 
-          @for (item of cv.work; track $index) {
-            <div class="relative pl-14 sm:pl-24" [id]="getItemElementId(item.company)">
-              <!-- Timeline Dot -->
-              <div class="absolute left-0 top-7 w-6 h-6 flex items-center justify-center -translate-x-[1px] z-10 bg-retro-dark">
-                <div class="w-4 h-4 rounded-full bg-retro-dark border-2 transition-all duration-300"
-                    [class.border-retro-bright]="isExpanded($index)"
-                    [class.border-retro-yellow/30]="!isExpanded($index)">
-                  @if (isExpanded($index)) {
-                    <div class="absolute inset-[3px] rounded-full bg-retro-bright shadow-[0_0_15px_rgba(255,213,79,0.8)]"></div>
+      @if (cvSignal(); as cv) {
+        @for (job of cv.work; track $index) {
+          <div [id]="getItemElementId(job.company)" class="grid grid-cols-[64px_1fr] gap-5 mb-9 items-start">
+            <div class="flex flex-col items-center">
+              <div class="w-14 h-14 rounded-[14px] neo-border bg-[var(--card-bg)] overflow-hidden flex items-center justify-center neo-shadow">
+                @if (job.image) {
+                  <img [src]="job.image" [alt]="job.company" class="w-full h-full object-contain p-1.5" />
+                }
+              </div>
+              <div class="w-0.5 flex-grow bg-[var(--ink)] opacity-10 mt-2 min-h-[40px]"></div>
+            </div>
+            <div class="p-6 rounded-[18px] glass-card transition-all duration-500"
+                 [class.animate-pulse]="isHighlighted(job.company)">
+              <div class="flex flex-wrap items-baseline justify-between gap-2 mb-1">
+                <h3 class="font-[var(--font-display)] text-xl font-bold m-0 text-[var(--ink)]">{{ job.role }}</h3>
+                <span class="font-[var(--font-mono)] text-xs text-[var(--ink-soft)]">{{ job.period }}</span>
+              </div>
+              <div class="font-[var(--font-display)] text-sm font-semibold text-[var(--color-accent)] mb-3">{{ job.company }}</div>
+              <p class="text-[15px] leading-relaxed text-[var(--ink-soft)] mb-3.5">{{ job.summary }}</p>
+              @if (job.highlights?.length) {
+                <div class="flex flex-col gap-2 mb-3.5">
+                  @for (ach of job.highlights; track $index) {
+                    <div class="flex gap-2.5 text-sm leading-relaxed text-[var(--ink-soft)]">
+                      <span class="text-[var(--color-accent)] font-bold flex-shrink-0">&#9642;</span>{{ ach }}
+                    </div>
                   }
                 </div>
-              </div>
-
-              <!-- Accordion Item -->
-              <div class="glass-effect rounded-xl border overflow-hidden transform-gpu transition-all duration-500 relative"
-                  [class.animate-neural-highlight]="isHighlighted(item.company)"
-                  [class.border-retro-yellow/40]="isExpanded($index) && !isHighlighted(item.company)"
-                  [class.border-retro-yellow/5]="!isExpanded($index) && !isHighlighted(item.company)"
-                  [class.shadow-[0_0_30px_rgba(255,176,0,0.05)]]="isExpanded($index)"
-                  [class.scale-[1.02]]="isHighlighted(item.company)"
-                  [class.z-20]="isHighlighted(item.company)">
-                
-                @if (isHighlighted(item.company)) {
-                  <div class="absolute top-2 right-4 font-mono text-[8px] text-retro-yellow animate-pulse tracking-widest uppercase">
-                    Neural_Focus_Active
-                  </div>
-                }
-
-                <!-- Header -->
-                <div (click)="toggleItem($index)" 
-                    class="p-5 sm:p-7 cursor-pointer flex justify-between items-center gap-6 group/header">
-                  
-                  <div class="flex items-center gap-6 flex-grow">
-                    <div class="hidden sm:flex w-12 h-12 rounded-lg bg-retro-dark border border-retro-yellow/10 items-center justify-center overflow-hidden flex-shrink-0 group-hover/header:border-retro-yellow/40 transition-all">
-                      @if (item.image) {
-                        <img [src]="item.image" class="w-full h-full object-cover opacity-40 group-hover/header:opacity-100 transition-opacity" [alt]="item.company">
-                      } @else {
-                        <ng-icon name="tablerBriefcase" class="text-retro-yellow/20" size="24"></ng-icon>
-                      }
-                    </div>
-
-                    <div class="flex-grow">
-                      <div class="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4 mb-1">
-                        <h3 class="text-lg font-bold transition-colors font-mono tracking-tight"
-                            [class.text-retro-bright]="isExpanded($index) || isHighlighted(item.company)"
-                            [class.text-glow-bright]="isExpanded($index) || isHighlighted(item.company)">
-                          {{item.role}}
-                        </h3>
-                        <span class="text-[10px] font-mono text-retro-yellow/20 uppercase tracking-widest hidden sm:block">::</span>
-                        <p class="text-xs font-mono uppercase tracking-[0.2em] font-medium"
-                          [class.text-retro-yellow]="isExpanded($index) || isHighlighted(item.company)">
-                          {{item.company}}
-                        </p>
-                      </div>
-                      <div class="sm:hidden text-[9px] font-mono text-retro-yellow/50 uppercase tracking-widest">
-                        {{item.period}}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="flex items-center gap-6">
-                    <span class="hidden sm:block text-[10px] font-mono text-retro-yellow/30 uppercase tracking-[0.2em] whitespace-nowrap">
-                      {{item.period}}
-                    </span>
-                    <ng-icon [name]="isExpanded($index) ? 'tablerChevronUp' : 'tablerChevronDown'" 
-                            class="text-retro-yellow/20 group-hover/header:text-retro-yellow transition-all duration-300"
-                            size="20"></ng-icon>
-                  </div>
+              }
+              @if (job.tags?.length) {
+                <div class="flex flex-wrap gap-2">
+                  @for (tag of job.tags; track $index) {
+                    <span class="font-[var(--font-mono)] text-[11px] font-medium px-2.5 py-1 rounded-lg bg-[var(--chip-bg)] border border-[var(--chip-border)] text-[var(--ink)]">{{ tag }}</span>
+                  }
                 </div>
-
-                <div class="grid transition-[grid-template-rows,opacity] duration-300 ease-in-out"
-                    [class.grid-rows-[1fr]]="isExpanded($index)"
-                    [class.grid-rows-[0fr]]="!isExpanded($index)"
-                    [class.opacity-100]="isExpanded($index)"
-                    [class.opacity-0]="!isExpanded($index)">
-                  <div class="overflow-hidden">
-                    <div class="px-5 pb-8 sm:px-10 sm:pb-10 border-t border-retro-yellow/10 pt-8">
-                      <p class="font-light text-base text-retro-font/80 leading-relaxed mb-8 max-w-2xl">
-                        {{item.summary}}
-                      </p>
-                      <div class="flex flex-wrap gap-2">
-                        @for (tech of item.highlights; track $index) {
-                          <span class="text-[10px] font-mono uppercase tracking-widest px-3 py-1.5 rounded-lg bg-retro-yellow/5 text-retro-yellow/70 border border-retro-yellow/10 hover:border-retro-yellow/30 hover:text-retro-yellow transition-all cursor-default">
-                            {{tech}}
-                          </span>
-                        }
-                      </div>
-                    </div>
-                  </div>
+              }
+              @if (job.metrics?.length) {
+                <div class="flex flex-wrap gap-2.5 mt-4">
+                  @for (m of job.metrics; track $index) {
+                    <span class="font-[var(--font-display)] text-[13px] font-bold px-3 py-1.5 rounded-full bg-[var(--color-lime)] text-[#15151A] neo-border">{{ m }}</span>
+                  }
                 </div>
-              </div>
+              }
             </div>
-          }
-        </div>
+          </div>
+        }
       }
     </div>
   `,
@@ -127,18 +71,16 @@ export class HomeExperienceComponent implements OnInit, OnDestroy {
   private portfolioService = inject(PortfolioService);
   private uiService = inject(UiService);
   private cdr = inject(ChangeDetectorRef);
-  
+  langService = inject(LanguageService);
+
   cvSignal = this.portfolioService.portfolioDataSignal;
-  expandedIndex = signal<number | null>(0);
-  highlightedExpId = signal<string | null>(null);
+  highlightedExpId: string | null = null;
   private sub = new Subscription();
 
   ngOnInit() {
     this.sub.add(
       this.uiService.highlight$.subscribe(event => {
-        if (event.type === 'EXPERIENCE') {
-          this.processHighlight(event.id);
-        }
+        if (event.type === 'EXPERIENCE') this.processHighlight(event.id);
       })
     );
   }
@@ -148,59 +90,31 @@ export class HomeExperienceComponent implements OnInit, OnDestroy {
   }
 
   isHighlighted(company: string): boolean {
-    return this.highlightedExpId() === this.getItemElementId(company);
+    return this.highlightedExpId === this.getItemElementId(company);
   }
 
   private processHighlight(id: string) {
     const data = this.cvSignal();
-    if (!data) {
-      setTimeout(() => this.processHighlight(id), 500);
-      return;
-    }
+    if (!data) { setTimeout(() => this.processHighlight(id), 500); return; }
 
     const targetId = id.toLowerCase().trim();
-    let index = data.work.findIndex(w => {
+    const match = data.work.find(w => {
       const company = w.company.toLowerCase().trim();
-      return company === targetId || 
-             company.includes(targetId) || 
-             targetId.includes(company) ||
-             company.replace(/\s+/g, '') === targetId.replace(/\s+/g, '');
+      return company === targetId || company.includes(targetId) || targetId.includes(company);
     });
 
-    if (index !== -1) {
-      const elementId = this.getItemElementId(data.work[index].company);
-      
-      // Reset first to force re-animation if same ID
-      this.highlightedExpId.set(null);
+    if (match) {
+      const elementId = this.getItemElementId(match.company);
+      this.highlightedExpId = null;
       this.cdr.markForCheck();
-
       setTimeout(() => {
-        this.highlightedExpId.set(elementId);
-        this.expandedIndex.set(index);
+        this.highlightedExpId = elementId;
         this.cdr.markForCheck();
-
-        setTimeout(() => {
-          const el = document.getElementById(elementId);
-          if (el) {
-            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          }
-        }, 100);
-
-        // Duración de la animación: 6 segundos para que sea muy visible
-        setTimeout(() => {
-          this.highlightedExpId.set(null);
-          this.cdr.markForCheck();
-        }, 6000);
+        const el = document.getElementById(elementId);
+        el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(() => { this.highlightedExpId = null; this.cdr.markForCheck(); }, 6000);
       }, 50);
     }
-  }
-
-  toggleItem(index: number) {
-    this.expandedIndex.update(v => v === index ? null : index);
-  }
-
-  isExpanded(index: number): boolean {
-    return this.expandedIndex() === index;
   }
 
   ngOnDestroy() {
