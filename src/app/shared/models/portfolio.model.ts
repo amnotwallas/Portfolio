@@ -1,20 +1,3 @@
-export interface SystemConfig {
-  id: string;
-  version: string;
-  status: string;
-  location: {
-    city: string;
-    coords: string;
-    timezone: string;
-  };
-  uptime_start: string;
-}
-
-export interface TerminalConfig {
-  command_suggestions: string[];
-  boot_sequence: string[];
-}
-
 export interface Profile {
   network: string;
   username: string;
@@ -24,11 +7,13 @@ export interface Profile {
 export interface Basics {
   name: string;
   label: string;
-  system_label: string;
   summary: string;
   email: string;
   website: string;
   url: string;
+  location?: string;
+  open_to_relocate?: boolean;
+  open_to?: string;
   profiles: Profile[];
 }
 
@@ -43,7 +28,8 @@ export interface WorkExperience {
   period: string;
   summary: string;
   image?: string;
-  highlights: string[];
+  highlights?: string[];   // used as tech tags
+  achievements?: string[]; // bullet points
   tags?: string[];
   metrics?: string[];
 }
@@ -69,7 +55,7 @@ export interface Project {
   highlights?: string[];
   links: {
     github: string;
-    demo: string | null;
+    demo?: string | null;
   };
   metadata: ProjectMetadata;
 }
@@ -78,6 +64,7 @@ export interface Education {
   institution: string;
   degree: string;
   period: string;
+  note?: string;
 }
 
 export interface Language {
@@ -86,8 +73,6 @@ export interface Language {
 }
 
 export interface PortfolioData {
-  system: SystemConfig;
-  terminal: TerminalConfig;
   basics: Basics;
   skills: SkillCategory[];
   work: WorkExperience[];

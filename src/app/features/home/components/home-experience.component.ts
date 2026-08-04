@@ -36,18 +36,18 @@ import { Subscription } from 'rxjs';
               </div>
               <div class="font-[var(--font-display)] text-sm font-semibold text-[var(--color-accent)] mb-3">{{ job.company }}</div>
               <p class="text-[15px] leading-relaxed text-[var(--ink-soft)] mb-3.5">{{ job.summary }}</p>
-              @if (job.highlights?.length) {
+              @if (job.achievements?.length) {
                 <div class="flex flex-col gap-2 mb-3.5">
-                  @for (ach of job.highlights; track $index) {
+                  @for (ach of job.achievements; track $index) {
                     <div class="flex gap-2.5 text-sm leading-relaxed text-[var(--ink-soft)]">
                       <span class="text-[var(--color-accent)] font-bold flex-shrink-0">&#9642;</span>{{ ach }}
                     </div>
                   }
                 </div>
               }
-              @if (job.tags?.length) {
+              @if (job.highlights?.length) {
                 <div class="flex flex-wrap gap-2">
-                  @for (tag of job.tags; track $index) {
+                  @for (tag of job.highlights; track $index) {
                     <span class="font-[var(--font-mono)] text-[11px] font-medium px-2.5 py-1 rounded-lg bg-[var(--chip-bg)] border border-[var(--chip-border)] text-[var(--ink)]">{{ tag }}</span>
                   }
                 </div>

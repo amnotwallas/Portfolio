@@ -16,6 +16,9 @@ import { LanguageService } from '../../../core/services/language.service';
               <div class="font-[var(--font-mono)] text-[11px] font-bold tracking-[0.15em] uppercase text-[var(--color-accent)] mb-2.5">{{ langService.t().educationEyebrow }}</div>
               <h3 class="font-[var(--font-display)] text-[19px] font-bold m-0 mb-1.5 text-[var(--ink)]">{{ edu.degree }}</h3>
               <div class="text-sm text-[var(--ink-soft)] mb-2">{{ edu.institution }} &middot; {{ edu.period }}</div>
+              @if (edu.note) {
+                <p class="text-sm leading-relaxed text-[var(--ink-soft)] m-0">{{ edu.note }}</p>
+              }
             </div>
           }
           @if (data.languages.length) {

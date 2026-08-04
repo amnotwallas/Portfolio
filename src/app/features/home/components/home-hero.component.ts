@@ -18,10 +18,11 @@ const SCRAMBLE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
             <h1 style="font-family: 'Space Grotesk', sans-serif; font-size: clamp(48px, 9vw, 104px); font-weight: 700; letter-spacing: -0.03em; line-height: 1; margin: 0; color: var(--ink);">
               {{ displayName(data.basics.name) }}
             </h1>
-            @if (data.system.status) {
+            @if (data.basics.open_to_relocate || data.basics.label) {
               <div class="absolute -top-4.5 -right-17 rotate-[-8deg]" style="animation: splashPop 1.6s ease-in-out infinite;">
-                <span class="font-[var(--font-display)] font-bold text-xs tracking-wide bg-[var(--color-lime)] text-[#15151A] neo-border rounded-lg px-2.5 py-1.5 neo-shadow whitespace-nowrap inline-block">
-                  {{ data.system.status }}
+                <span class="font-bold text-xs tracking-wide bg-[var(--color-lime)] text-[#15151A] neo-border rounded-lg px-2.5 py-1.5 neo-shadow whitespace-nowrap inline-block"
+                      style="font-family: 'Space Grotesk', sans-serif;">
+                  OPEN TO WORK
                 </span>
               </div>
             }

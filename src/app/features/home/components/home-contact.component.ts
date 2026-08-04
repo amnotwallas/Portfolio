@@ -46,7 +46,7 @@ import { LanguageService } from '../../../core/services/language.service';
         </div>
         <div style="font-family: var(--font-mono); font-size: 11.5px; color: rgba(250,250,247,0.35);">
           &copy; {{ currentYear }} {{ data.basics.name }}
-          @if (data.system?.location?.city) { &middot; {{ data.system.location.city }} }
+          @if (data.basics.location) { &middot; {{ data.basics.location }} }
         </div>
       </section>
 

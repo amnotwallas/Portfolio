@@ -73,7 +73,7 @@ export class ChatComponent implements AfterViewInit, OnDestroy {
   isProcessing = this.chatService.isProcessing;
   cvSignal = this.portfolioService.portfolioDataSignal;
 
-  suggestions = computed(() => this.cvSignal()?.terminal?.command_suggestions ?? []);
+  suggestions = computed(() => ([] as string[]));
 
   ngAfterViewInit() {}
   ngOnDestroy() {}
