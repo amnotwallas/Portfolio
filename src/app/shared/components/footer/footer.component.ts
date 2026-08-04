@@ -35,7 +35,7 @@ import { tablerBrandGithub, tablerBrandLinkedin, tablerMail, tablerCheck, tabler
         </button>
       }
       <a href="https://amnotwallas.github.io/Portfolio/" target="_blank" rel="noopener" title="CV"
-         class="w-11.5 h-11.5 rounded-[14px] flex items-center justify-center bg-[var(--color-lime)] text-[#15151A] font-[var(--font-mono)] font-bold text-xs neo-border hover:scale-110"
+         class="w-11.5 h-11.5 rounded-[14px] flex items-center justify-center font-[var(--font-mono)] font-bold text-xs bg-[#C6FF6B] text-[#15151A] border-2 border-[#15151A] dark:bg-[#15151A] dark:text-[#C6FF6B] dark:border-[#C6FF6B] hover:scale-110"
          style="transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1);">
         CV
       </a>
