@@ -19,10 +19,9 @@ const SCRAMBLE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
               {{ displayName(data.basics.name) }}
             </h1>
             @if (data.basics.open_to_relocate || data.basics.label) {
-              <div class="absolute -top-4.5 -right-17 rotate-[-8deg]" style="animation: splashPop 1.6s ease-in-out infinite;">
-                <span class="font-bold text-xs tracking-wide bg-[var(--color-lime)] text-[#15151A] neo-border rounded-lg px-2.5 py-1.5 neo-shadow whitespace-nowrap inline-block"
-                      style="font-family: 'Space Grotesk', sans-serif;">
-                  OPEN TO WORK
+              <div class="absolute -top-10 -right-28 rotate-[-8deg] pointer-events-none z-30">
+                <span class="splash-text-mc">
+                  OPEN TO WORK!
                 </span>
               </div>
             }

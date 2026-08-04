@@ -33,14 +33,10 @@ import { Subscription } from 'rxjs';
             @for (item of cv.projects; track item.slug) {
               <div [id]="getProjectElementId(item.slug)" class="min-w-full p-1">
                 <div class="grid grid-cols-[1.1fr_1fr] rounded-[22px] neo-border-thick overflow-hidden glass-card" style="box-shadow: 6px 6px 0 var(--ink);" [class.animate-pulse]="isHighlighted(item.slug)">
-                  <div class="relative min-h-[260px] flex items-center justify-center border-r-2.5 border-[var(--ink)] overflow-hidden p-2.5"
-                       [style.background]="'repeating-linear-gradient(135deg, var(--stripe-a), var(--stripe-a) 10px, var(--stripe-b) 10px, var(--stripe-b) 20px)'">
+                  <div class="relative min-h-[300px] w-full h-full flex items-center justify-center border-r-2.5 border-[var(--ink)] overflow-hidden bg-[var(--card-bg)]">
                     @if (resolvedImages[item.image]) {
-                      <img [src]="resolvedImages[item.image]" [alt]="item.name" class="max-h-[260px] w-auto max-w-full object-contain rounded-lg" />
+                      <img [src]="resolvedImages[item.image]" [alt]="item.name" class="w-full h-full object-cover object-top transition-transform duration-500 hover:scale-105" />
                     }
-                    <span class="absolute top-3.5 left-3.5 font-[var(--font-display)] font-bold text-[11px] tracking-wide bg-[var(--color-lime)] text-[#15151A] neo-border rounded-full px-3 py-1.5">
-                      {{ item.metadata.status }}
-                    </span>
                   </div>
                   <div class="p-7.5 flex flex-col gap-3.5">
                     <h3 class="font-[var(--font-display)] text-2xl font-bold m-0 text-[var(--ink)]">{{ item.name }}</h3>

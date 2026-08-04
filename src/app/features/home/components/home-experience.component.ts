@@ -1,4 +1,4 @@
-import { Component, inject, ChangeDetectionStrategy, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, OnInit, OnDestroy, ChangeDetectorRef, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PortfolioService } from '../../../core/services/portfolio.service';
 import { UiService } from '../../../core/services/ui.service';
@@ -18,44 +18,75 @@ import { Subscription } from 'rxjs';
       <h2 class="font-[var(--font-display)] font-bold mb-12 text-[var(--ink)]" style="font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.02em;">{{ langService.t().experienceTitle }}</h2>
 
       @if (cvSignal(); as cv) {
-        @for (job of cv.work; track $index) {
-          <div [id]="getItemElementId(job.company)" class="grid grid-cols-[64px_1fr] gap-5 mb-9 items-start">
+        @for (job of cv.work; track job.company) {
+          <div [id]="getItemElementId(job.company)" class="grid grid-cols-[64px_1fr] gap-5 mb-7 items-start">
             <div class="flex flex-col items-center">
-              <div class="w-14 h-14 rounded-[14px] neo-border bg-[var(--card-bg)] overflow-hidden flex items-center justify-center neo-shadow">
+              <div class="w-14 h-14 rounded-[14px] neo-border bg-[var(--card-bg)] overflow-hidden flex items-center justify-center neo-shadow flex-shrink-0 cursor-pointer"
+                   (click)="toggleExpand(job.company)">
                 @if (job.image) {
                   <img [src]="job.image" [alt]="job.company" class="w-full h-full object-contain p-1.5" />
                 }
               </div>
-              <div class="w-0.5 flex-grow bg-[var(--ink)] opacity-10 mt-2 min-h-[40px]"></div>
+              <div class="w-0.5 flex-grow bg-[var(--ink)] opacity-10 mt-2 min-h-[30px]"></div>
             </div>
-            <div class="p-6 rounded-[18px] glass-card transition-all duration-500"
+
+            <div class="rounded-[18px] glass-card transition-all duration-300 overflow-hidden"
+                 [class.neo-border]="isExpanded(job.company)"
                  [class.animate-pulse]="isHighlighted(job.company)">
-              <div class="flex flex-wrap items-baseline justify-between gap-2 mb-1">
-                <h3 class="font-[var(--font-display)] text-xl font-bold m-0 text-[var(--ink)]">{{ job.role }}</h3>
-                <span class="font-[var(--font-mono)] text-xs text-[var(--ink-soft)]">{{ job.period }}</span>
+
+              <!-- Header row: clickable to toggle accordion -->
+              <div class="p-6 cursor-pointer flex flex-wrap items-center justify-between gap-2 select-none"
+                   (click)="toggleExpand(job.company)">
+                <div>
+                  <div class="flex items-center gap-3">
+                    <h3 class="font-[var(--font-display)] text-xl font-bold m-0 text-[var(--ink)]">{{ job.role }}</h3>
+                    @if ($first) {
+                      <span class="font-[var(--font-mono)] text-[10px] font-bold px-2 py-0.5 rounded-full bg-[var(--color-lime)] text-[#15151A] neo-border">
+                        CURRENT
+                      </span>
+                    }
+                  </div>
+                  <div class="font-[var(--font-display)] text-sm font-semibold text-[var(--color-accent)] mt-1">{{ job.company }}</div>
+                </div>
+                <div class="flex items-center gap-4">
+                  <span class="font-[var(--font-mono)] text-xs text-[var(--ink-soft)]">{{ job.period }}</span>
+                  <div class="w-7 h-7 rounded-full border border-[var(--ink)] flex items-center justify-center text-xs font-bold"
+                       style="transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1);"
+                       [class.rotate-180]="isExpanded(job.company)">
+                    ▼
+                  </div>
+                </div>
               </div>
-              <div class="font-[var(--font-display)] text-sm font-semibold text-[var(--color-accent)] mb-3">{{ job.company }}</div>
-              <p class="text-[15px] leading-relaxed text-[var(--ink-soft)] mb-3.5">{{ job.summary }}</p>
-              @if (job.achievements?.length) {
-                <div class="flex flex-col gap-2 mb-3.5">
-                  @for (ach of job.achievements; track $index) {
-                    <div class="flex gap-2.5 text-sm leading-relaxed text-[var(--ink-soft)]">
-                      <span class="text-[var(--color-accent)] font-bold flex-shrink-0">&#9642;</span>{{ ach }}
+
+              <!-- Collapsible Content -->
+              @if (isExpanded(job.company)) {
+                <div class="px-6 pb-6 pt-0 border-t border-[var(--glass-border)] animate-spring-up">
+                  <p class="text-[15px] leading-relaxed text-[var(--ink-soft)] my-3.5">{{ job.summary }}</p>
+
+                  @if (job.achievements?.length) {
+                    <div class="flex flex-col gap-2 mb-4">
+                      @for (ach of job.achievements; track $index) {
+                        <div class="flex gap-2.5 text-sm leading-relaxed text-[var(--ink-soft)]">
+                          <span class="text-[var(--color-accent)] font-bold flex-shrink-0">&#9642;</span>{{ ach }}
+                        </div>
+                      }
                     </div>
                   }
-                </div>
-              }
-              @if (job.highlights?.length) {
-                <div class="flex flex-wrap gap-2">
-                  @for (tag of job.highlights; track $index) {
-                    <span class="font-[var(--font-mono)] text-[11px] font-medium px-2.5 py-1 rounded-lg bg-[var(--chip-bg)] border border-[var(--chip-border)] text-[var(--ink)]">{{ tag }}</span>
+
+                  @if (job.highlights?.length) {
+                    <div class="flex flex-wrap gap-2">
+                      @for (tag of job.highlights; track $index) {
+                        <span class="font-[var(--font-mono)] text-[11px] font-medium px-2.5 py-1 rounded-lg bg-[var(--chip-bg)] border border-[var(--chip-border)] text-[var(--ink)]">{{ tag }}</span>
+                      }
+                    </div>
                   }
-                </div>
-              }
-              @if (job.metrics?.length) {
-                <div class="flex flex-wrap gap-2.5 mt-4">
-                  @for (m of job.metrics; track $index) {
-                    <span class="font-[var(--font-display)] text-[13px] font-bold px-3 py-1.5 rounded-full bg-[var(--color-lime)] text-[#15151A] neo-border">{{ m }}</span>
+
+                  @if (job.metrics?.length) {
+                    <div class="flex flex-wrap gap-2.5 mt-4">
+                      @for (m of job.metrics; track $index) {
+                        <span class="font-[var(--font-display)] text-[13px] font-bold px-3 py-1.5 rounded-full bg-[var(--color-lime)] text-[#15151A] neo-border">{{ m }}</span>
+                      }
+                    </div>
                   }
                 </div>
               }
@@ -75,14 +106,38 @@ export class HomeExperienceComponent implements OnInit, OnDestroy {
 
   cvSignal = this.portfolioService.portfolioDataSignal;
   highlightedExpId: string | null = null;
+  expandedCompany = signal<string | null>(null);
+
   private sub = new Subscription();
 
   ngOnInit() {
+    // Set initial expanded job to the first one (current job)
+    const data = this.cvSignal();
+    if (data && data.work.length > 0) {
+      this.expandedCompany.set(data.work[0].company);
+    }
+
     this.sub.add(
       this.uiService.highlight$.subscribe(event => {
         if (event.type === 'EXPERIENCE') this.processHighlight(event.id);
       })
     );
+  }
+
+  isExpanded(company: string): boolean {
+    // Default expand first job if none set
+    if (this.expandedCompany() === null && this.cvSignal()?.work[0]?.company === company) {
+      return true;
+    }
+    return this.expandedCompany() === company;
+  }
+
+  toggleExpand(company: string) {
+    if (this.isExpanded(company)) {
+      this.expandedCompany.set(null);
+    } else {
+      this.expandedCompany.set(company);
+    }
   }
 
   getItemElementId(company: string): string {
@@ -104,6 +159,7 @@ export class HomeExperienceComponent implements OnInit, OnDestroy {
     });
 
     if (match) {
+      this.expandedCompany.set(match.company);
       const elementId = this.getItemElementId(match.company);
       this.highlightedExpId = null;
       this.cdr.markForCheck();

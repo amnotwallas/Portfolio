@@ -28,7 +28,7 @@ const BENTO_VARS = ['--bento-1', '--bento-2', '--bento-3', '--bento-4', '--bento
             <div class="font-[var(--font-display)] font-bold text-base">{{ cat.name }}</div>
             <div class="flex flex-wrap gap-2">
               @for (item of cat.items; track item) {
-                <span class="font-[var(--font-mono)] text-[11.5px] px-2.5 py-1 rounded-lg bg-white/55 border border-black/15">{{ item }}</span>
+                <span class="font-[var(--font-mono)] text-[11.5px] font-semibold px-2.5 py-1 rounded-[7px] bg-[var(--chip-bg)] text-[var(--chip-text)] border border-[var(--chip-border)] backdrop-blur-xs">{{ item }}</span>
               }
             </div>
           </div>
