@@ -2,112 +2,73 @@ import { Component, inject, ChangeDetectorRef, ChangeDetectionStrategy, OnInit, 
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { tablerRocket, tablerBrandGithub, tablerChevronDown, tablerChevronUp } from '@ng-icons/tabler-icons';
+import { tablerChevronLeft, tablerChevronRight } from '@ng-icons/tabler-icons';
 import { PortfolioService } from '../../../core/services/portfolio.service';
 import { UiService } from '../../../core/services/ui.service';
+import { LanguageService } from '../../../core/services/language.service';
 import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home-projects',
   standalone: true,
   imports: [CommonModule, NgIcon, RouterModule],
-  providers: [provideIcons({ tablerRocket, tablerBrandGithub, tablerChevronDown, tablerChevronUp })],
+  providers: [provideIcons({ tablerChevronLeft, tablerChevronRight })],
   template: `
-    <div class="w-full max-w-5xl mx-auto py-20 px-6 group">
-      <div class="flex items-center gap-4 mb-14">
-        <div class="section-header-block">SYSTEM // KEY_PROJECTS</div>
-        <div class="h-[1px] flex-grow bg-retro-yellow/10 group-hover:bg-retro-yellow/30 transition-colors"></div>
+    <div id="projects" class="w-full max-w-[980px] mx-auto py-5 px-6 pb-28">
+      <div class="flex items-center gap-3 mb-11">
+        <span class="font-[var(--font-mono)] text-[11px] font-bold tracking-[0.2em] uppercase text-[var(--color-accent)]">{{ langService.t.projectsEyebrow }}</span>
+        <div class="flex-grow h-0.5 bg-[var(--ink)] opacity-15"></div>
+      </div>
+      <div class="flex items-baseline justify-between mb-8 flex-wrap gap-3">
+        <h2 class="font-[var(--font-display)] font-bold m-0 text-[var(--ink)]" style="font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.02em;">{{ langService.t.projectsTitle }}</h2>
+        <div class="flex gap-2.5">
+          <button (click)="prev()" class="w-10.5 h-10.5 rounded-full neo-border bg-[var(--card-bg)] flex items-center justify-center neo-shadow"><ng-icon name="tablerChevronLeft" size="16"></ng-icon></button>
+          <button (click)="next()" class="w-10.5 h-10.5 rounded-full neo-border bg-[var(--card-bg)] flex items-center justify-center neo-shadow"><ng-icon name="tablerChevronRight" size="16"></ng-icon></button>
+        </div>
       </div>
 
       @if (cvSignal(); as cv) {
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-          @for (item of cv.projects; track $index; let projectIdx = $index) {
-          <div 
-            [id]="getProjectElementId(item.slug)"
-            class="p-8 rounded-xl glass-effect group/project shadow-2xl relative overflow-hidden flex flex-col border transition-all duration-500"
-            [class.animate-neural-highlight]="isHighlighted(item.slug)"
-            [class.border-retro-yellow/40]="!isHighlighted(item.slug)"
-            [class.scale-[1.02]]="isHighlighted(item.slug)"
-            [class.z-20]="isHighlighted(item.slug)"
-          >
-            
-            @if (isHighlighted(item.slug)) {
-              <div class="absolute top-2 right-4 font-mono text-[8px] text-retro-yellow animate-pulse tracking-widest uppercase z-30">
-                Neural_Focus_Active
-              </div>
-            }
-
-            <!-- Project Image Container -->
-            <div class="relative mb-8 aspect-[4/3] overflow-hidden rounded-lg border border-retro-yellow/20 bg-retro-dark shadow-inner"
-                [style.view-transition-name]="'project-image-' + item.slug">
-              
-              @if (resolvedImages[item.image]) {
-                <img [src]="resolvedImages[item.image]" 
-                    loading="lazy"
-                    width="600"
-                    height="450"
-                    (load)="onImageLoad(item.image)"
-                    class="w-full h-full object-cover object-top transition-all duration-700"
-                    [class.opacity-0]="!imagesLoaded[item.image]"
-                    [class.opacity-70]="imagesLoaded[item.image]"
-                    [class.group-hover/project:opacity-100]="imagesLoaded[item.image]"
-                    [class.group-hover/project:scale-105]="imagesLoaded[item.image]"
-                    [alt]="item.name">
-                
-                @if (!imagesLoaded[item.image]) {
-                  <div class="absolute inset-0 skeleton"></div>
-                }
-              } @else {
-                <div class="absolute inset-0 skeleton"></div>
-              }
-              
-              <div class="absolute inset-0 z-20 pointer-events-none bg-gradient-to-t from-retro-dark/90 via-transparent to-transparent"></div>
-            </div>
-
-            <div class="flex justify-between items-start mb-4 gap-4">
-              <h3 class="text-2xl font-bold text-retro-font group-hover/project:text-retro-bright group-hover/project:text-glow-bright transition-all font-mono tracking-tight"
-                  [class.text-retro-bright]="isHighlighted(item.slug)"
-                  [class.text-glow-bright]="isHighlighted(item.slug)"
-                  [style.view-transition-name]="'project-title-' + item.slug">{{item.name}}</h3>
-              @if (item.links.github) {
-                <a [href]="item.links.github" target="_blank" class="text-retro-yellow/40 hover:text-retro-bright transition-colors flex-shrink-0">
-                  <ng-icon name="tablerBrandGithub" size="24"></ng-icon>
-                </a>
-              }
-            </div>
-            
-            <div class="relative">
-              <div class="grid transition-[grid-template-rows,margin-bottom] duration-300 ease-in-out"
-                  [class.grid-rows-[1fr]]="expandedProjects[projectIdx]"
-                  [class.grid-rows-[0fr]]="!expandedProjects[projectIdx]"
-                  [class.mb-6]="expandedProjects[projectIdx]"
-                  [class.mb-4]="!expandedProjects[projectIdx]">
-                <div class="overflow-hidden">
-                  <p class="font-light text-sm text-retro-font/70 leading-relaxed"
-                    [class.line-clamp-2]="!expandedProjects[projectIdx]">
-                    {{item.description}}
-                  </p>
+        <div class="overflow-hidden rounded-[24px]">
+          <div class="flex transition-transform duration-500" [style.transform]="'translateX(-' + (index() * 100) + '%)'">
+            @for (item of cv.projects; track item.slug) {
+              <div [id]="getProjectElementId(item.slug)" class="min-w-full p-1">
+                <div class="grid grid-cols-[1.1fr_1fr] rounded-[22px] neo-border-thick overflow-hidden glass-card neo-shadow"
+                     [class.animate-pulse]="isHighlighted(item.slug)">
+                  <div class="relative min-h-[260px] flex items-center justify-center border-r-2.5 border-[var(--ink)]"
+                       [style.background]="'repeating-linear-gradient(135deg, var(--stripe-a), var(--stripe-a) 10px, var(--stripe-b) 10px, var(--stripe-b) 20px)'">
+                    @if (resolvedImages[item.image]) {
+                      <img [src]="resolvedImages[item.image]" [alt]="item.name" class="w-full h-full object-cover" />
+                    }
+                    <span class="absolute top-3.5 left-3.5 font-[var(--font-display)] font-bold text-[11px] tracking-wide bg-[var(--color-lime)] text-[#15151A] neo-border rounded-full px-3 py-1.5">
+                      {{ item.metadata.status }}
+                    </span>
+                  </div>
+                  <div class="p-7.5 flex flex-col gap-3.5">
+                    <h3 class="font-[var(--font-display)] text-2xl font-bold m-0 text-[var(--ink)]">{{ item.name }}</h3>
+                    <p class="text-[14.5px] leading-relaxed text-[var(--ink-soft)] m-0">{{ item.description }}</p>
+                    <div class="flex flex-wrap gap-1.5">
+                      @for (s of item.stack; track s) {
+                        <span class="font-[var(--font-mono)] text-[10.5px] px-2.5 py-1 rounded-md bg-[var(--chip-bg)] border border-[var(--chip-border)] text-[var(--ink)]">{{ s }}</span>
+                      }
+                    </div>
+                    <div class="flex gap-2.5 mt-1.5 flex-wrap">
+                      <a [routerLink]="['/project', item.slug]" class="font-[var(--font-display)] font-bold text-[13.5px] bg-[var(--ink)] text-[var(--bg)] neo-border rounded-full px-4.5 py-2.5">{{ langService.t.viewCaseLabel }}</a>
+                      @if (item.links.github) {
+                        <a [href]="item.links.github" target="_blank" rel="noopener" class="font-[var(--font-display)] font-bold text-[13.5px] glass-card text-[var(--ink)] rounded-full px-4.5 py-2.5">GitHub</a>
+                      }
+                    </div>
+                  </div>
                 </div>
               </div>
-              
-              <button (click)="toggleProject(projectIdx)" 
-                      class="flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-retro-yellow/60 hover:text-retro-yellow transition-colors mb-6">
-                {{ expandedProjects[projectIdx] ? 'Contract Metadata' : 'Expand Metadata' }}
-                <ng-icon [name]="expandedProjects[projectIdx] ? 'tablerChevronUp' : 'tablerChevronDown'" size="14"></ng-icon>
-              </button>
-            </div>
-
-            <div class="flex flex-wrap gap-2 mb-10">
-              @for (tech of item.stack; track $index) {
-                <span class="text-[9px] font-mono px-2.5 py-1 rounded bg-retro-yellow/5 border border-retro-yellow/20 text-retro-yellow/80 uppercase tracking-widest">{{tech}}</span>
-              }
-            </div>
-            
-            <a [routerLink]="['/project', item.slug]" class="inline-flex items-center gap-3 text-[11px] font-mono font-bold uppercase tracking-[0.3em] text-retro-yellow/50 hover:text-retro-yellow transition-all mt-auto border-t border-retro-yellow/10 pt-6 group/btn">
-              <ng-icon name="tablerRocket" size="16" class="group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform"></ng-icon>
-              <span>ACCESS_FULL_LOGS</span>
-            </a>
+            }
           </div>
+        </div>
+
+        <div class="flex justify-center gap-2 mt-5">
+          @for (item of cv.projects; track item.slug; let i = $index) {
+            <button (click)="goTo(i)" class="h-2 rounded-full neo-border transition-all"
+                    [style.width]="i === index() ? '26px' : '8px'"
+                    [style.background]="i === index() ? 'var(--ink)' : 'var(--card-bg)'"></button>
           }
         </div>
       }
@@ -119,30 +80,25 @@ export class HomeProjectsComponent implements OnInit, OnDestroy {
   private portfolioService = inject(PortfolioService);
   private uiService = inject(UiService);
   private cdr = inject(ChangeDetectorRef);
-  
-  cvSignal = this.portfolioService.portfolioDataSignal;
+  langService = inject(LanguageService);
 
-  expandedProjects: { [key: number]: boolean } = {};
-  imagesLoaded: { [key: string]: boolean } = {};
+  cvSignal = this.portfolioService.portfolioDataSignal;
+  index = signal(0);
   resolvedImages: { [key: string]: string } = {};
-  highlightedProjectId = signal<string | null>(null);
+  highlightedProjectId: string | null = null;
   private sub = new Subscription();
 
   constructor() {
     effect(() => {
       const data = this.cvSignal();
-      if (data) {
-        this.resolveAllImages(data);
-      }
+      if (data) this.resolveAllImages(data);
     });
   }
 
   ngOnInit() {
     this.sub.add(
       this.uiService.highlight$.subscribe(event => {
-        if (event.type === 'PROJECT') {
-          this.processHighlight(event.id);
-        }
+        if (event.type === 'PROJECT') this.processHighlight(event.id);
       })
     );
   }
@@ -152,69 +108,51 @@ export class HomeProjectsComponent implements OnInit, OnDestroy {
   }
 
   isHighlighted(slug: string): boolean {
-    return this.highlightedProjectId() === this.getProjectElementId(slug);
+    return this.highlightedProjectId === this.getProjectElementId(slug);
   }
 
   private processHighlight(id: string) {
     const data = this.cvSignal();
-    if (!data) {
-      setTimeout(() => this.processHighlight(id), 500);
-      return;
-    }
-
+    if (!data) { setTimeout(() => this.processHighlight(id), 500); return; }
     const targetId = id.toLowerCase().trim();
-    const project = data.projects.find(p => 
-      p.slug === targetId || 
-      p.slug.includes(targetId) || 
-      p.name.toLowerCase().includes(targetId) ||
-      p.id === targetId
-    );
-
-    if (project) {
+    const idx = data.projects.findIndex(p => p.slug === targetId || p.slug.includes(targetId) || p.name.toLowerCase().includes(targetId));
+    if (idx !== -1) {
+      const project = data.projects[idx];
+      this.index.set(idx);
       const elementId = this.getProjectElementId(project.slug);
-      
-      // Reset first to force re-animation
-      this.highlightedProjectId.set(null);
+      this.highlightedProjectId = null;
       this.cdr.markForCheck();
-
       setTimeout(() => {
-        this.highlightedProjectId.set(elementId);
+        this.highlightedProjectId = elementId;
         this.cdr.markForCheck();
-
-        setTimeout(() => {
-          const el = document.getElementById(elementId);
-          if (el) {
-            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          }
-        }, 100);
-
-        setTimeout(() => {
-          this.highlightedProjectId.set(null);
-          this.cdr.markForCheck();
-        }, 6000);
+        const el = document.getElementById(elementId);
+        el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(() => { this.highlightedProjectId = null; this.cdr.markForCheck(); }, 6000);
       }, 50);
     }
   }
 
   private async resolveAllImages(data: any) {
-    const resolutionPromises = data.projects.map(async (project: any) => {
+    await Promise.all(data.projects.map(async (project: any) => {
       if (!this.resolvedImages[project.image]) {
-        const resolvedUrl = await this.portfolioService.getSecureImage(project.image);
-        this.resolvedImages[project.image] = resolvedUrl;
+        this.resolvedImages[project.image] = await this.portfolioService.getSecureImage(project.image);
         this.cdr.markForCheck();
       }
-    });
-    await Promise.all(resolutionPromises);
+    }));
   }
 
-  toggleProject(index: number) {
-    this.expandedProjects[index] = !this.expandedProjects[index];
-    this.cdr.markForCheck();
+  prev() {
+    const total = this.cvSignal()?.projects.length ?? 1;
+    this.index.update(i => (i - 1 + total) % total);
   }
 
-  onImageLoad(url: string) {
-    this.imagesLoaded[url] = true;
-    this.cdr.markForCheck();
+  next() {
+    const total = this.cvSignal()?.projects.length ?? 1;
+    this.index.update(i => (i + 1) % total);
+  }
+
+  goTo(i: number) {
+    this.index.set(i);
   }
 
   ngOnDestroy() {
