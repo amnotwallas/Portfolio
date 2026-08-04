@@ -35,8 +35,8 @@ import { tablerBrandGithub, tablerBrandLinkedin, tablerMail, tablerCheck, tabler
         </button>
       }
       <a href="https://amnotwallas.github.io/Portfolio/" target="_blank" rel="noopener" title="CV"
-         class="w-11.5 h-11.5 rounded-[14px] flex items-center justify-center font-[var(--font-mono)] font-bold text-xs bg-[#15151A] text-[#FAFAF7] border-2 border-[#15151A] dark:bg-[#15151A] dark:text-[#C6FF6B] dark:border-[#C6FF6B] hover:scale-110"
-         style="transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1);">
+         class="w-11.5 h-11.5 rounded-[14px] flex items-center justify-center font-[var(--font-mono)] font-bold text-xs hover:scale-110"
+         style="background: var(--dock-cv-bg); color: var(--dock-cv-text); border: 2px solid var(--dock-cv-border); transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1);">
         CV
       </a>
       <button (click)="uiService.toggleChat()" [title]="langService.t().chatTitle"

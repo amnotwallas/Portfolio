@@ -1,6 +1,8 @@
 @import 'tailwindcss';
 @import "tailwindcss-primeui";
 
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
 @theme {
   --font-display: 'Space Grotesk', sans-serif;
   --font-body: 'Inter', sans-serif;
@@ -22,6 +24,9 @@
   --chip-bg: rgba(255,255,255,0.75);
   --chip-border: rgba(21,21,26,0.18);
   --chip-text: #15151A;
+  --dock-cv-bg: #15151A;
+  --dock-cv-text: #FAFAF7;
+  --dock-cv-border: #15151A;
   --chat-bg: rgba(255,255,255,0.85);
   --stripe-a: #EDEDE6;
   --stripe-b: #E2E2D8;
@@ -41,6 +46,9 @@
   --chip-bg: rgba(255,255,255,0.14);
   --chip-border: rgba(255,255,255,0.25);
   --chip-text: #F2F2F0;
+  --dock-cv-bg: #15151A;
+  --dock-cv-text: #C6FF6B;
+  --dock-cv-border: #C6FF6B;
   --chat-bg: rgba(28,28,32,0.92);
   --stripe-a: #232327;
   --stripe-b: #2B2B30;
