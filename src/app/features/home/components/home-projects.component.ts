@@ -115,7 +115,7 @@ export class HomeProjectsComponent implements OnInit, OnDestroy {
     const data = this.cvSignal();
     if (!data) { setTimeout(() => this.processHighlight(id), 500); return; }
     const targetId = id.toLowerCase().trim();
-    const idx = data.projects.findIndex(p => p.slug === targetId || p.slug.includes(targetId) || p.name.toLowerCase().includes(targetId));
+    const idx = data.projects.findIndex(p => p.slug === targetId || p.slug.includes(targetId) || p.name.toLowerCase().includes(targetId) || p.id === targetId);
     if (idx !== -1) {
       const project = data.projects[idx];
       this.index.set(idx);
