@@ -29,7 +29,12 @@ export class LanguageService {
       chatSubtitle: 'ask me anything',
       chatPlaceholder: 'Type a message...',
       chatEmptyState: "Ask me about Walter's experience, skills, or projects.",
-      backToPortfolio: 'Back to portfolio'
+      backToPortfolio: 'Back to portfolio',
+      overviewLabel: 'Overview',
+      stackLabel: 'Stack',
+      highlightsLabel: 'Highlights',
+      challengeLabel: 'Challenge',
+      solutionLabel: 'Solution'
     },
     es: {
       nav: { home: 'Inicio', experience: 'Experiencia', skills: 'Habilidades', projects: 'Proyectos', contact: 'Contacto' },
@@ -51,7 +56,12 @@ export class LanguageService {
       chatSubtitle: 'pregúntame lo que sea',
       chatPlaceholder: 'Escribe un mensaje...',
       chatEmptyState: 'Pregúntame sobre la experiencia, habilidades o proyectos de Walter.',
-      backToPortfolio: 'Volver al portafolio'
+      backToPortfolio: 'Volver al portafolio',
+      overviewLabel: 'Resumen',
+      stackLabel: 'Stack',
+      highlightsLabel: 'Destacados',
+      challengeLabel: 'Reto',
+      solutionLabel: 'Solución'
     }
   };
 

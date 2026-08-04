@@ -21,6 +21,7 @@ import {
 } from "@ng-icons/tabler-icons";
 import { Project } from "../../shared/models/portfolio.model";
 import { PortfolioService } from "../../core/services/portfolio.service";
+import { LanguageService } from "../../core/services/language.service";
 import { interval, Subscription } from "rxjs";
 
 @Component({
@@ -52,6 +53,7 @@ export class ProjectDetailsPage implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
+  langService = inject(LanguageService);
 
   @ViewChild('mainCont') mainCont!: ElementRef<HTMLElement>;
 
