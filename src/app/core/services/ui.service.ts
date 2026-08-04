@@ -36,4 +36,7 @@ export class UiService {
       this.router.navigate(['/home'], { fragment: id });
     }
   }
+
+  chatOpen = signal(false);
+  toggleChat() { this.chatOpen.update(v => !v); }
 }
