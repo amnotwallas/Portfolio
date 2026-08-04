@@ -45,13 +45,6 @@ interface NavItem { id: string; label: string; }
             <span class="opacity-30">/</span>
             <span [class.opacity-100]="langService.currentLang() === 'es'" [class.opacity-35]="langService.currentLang() !== 'es'">ES</span>
           </button>
-          <a href="https://amnotwallas.github.io/Portfolio/" target="_blank" rel="noopener"
-             style="font-family: var(--font-display); font-weight: 700; font-size: 13px; color: #15151A;
-                    background: var(--color-lime); border: 2px solid var(--ink);
-                    border-radius: 9999px; padding: 8px 16px;
-                    box-shadow: 3px 3px 0 var(--ink); white-space: nowrap;">
-            {{ langService.t().resumeLabel }}
-          </a>
         </div>
       </div>
     </nav>

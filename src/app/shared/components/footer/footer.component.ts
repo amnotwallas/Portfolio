@@ -34,6 +34,11 @@ import { tablerBrandGithub, tablerBrandLinkedin, tablerMail, tablerCheck, tabler
           <ng-icon [svg]="isCopied() ? icons.tablerCheck : icons.tablerMail" size="18"></ng-icon>
         </button>
       }
+      <a href="https://amnotwallas.github.io/Portfolio/" target="_blank" rel="noopener" title="CV"
+         class="w-11.5 h-11.5 rounded-[14px] flex items-center justify-center bg-[var(--color-lime)] text-[#15151A] font-[var(--font-mono)] font-bold text-xs neo-border hover:scale-110"
+         style="transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1);">
+        CV
+      </a>
       <button (click)="uiService.toggleChat()" [title]="langService.t().chatTitle"
               class="relative w-11.5 h-11.5 rounded-[14px] flex items-center justify-center bg-[#15151A] text-[#FAFAF7] hover:scale-110"
               style="transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1);">
