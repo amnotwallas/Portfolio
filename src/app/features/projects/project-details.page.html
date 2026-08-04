@@ -58,7 +58,7 @@
                         <img [src]="resolvedImages[img]"
                             loading="lazy"
                             (load)="onImageLoad(img)"
-                            class="absolute inset-0 w-full h-full object-cover object-top transition-all duration-700"
+                            class="absolute inset-0 w-full h-full object-contain p-2 transition-all duration-700"
                             [class.opacity-100]="imagesLoaded[img]"
                             [class.opacity-0]="!imagesLoaded[img]"
                             [class.z-10]="true"
