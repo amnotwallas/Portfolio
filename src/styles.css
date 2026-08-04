@@ -137,11 +137,61 @@ h1, h2, h3, h4 { font-family: var(--font-display); }
   transition: all 0.3s ease;
 }
 
-:root[data-theme="dark"] .splash-text-mc {
-  background: #15151A;
-  color: #C6FF6B;
-  border: 2px solid #C6FF6B;
-  box-shadow: 3px 3px 0px #C6FF6B;
+/* Custom Scrollbars (Global & Containers) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(21, 21, 26, 0.2);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent);
+}
+
+:root[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: rgba(242, 242, 240, 0.2);
+}
+
+:root[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: var(--color-lime);
+}
+
+/* Chat-specific ultra-slim scrollbar */
+.chat-scroll::-webkit-scrollbar {
+  width: 5px;
+}
+
+.chat-scroll::-webkit-scrollbar-thumb {
+  background: rgba(59, 76, 240, 0.35);
+  border-radius: 9999px;
+}
+
+.chat-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent);
+}
+
+:root[data-theme="dark"] .chat-scroll::-webkit-scrollbar-thumb {
+  background: rgba(198, 255, 107, 0.35);
+}
+
+:root[data-theme="dark"] .chat-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--color-lime);
+}
+
+/* Firefox scrollbar styling */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(59, 76, 240, 0.35) transparent;
 }
 
 .skeleton {

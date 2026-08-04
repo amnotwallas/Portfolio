@@ -46,7 +46,7 @@ export interface ChatMessage {
         </div>
 
         <!-- Messages Scroll Area -->
-        <div #scrollContainer class="flex-1 p-4 overflow-y-auto flex flex-col gap-3">
+        <div #scrollContainer class="flex-1 p-4 overflow-y-auto chat-scroll flex flex-col gap-3">
           
           <!-- Empty State Greeting -->
           @if (messages().length === 0) {
