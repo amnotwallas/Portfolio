@@ -40,8 +40,9 @@ export class LanguageService {
       chatSuggestions: [
         'What skills do you have?',
         'Tell me about CaseLens',
-        'What is WALTER_AI?'
-      ]
+        'What is WALTER-AI?'
+      ],
+      cvUnavailableTooltip: "CV unavailable. Ask WALTER-AI about Walter's experience!"
     },
     es: {
       nav: { home: 'Inicio', experience: 'Experiencia', skills: 'Habilidades', projects: 'Proyectos', contact: 'Contacto' },
@@ -74,8 +75,9 @@ export class LanguageService {
       chatSuggestions: [
         '¿Qué habilidades tienes?',
         'Cuéntame sobre CaseLens',
-        '¿Qué es WALTER_AI?'
-      ]
+        '¿Qué es WALTER-AI?'
+      ],
+      cvUnavailableTooltip: 'CV no disponible. ¡Pregúntale a WALTER-AI sobre la trayectoria de Walter!'
     }
   };
 
