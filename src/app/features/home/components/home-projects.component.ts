@@ -32,7 +32,7 @@ import { Subscription } from 'rxjs';
           <div class="flex" style="transition: transform 0.55s cubic-bezier(0.22,1,0.36,1);" [style.transform]="'translateX(-' + (index() * 100) + '%)'">
             @for (item of cv.projects; track item.slug) {
               <div [id]="getProjectElementId(item.slug)" class="min-w-full p-1">
-                <div class="grid grid-cols-[1.1fr_1fr] rounded-[22px] neo-border-thick overflow-hidden glass-card" style="box-shadow: 6px 6px 0 var(--ink);" [class.animate-pulse]="isHighlighted(item.slug)">
+                <div class="grid grid-cols-1 md:grid-cols-[1.1fr_1fr] rounded-[22px] neo-border-thick overflow-hidden glass-card" style="box-shadow: 6px 6px 0 var(--ink);" [class.animate-pulse]="isHighlighted(item.slug)">
                   <div class="relative min-h-[300px] w-full h-full flex items-center justify-center border-r-2.5 border-[var(--ink)] overflow-hidden bg-[var(--card-bg)]">
                     @if (resolvedImages[item.image]) {
                       <img [src]="resolvedImages[item.image]" [alt]="item.name" class="w-full h-full object-cover object-top transition-transform duration-500 hover:scale-105" />

@@ -10,7 +10,7 @@ import { LanguageService } from '../../../core/services/language.service';
   template: `
     @if (cv(); as data) {
       @if (data.education.length || data.languages.length) {
-        <section class="max-w-[980px] mx-auto px-6 pb-24 grid grid-cols-[1.4fr_1fr] gap-5">
+        <section class="max-w-[980px] mx-auto px-6 pb-24 grid grid-cols-1 md:grid-cols-[1.4fr_1fr] gap-5">
           @if (education(); as edu) {
             <div class="p-6.5 rounded-[18px] glass-card">
               <div class="font-[var(--font-mono)] text-[11px] font-bold tracking-[0.15em] uppercase text-[var(--color-accent)] mb-2.5">{{ langService.t().educationEyebrow }}</div>
