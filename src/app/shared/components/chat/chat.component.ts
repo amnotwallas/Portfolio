@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, inject, AfterViewChecked, ChangeDetectorRef, signal, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { Component, ElementRef, ViewChild, inject, AfterViewChecked, ChangeDetectorRef, signal, computed, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -75,9 +75,9 @@ export interface ChatMessage {
         </div>
 
         <!-- Default Suggestion Chips -->
-        @if (messages().length === 0 && defaultSuggestions.length) {
+        @if (messages().length === 0 && defaultSuggestions().length) {
           <div class="px-3.5 py-2 flex flex-wrap gap-1.5 border-t border-[var(--glass-border)] bg-[var(--glass)]">
-            @for (q of defaultSuggestions; track q) {
+            @for (q of defaultSuggestions(); track q) {
               <button (click)="suggestQuery(q)" class="text-left font-[var(--font-mono)] text-[11px] px-2.5 py-1.5 rounded-full bg-[var(--chip-bg)] hover:bg-[var(--color-lime)] hover:text-[#15151A] hover:border-[var(--ink)] text-[var(--ink)] border border-[var(--chip-border)] transition-colors whitespace-nowrap">
                 {{ q }}
               </button>
@@ -116,11 +116,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 
   messages = signal<ChatMessage[]>([]);
 
-  defaultSuggestions = [
-    'What skills do you have?',
-    'Tell me about CaseLens',
-    'What is WALTER-AI?'
-  ];
+  defaultSuggestions = computed(() => this.langService.t().chatSuggestions);
 
   ngAfterViewChecked() {
     this.scrollToBottom();

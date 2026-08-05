@@ -36,7 +36,12 @@ export class LanguageService {
       stackLabel: 'Stack',
       highlightsLabel: 'Highlights',
       challengeLabel: 'Challenge',
-      solutionLabel: 'Solution'
+      solutionLabel: 'Solution',
+      chatSuggestions: [
+        'What skills do you have?',
+        'Tell me about CaseLens',
+        'What is WALTER_AI?'
+      ]
     },
     es: {
       nav: { home: 'Inicio', experience: 'Experiencia', skills: 'Habilidades', projects: 'Proyectos', contact: 'Contacto' },
@@ -65,7 +70,12 @@ export class LanguageService {
       stackLabel: 'Stack',
       highlightsLabel: 'Destacados',
       challengeLabel: 'Reto',
-      solutionLabel: 'Solución'
+      solutionLabel: 'Solución',
+      chatSuggestions: [
+        '¿Qué habilidades tienes?',
+        'Cuéntame sobre CaseLens',
+        '¿Qué es WALTER_AI?'
+      ]
     }
   };
 
