@@ -65,9 +65,12 @@ export interface ChatMessage {
               </div>
             } @else {
               <div class="self-start max-w-[88%] px-3.5 py-2.5 rounded-[16px_16px_16px_4px] bg-[var(--card-bg)] border border-[var(--ink)]/15 text-[var(--ink)] text-xs leading-relaxed neo-shadow-xs animate-fade-up">
-                <span class="whitespace-pre-wrap">{{ msg.text }}</span>
-                @if (msg.streaming) {
-                  <span class="inline-block w-1.5 h-3 bg-[var(--color-accent)] ml-0.5 animate-pulse"></span>
+                @if (msg.streaming && !msg.text) {
+                  <span class="text-shimmer font-medium">{{ langService.t().chatThinking }}</span>
+                } @else if (msg.streaming) {
+                  <span class="text-shimmer whitespace-pre-wrap">{{ msg.text }}</span>
+                } @else {
+                  <span class="whitespace-pre-wrap">{{ msg.text }}</span>
                 }
               </div>
             }
