@@ -1,23 +1,19 @@
 import { Injectable, signal, computed, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { PortfolioData } from '../../shared/models/portfolio.model';
 import { LanguageService } from './language.service';
-import { firstValueFrom } from 'rxjs';
+import portfolioDataJson from '../../../assets/data.json';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PortfolioService {
-  private http = inject(HttpClient);
   private langService = inject(LanguageService);
 
-  public rawPortfolioSignal = signal<PortfolioData | null>(null);
+  public rawPortfolioSignal = signal<PortfolioData>(portfolioDataJson as PortfolioData);
 
   /** Computed signal that returns localized portfolio data matching current language */
-  public portfolioDataSignal = computed<PortfolioData | null>(() => {
+  public portfolioDataSignal = computed<PortfolioData>(() => {
     const raw = this.rawPortfolioSignal();
-    if (!raw) return null;
-
     const isEs = this.langService.currentLang() === 'es';
     if (!isEs) return raw;
 
@@ -57,27 +53,16 @@ export class PortfolioService {
     };
   });
 
-  get portfolio(): PortfolioData | null {
+  get portfolio(): PortfolioData {
     return this.portfolioDataSignal();
   }
 
   get isLoaded(): boolean {
-    return this.portfolioDataSignal() !== null;
+    return true;
   }
 
-  /** Called by APP_INITIALIZER — loads data.json from assets */
-  async init() {
-    try {
-      const data = await firstValueFrom(
-        this.http.get<PortfolioData>('assets/data.json')
-      );
-      if (data) {
-        this.rawPortfolioSignal.set(data);
-      }
-    } catch (err) {
-      console.error('PortfolioService: Failed to load assets/data.json', err);
-    }
-  }
+  /** Data is directly bundled into JavaScript bundle — zero HTTP network requests needed! */
+  async init() {}
 
   async getSecureImage(path: string): Promise<string> {
     if (!path) return '';
