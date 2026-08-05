@@ -14,11 +14,13 @@ import { tablerBrandGithub, tablerBrandLinkedin, tablerMail, tablerCheck, tabler
   template: `
     <div class="fixed bottom-5.5 right-5.5 z-[200] flex flex-col items-end gap-2">
       
-      <!-- Dynamic Rotating Agent Invitation Bubble -->
-      @if (!uiService.chatOpen() && !showCvTooltip() && showInvitation()) {
+      <!-- Dynamic Rotating Agent Invitation Bubble (5s wait -> Pop In -> 5s display -> Pop Out -> 5s wait) -->
+      @if (!uiService.chatOpen() && !showCvTooltip() && !isDismissed() && invitationMode() !== 'HIDDEN') {
         <div (click)="openChatFromInvitation()"
-             class="px-4 py-2.5 rounded-2xl glass-card neo-border neo-shadow cursor-pointer max-w-[310px] animate-spring-up flex items-center justify-between gap-2 select-none group hover:scale-[1.02] transition-transform"
-             style="background: var(--card-bg); border: 2px solid var(--ink);">
+             class="px-4 py-2.5 rounded-2xl glass-card neo-border neo-shadow cursor-pointer max-w-[310px] flex items-center justify-between gap-2 select-none group hover:scale-[1.03] transition-transform shadow-md"
+             [class.animate-pop-in]="invitationMode() === 'IN'"
+             [class.animate-pop-out]="invitationMode() === 'OUT'"
+             style="background: var(--card-bg); border: 2px solid var(--ink); transform-origin: bottom right;">
           <div class="font-[var(--font-body)] text-xs font-semibold text-[var(--ink)] leading-snug">
             {{ currentInvitation() }}
           </div>
@@ -98,11 +100,13 @@ export class Footer implements OnInit, OnDestroy {
 
   isCopied = signal(false);
   showCvTooltip = signal(false);
-  showInvitation = signal(true);
+  isDismissed = signal(false);
+
+  invitationMode = signal<'HIDDEN' | 'IN' | 'OUT'>('HIDDEN');
   invitationIndex = signal(0);
-  
-  private tooltipTimeout: any;
-  private rotationInterval: any;
+
+  private cvTooltipTimeout: any;
+  private invitationTimer: any;
 
   currentInvitation = computed(() => {
     const list = this.langService.t().agentInvitations || [];
@@ -111,14 +115,46 @@ export class Footer implements OnInit, OnDestroy {
   });
 
   ngOnInit() {
-    this.rotationInterval = setInterval(() => {
-      this.invitationIndex.update(i => i + 1);
-    }, 10000);
+    this.scheduleNextInvitation(5000);
   }
 
   ngOnDestroy() {
-    if (this.rotationInterval) clearInterval(this.rotationInterval);
-    if (this.tooltipTimeout) clearTimeout(this.tooltipTimeout);
+    if (this.invitationTimer) clearTimeout(this.invitationTimer);
+    if (this.cvTooltipTimeout) clearTimeout(this.cvTooltipTimeout);
+  }
+
+  private scheduleNextInvitation(delayMs: number) {
+    if (this.isDismissed()) return;
+
+    this.invitationTimer = setTimeout(() => {
+      if (this.isDismissed() || this.uiService.chatOpen()) {
+        this.scheduleNextInvitation(5000);
+        return;
+      }
+
+      // Step 1: Pop In animation
+      this.invitationMode.set('IN');
+
+      // Step 2: Stay visible for 5 seconds
+      this.invitationTimer = setTimeout(() => {
+        if (this.isDismissed()) {
+          this.invitationMode.set('HIDDEN');
+          return;
+        }
+
+        // Step 3: Trigger Pop Out animation
+        this.invitationMode.set('OUT');
+
+        // Step 4: After exit animation completes (380ms), hide element and schedule next run after 5s wait
+        this.invitationTimer = setTimeout(() => {
+          this.invitationMode.set('HIDDEN');
+          this.invitationIndex.update(i => i + 1);
+          this.scheduleNextInvitation(5000);
+        }, 380);
+
+      }, 5000);
+
+    }, delayMs);
   }
 
   getProfileUrl(network: string): string | null {
@@ -141,8 +177,8 @@ export class Footer implements OnInit, OnDestroy {
 
   triggerCvTooltip() {
     this.showCvTooltip.set(true);
-    clearTimeout(this.tooltipTimeout);
-    this.tooltipTimeout = setTimeout(() => this.showCvTooltip.set(false), 4000);
+    clearTimeout(this.cvTooltipTimeout);
+    this.cvTooltipTimeout = setTimeout(() => this.showCvTooltip.set(false), 4000);
   }
 
   openChatFromTooltip() {
@@ -160,6 +196,8 @@ export class Footer implements OnInit, OnDestroy {
 
   dismissInvitation(event: MouseEvent) {
     event.stopPropagation();
-    this.showInvitation.set(false);
+    this.isDismissed.set(true);
+    this.invitationMode.set('HIDDEN');
+    if (this.invitationTimer) clearTimeout(this.invitationTimer);
   }
 }
