@@ -69,7 +69,7 @@ export class PortfolioService {
   async init() {
     try {
       const data = await firstValueFrom(
-        this.http.get<PortfolioData>('/assets/data.json')
+        this.http.get<PortfolioData>('assets/data.json')
       );
       if (data) {
         this.rawPortfolioSignal.set(data);
@@ -80,8 +80,12 @@ export class PortfolioService {
   }
 
   async getSecureImage(path: string): Promise<string> {
+    if (!path) return '';
     if (path.startsWith('http://') || path.startsWith('https://')) {
       return path;
+    }
+    if (path.startsWith('/')) {
+      return path.substring(1);
     }
     return path;
   }

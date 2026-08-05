@@ -145,8 +145,8 @@
       "description_es": "Sistema RAG legal full-stack con guardrails de doble capa, streaming SSE y citas exactas de fuentes.",
       "long_description": "CaseLens is a full-stack Retrieval-Augmented Generation (RAG) system engineered for legal document intelligence. Built with Clean Architecture on FastAPI, it lets users upload legal files, case records, contracts, and jurisprudence, then query them in natural language and receive precise, citation-backed answers. Features double-layer guardrails that abort LLM calls on empty retrieval results (saving 100% of API costs on empty queries), legal-aware text chunking optimized for Spanish legal vocabulary, and a React + TypeScript dashboard with real-time SSE token streaming and smart citation previews.",
       "long_description_es": "CaseLens es un sistema Retrieval-Augmented Generation (RAG) diseñado para inteligencia de documentos legales. Construido con Arquitectura Limpia en FastAPI, permite cargar archivos legales, expedientes, contratos y jurisprudencia, consultándolos en lenguaje natural con respuestas precisas respaldadas por citas. Cuenta con guardrails de doble capa que cancelan llamadas al LLM cuando no hay información relevante (ahorrando el 100% del costo en consultas vacías), fragmentación de texto especializada en vocabulario legal en español y un panel React + TypeScript con streaming SSE en tiempo real y vista previa de citas.",
-      "image": "/assets/projects/caselens/caselens-image1.png",
-      "images": ["/assets/projects/caselens/caselens-image1.png"],
+      "image": "assets/projects/caselens/caselens-image1.png",
+      "images": ["assets/projects/caselens/caselens-image1.png"],
       "stack": [
         "FastAPI",
         "React",
@@ -190,8 +190,8 @@
       "description_es": "Motor de orquestación multiagente con arquitectura limpia, seguridad estricta en llamadas a herramientas y evaluación automatizada LLM-as-a-judge.",
       "long_description": "An advanced multi-agent orchestrator acting as the backend engine for Walter's portfolio. Built with Python and FastAPI following Clean Architecture, it coordinates specialized agents using LiteLLM to dynamically query data. Includes a robust prompt-injection guardrail layer, real-time Server-Sent Events (SSE) chat streaming, and an automated CI/CD evaluation pipeline with an LLM-as-a-judge scoring system.",
       "long_description_es": "Un orquestador multiagente avanzado que actúa como motor backend para el portafolio de Walter. Construido en Python y FastAPI siguiendo Arquitectura Limpia, coordina agentes especializados usando LiteLLM para consultar datos dinámicamente. Incluye una capa robusta de guardrails contra inyección de prompts, streaming de chat en tiempo real vía SSE y un pipeline de evaluación automatizado CI/CD con evaluación LLM-as-a-judge.",
-      "image": "/assets/projects/Walter_AI/WalterAI.png",
-      "images": ["/assets/projects/Walter_AI/WalterAI.png"],
+      "image": "assets/projects/Walter_AI/WalterAI.png",
+      "images": ["assets/projects/Walter_AI/WalterAI.png"],
       "stack": ["FastAPI", "Python", "LiteLLM", "SSE", "Pydantic", "GitHub Actions"],
       "period": "2026-04",
       "links": {
