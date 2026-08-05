@@ -47,7 +47,7 @@ import { tablerBrandGithub, tablerBrandLinkedin, tablerMail, tablerCheck, tabler
       }
 
       <!-- Floating Dock -->
-      <div class="flex items-center gap-1.5 px-3 py-2.5 rounded-full glass-card neo-border neo-shadow">
+      <div class="relative flex items-center gap-1.5 px-3 py-2.5 rounded-full glass-card neo-border neo-shadow">
         @if (getProfileUrl('GitHub'); as gh) {
           <a [href]="gh" target="_blank" rel="noopener" title="GitHub"
              class="w-11.5 h-11.5 rounded-[14px] flex items-center justify-center bg-[var(--dock-idle)] text-[var(--ink)] hover:scale-110"
@@ -63,11 +63,21 @@ import { tablerBrandGithub, tablerBrandLinkedin, tablerMail, tablerCheck, tabler
           </a>
         }
         @if (portfolio?.basics?.email) {
-          <button (click)="copyEmail()" title="Copy email"
-                  class="w-11.5 h-11.5 rounded-[14px] flex items-center justify-center bg-[var(--dock-idle)] text-[var(--ink)] hover:scale-110"
-                  style="transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1);">
-            <ng-icon [svg]="isCopied() ? icons.tablerCheck : icons.tablerMail" size="18"></ng-icon>
-          </button>
+          <div class="relative flex items-center justify-center">
+            <!-- Dynamic Email Copied Toast aligned directly above the Email button -->
+            @if (isCopied()) {
+              <div class="absolute bottom-[calc(100%+14px)] left-1/2 -translate-x-1/2 px-3.5 py-2 rounded-xl cursor-default animate-pop-in flex items-center gap-1.5 whitespace-nowrap select-none shadow-md z-[210]"
+                   style="background: #C6FF6B; color: #15151A; border: 2.5px solid #15151A; box-shadow: 3px 3px 0 #15151A; font-family: 'Space Grotesk', sans-serif;">
+                <ng-icon [svg]="icons.tablerCheck" size="15"></ng-icon>
+                <span class="font-extrabold text-[12px] tracking-wide">{{ langService.t().emailCopied }}</span>
+              </div>
+            }
+            <button (click)="copyEmail()" title="Copy email"
+                    class="w-11.5 h-11.5 rounded-[14px] flex items-center justify-center bg-[var(--dock-idle)] text-[var(--ink)] hover:scale-110"
+                    style="transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1);">
+              <ng-icon [svg]="isCopied() ? icons.tablerCheck : icons.tablerMail" size="18"></ng-icon>
+            </button>
+          </div>
         }
         
         <!-- CV Button (Triggers Tooltip & Invites to WALTER-AI) -->
@@ -169,9 +179,11 @@ export class Footer implements OnInit, OnDestroy {
     try {
       await navigator.clipboard.writeText(email);
       this.isCopied.set(true);
-      setTimeout(() => this.isCopied.set(false), 2000);
+      setTimeout(() => this.isCopied.set(false), 2500);
     } catch {
-      // Clipboard API unavailable
+      // Clipboard API fallback
+      this.isCopied.set(true);
+      setTimeout(() => this.isCopied.set(false), 2500);
     }
   }
 
