@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, inject, AfterViewChecked, ChangeDetectorRef, signal, computed, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { Component, ElementRef, ViewChild, inject, AfterViewChecked, ChangeDetectorRef, signal, computed, effect, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -117,6 +117,16 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   messages = signal<ChatMessage[]>([]);
 
   defaultSuggestions = computed(() => this.langService.t().chatSuggestions);
+
+  constructor() {
+    effect(() => {
+      if (this.uiService.chatOpen()) {
+        setTimeout(() => {
+          this.chatInput?.nativeElement?.focus();
+        }, 150);
+      }
+    });
+  }
 
   ngAfterViewChecked() {
     this.scrollToBottom();

@@ -14,10 +14,10 @@ import { tablerBrandGithub, tablerBrandLinkedin, tablerMail, tablerCheck, tabler
   template: `
     <div class="fixed bottom-5.5 right-5.5 z-[200] flex flex-col items-end gap-2">
       
-      <!-- Dynamic Rotating Agent Invitation Bubble (5s wait -> Pop In -> 5s display -> Pop Out -> 5s wait) -->
+      <!-- Dynamic Rotating Agent Invitation Bubble -->
       @if (!uiService.chatOpen() && !showCvTooltip() && !isDismissed() && invitationMode() !== 'HIDDEN') {
         <div (click)="openChatFromInvitation()"
-             class="px-4 py-2.5 rounded-2xl glass-card neo-border neo-shadow cursor-pointer max-w-[310px] flex items-center justify-between gap-2 select-none group hover:scale-[1.03] transition-transform shadow-md"
+             class="relative px-4 py-2.5 rounded-2xl glass-card neo-border neo-shadow cursor-pointer max-w-[310px] flex items-center justify-between gap-2 select-none group hover:scale-[1.03] transition-transform shadow-md mb-1"
              [class.animate-pop-in]="invitationMode() === 'IN'"
              [class.animate-pop-out]="invitationMode() === 'OUT'"
              style="background: var(--card-bg); border: 2px solid var(--ink); transform-origin: bottom right;">
@@ -28,6 +28,10 @@ import { tablerBrandGithub, tablerBrandLinkedin, tablerMail, tablerCheck, tabler
                   class="text-[var(--ink-soft)] hover:text-[var(--ink)] p-0.5 text-xs opacity-60 hover:opacity-100 flex-shrink-0">
             ✕
           </button>
+
+          <!-- Speech Bubble Pointer Tail (Triangular tail pointing to WALTER-AI button) -->
+          <div class="absolute -bottom-[9px] right-6 w-0 h-0 border-l-[7px] border-l-transparent border-r-[7px] border-r-transparent border-t-[9px] border-t-[var(--ink)]"></div>
+          <div class="absolute -bottom-[6.5px] right-[25px] w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[8px] border-t-[var(--card-bg)]"></div>
         </div>
       }
 
