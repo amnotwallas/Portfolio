@@ -5,11 +5,12 @@
     "hero_titles": [
       "AI & Backend Engineer",
       "FastAPI + Python",
-      "LLM Systems Builde",
+      "LLM Systems Builder",
       "System Architecture & APIs",
       "Multiagent Orchestration"
     ],
     "summary": "Backend & AI Engineer, Mexico. I build production systems with LLMs using Python and FastAPI. I love creating agents, connecting models to real data, and solving hard problems with AI. Passionate about learning and shipping things that work.",
+    "summary_es": "Ingeniero Backend e Inteligencia Artificial en México. Construyo sistemas en producción con LLMs utilizando Python y FastAPI. Me apasiona crear agentes IA, conectar modelos con datos reales y resolver problemas complejos. Enfocado en aprender continuamente y lanzar software que funciona.",
     "email": "walterardev@gmail.com",
     "website": "https://amnotwallas.github.io/Portfolio/",
     "url": "https://github.com/amnotwallas",
@@ -57,7 +58,7 @@
         "Prompt Engineering",
         "Prompt Injection Guardrails",
         "RAG Systems",
-        "Context Engeneering",
+        "Context Engineering",
         "LLM Evaluation Pipelines"
       ]
     },
@@ -96,14 +97,21 @@
     {
       "company": "IBICARE",
       "role": "Backend & AI Engineer",
+      "role_es": "Ingeniero Backend e IA",
       "period": "2025-09 — Present",
       "summary": "Own the AI infrastructure and backend integrations powering Neuroa, a multiagent health assistant embedded in IBICARE's app, serving 400+ active users across corporate wellness programs (HR admins, coaches, physiotherapists, nutritionists).",
+      "summary_es": "Lidero la infraestructura de IA e integraciones backend que impulsan a Neuroa, un asistente de salud multiagente integrado en la app de IBICARE, sirviendo a más de 400 usuarios activos en programas de bienestar corporativo (administradores de RH, coaches, fisioterapeutas y nutriólogos).",
       "image": "https://play-lh.googleusercontent.com/qRNTf7VjO6Lhc4Zo5APR5MYfyHFgdxDhWVDI0dTNeCYPEZgUi-CvQQtgP87tHvjimDU",
       "highlights": ["Python", "FastAPI", "LLM Agents", "MLflow", "SQL Server"],
       "achievements": [
         "Cut LLM operational costs 40% by routing queries to models sized to their complexity, plus caching repeated queries",
         "Built MLflow evaluation pipelines wired into CI/CD — catch prompt regressions, tool-call errors, hallucination rate, and safety violations before every deploy",
         "Implemented RBAC-aware access validation at the agent level, hard-separating what regular users, admins, and health professionals can see"
+      ],
+      "achievements_es": [
+        "Reduje los costos operativos de LLM en un 40% enrutando consultas a modelos dimensionados según su complejidad y aplicando caché en consultas repetidas",
+        "Construí pipelines de evaluación en MLflow integrados en CI/CD para detectar regresiones de prompts, errores de herramientas, alucinaciones y violaciones de seguridad antes de cada despliegue",
+        "Implementé validación de acceso RBAC a nivel de agente, separando estrictamente lo que usuarios regulares, administradores y profesionales de salud pueden visualizar"
       ],
       "metrics": [
         "400+ active users on production AI infrastructure",
@@ -113,8 +121,10 @@
     {
       "company": "Tecnm Campus Apatzingán",
       "role": "Software Development Intern",
+      "role_es": "Practicante de Desarrollo de Software",
       "period": "2025-02 — 2025-08",
       "summary": "I designed and implemented a comprehensive automation system for managing professional residencies. Using JavaScript and Google Apps Script, I optimized communication between the institution, students, and program directors. The solution automated the sending of dynamic status updates from Google Sheets, significantly reducing response times and eliminating human error in critical administrative processes.",
+      "summary_es": "Diseñé e implementé un sistema integral de automatización para la gestión de residencias profesionales. Utilizando JavaScript y Google Apps Script, optimicé la comunicación entre la institución, estudiantes y directores de carrera. La solución automatizó el envío de actualizaciones de estado dinámicas desde Google Sheets, reduciendo significativamente los tiempos de respuesta y eliminando errores humanos en procesos administrativos críticos.",
       "image": "https://apatzingan.tecnm.mx/wp-content/uploads/2022/04/TecNM-Vertical-451x372.png",
       "highlights": [
         "JavaScript",
@@ -132,7 +142,9 @@
       "slug": "caselens",
       "name": "CaseLens — AI Legal RAG Search",
       "description": "Full-stack legal RAG system with double-layer guardrails, SSE streaming, and exact source citations.",
+      "description_es": "Sistema RAG legal full-stack con guardrails de doble capa, streaming SSE y citas exactas de fuentes.",
       "long_description": "CaseLens is a full-stack Retrieval-Augmented Generation (RAG) system engineered for legal document intelligence. Built with Clean Architecture on FastAPI, it lets users upload legal files, case records, contracts, and jurisprudence, then query them in natural language and receive precise, citation-backed answers. Features double-layer guardrails that abort LLM calls on empty retrieval results (saving 100% of API costs on empty queries), legal-aware text chunking optimized for Spanish legal vocabulary, and a React + TypeScript dashboard with real-time SSE token streaming and smart citation previews.",
+      "long_description_es": "CaseLens es un sistema Retrieval-Augmented Generation (RAG) diseñado para inteligencia de documentos legales. Construido con Arquitectura Limpia en FastAPI, permite cargar archivos legales, expedientes, contratos y jurisprudencia, consultándolos en lenguaje natural con respuestas precisas respaldadas por citas. Cuenta con guardrails de doble capa que cancelan llamadas al LLM cuando no hay información relevante (ahorrando el 100% del costo en consultas vacías), fragmentación de texto especializada en vocabulario legal en español y un panel React + TypeScript con streaming SSE en tiempo real y vista previa de citas.",
       "image": "/assets/projects/caselens/caselens-image1.png",
       "images": ["/assets/projects/caselens/caselens-image1.png"],
       "stack": [
@@ -153,13 +165,21 @@
         "role": "Backend & AI Engineer",
         "complexity": "HIGH",
         "challenges": "Enforcing strict Clean Architecture boundaries between domain logic and infrastructure (LLM, vector store, parsers) while streaming citations and tokens in real time via SSE.",
-        "solutions": "Designed a ports-and-adapters architecture isolating domain/use cases from FastAPI and storage adapters, added double-layer guardrails to cut unnecessary LLM calls, and implemented legal-aware chunking for Spanish-language documents."
+        "challenges_es": "Garantizar límites estrictos de Arquitectura Limpia entre la lógica de dominio e infraestructura (LLM, base de datos vectorial, parsers) mientras se transmiten citas y tokens en tiempo real mediante SSE.",
+        "solutions": "Designed a ports-and-adapters architecture isolating domain/use cases from FastAPI and storage adapters, added double-layer guardrails to cut unnecessary LLM calls, and implemented legal-aware chunking for Spanish-language documents.",
+        "solutions_es": "Diseñé una arquitectura de puertos y adaptadores aislando los casos de uso del dominio de FastAPI y los adaptadores de almacenamiento, añadí guardrails de doble capa para eliminar llamadas innecesarias a LLMs e implementé chunking especializado en documentos legales en español."
       },
       "highlights": [
         "Double-layer guardrails abort before the LLM when no relevant chunks are found — eliminates LLM cost on empty queries entirely",
         "Legal-aware text chunking optimized for Spanish legal vocabulary and document structure",
         "SSE streaming delivers citations before tokens start — sources visible immediately",
         "API key security with dev proxy injection — keys never exposed to the browser"
+      ],
+      "highlights_es": [
+        "Guardrails de doble capa cancelan la llamada al LLM si no se encuentran fragmentos relevantes — eliminando totalmente el costo de API en consultas vacías",
+        "Chunking de texto especializado en vocabulario legal y estructura de documentos en español",
+        "Streaming SSE entrega citas antes de que comiencen los tokens — las fuentes son visibles de inmediato",
+        "Seguridad de llaves de API con proxy de desarrollo — las API keys nunca se exponen al navegador"
       ]
     },
     {
@@ -167,10 +187,11 @@
       "slug": "walter-ai",
       "name": "WALTER-AI",
       "description": "Multi-agent orchestration engine with clean architecture, strict tool-calling safety, and automated LLM-as-a-judge evaluation.",
+      "description_es": "Motor de orquestación multiagente con arquitectura limpia, seguridad estricta en llamadas a herramientas y evaluación automatizada LLM-as-a-judge.",
       "long_description": "An advanced multi-agent orchestrator acting as the backend engine for Walter's portfolio. Built with Python and FastAPI following Clean Architecture, it coordinates specialized agents using LiteLLM to dynamically query data. Includes a robust prompt-injection guardrail layer, real-time Server-Sent Events (SSE) chat streaming, and an automated CI/CD evaluation pipeline with an LLM-as-a-judge scoring system.",
+      "long_description_es": "Un orquestador multiagente avanzado que actúa como motor backend para el portafolio de Walter. Construido en Python y FastAPI siguiendo Arquitectura Limpia, coordina agentes especializados usando LiteLLM para consultar datos dinámicamente. Incluye una capa robusta de guardrails contra inyección de prompts, streaming de chat en tiempo real vía SSE y un pipeline de evaluación automatizado CI/CD con evaluación LLM-as-a-judge.",
       "image": "/assets/projects/Walter_AI/WalterAI.png",
       "images": ["/assets/projects/Walter_AI/WalterAI.png"],
-
       "stack": ["FastAPI", "Python", "LiteLLM", "SSE", "Pydantic", "GitHub Actions"],
       "period": "2026-04",
       "links": {
@@ -182,7 +203,9 @@
         "role": "BACKEND & AI ENGINEER",
         "complexity": "VERY HIGH",
         "challenges": "Ensuring strictly validated JSON responses from Llama models under tool-use constraints, preventing prompt-injection attacks, and avoiding provider rate limits during bulk automated runs.",
-        "solutions": "Removed pseudo-code examples from prompts, built a regex-based bilingual guardrail layer, implemented exponential backoff logic, and built a double-layer CI/CD evaluator combining deterministic checks with an LLM-as-a-judge."
+        "challenges_es": "Asegurar respuestas JSON estrictamente validadas desde modelos Llama bajo restricciones de tool-use, prevenir ataques de inyección de prompts y evitar límites de tasa durante ejecuciones automatizadas.",
+        "solutions": "Removed pseudo-code examples from prompts, built a regex-based bilingual guardrail layer, implemented exponential backoff logic, and built a double-layer CI/CD evaluator combining deterministic checks with an LLM-as-a-judge.",
+        "solutions_es": "Eliminé ejemplos de pseudocódigo en prompts, construí una capa bilingüe de guardrails basada en expresiones regulares, implementé lógica de reintento exponencial y creé un evaluador CI/CD de doble capa combinando validación determinista con LLM-as-a-judge."
       },
       "highlights": [
         "Supervisor orchestration with isolated tool access and structured outputs",
@@ -190,6 +213,13 @@
         "Automated CI/CD evaluation pipeline (GitHub Actions) combining deterministic action checks with LLM-as-a-judge",
         "Proactive bilingual guardrail layer intercepting prompt injection, rule evasion, and formatting anomalies",
         "Hexagonal architecture (ports and adapters) isolating router, LLM clients (LiteLLM), and audit telemetry"
+      ],
+      "highlights_es": [
+        "Orquestación supervisora con acceso aislado a herramientas y respuestas estructuradas",
+        "Streaming SSE con trazabilidad completa de ejecución desde el prompt hasta la respuesta final",
+        "Pipeline de evaluación automatizada CI/CD (GitHub Actions) combinando validación determinista y LLM-as-a-judge",
+        "Capa de guardrails bilingüe proactiva que intercepta inyección de prompts, evasión de reglas y anomalías de formato",
+        "Arquitectura hexagonal (puertos y adaptadores) aislando enrutadores, clientes LLM (LiteLLM) y telemetría de auditoría"
       ]
     }
   ],
@@ -197,12 +227,24 @@
     {
       "institution": "Instituto Tecnológico Superior de Apatzingán (ITSA)",
       "degree": "B.S. Computer Systems Engineering",
+      "degree_es": "Ingeniería en Sistemas Computacionales",
       "period": "2021 — 2026",
-      "note": "All coursework completed. Degree conferral in progress (Aug 2026)."
+      "note": "All coursework completed. Degree conferral in progress (Aug 2026).",
+      "note_es": "Total de créditos concluidos. En proceso de titulación (Ago 2026)."
     }
   ],
   "languages": [
-    { "name": "Spanish", "level": "Native" },
-    { "name": "English", "level": "B2 — Professional working proficiency" }
+    {
+      "name": "Spanish",
+      "name_es": "Español",
+      "level": "Native",
+      "level_es": "Nativo"
+    },
+    {
+      "name": "English",
+      "name_es": "Inglés",
+      "level": "B2 — Professional working proficiency",
+      "level_es": "B2 — Competencia profesional"
+    }
   ]
 }

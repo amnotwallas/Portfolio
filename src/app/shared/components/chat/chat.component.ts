@@ -119,7 +119,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   defaultSuggestions = [
     'What skills do you have?',
     'Tell me about CaseLens',
-    'What is WALTER_AI?'
+    'What is WALTER-AI?'
   ];
 
   ngAfterViewChecked() {
