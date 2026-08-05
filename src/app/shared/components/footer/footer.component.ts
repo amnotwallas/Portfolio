@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from "@angular/core";
+import { Component, computed, inject, signal, OnInit, OnDestroy } from "@angular/core";
 import { NgIcon } from "@ng-icons/core";
 import { CommonModule } from "@angular/common";
 import { PortfolioData, Profile } from "../../models/portfolio.model";
@@ -14,6 +14,21 @@ import { tablerBrandGithub, tablerBrandLinkedin, tablerMail, tablerCheck, tabler
   template: `
     <div class="fixed bottom-5.5 right-5.5 z-[200] flex flex-col items-end gap-2">
       
+      <!-- Dynamic Rotating Agent Invitation Bubble -->
+      @if (!uiService.chatOpen() && !showCvTooltip() && showInvitation()) {
+        <div (click)="openChatFromInvitation()"
+             class="px-4 py-2.5 rounded-2xl glass-card neo-border neo-shadow cursor-pointer max-w-[310px] animate-spring-up flex items-center justify-between gap-2 select-none group hover:scale-[1.02] transition-transform"
+             style="background: var(--card-bg); border: 2px solid var(--ink);">
+          <div class="font-[var(--font-body)] text-xs font-semibold text-[var(--ink)] leading-snug">
+            {{ currentInvitation() }}
+          </div>
+          <button (click)="dismissInvitation($event)" title="Close"
+                  class="text-[var(--ink-soft)] hover:text-[var(--ink)] p-0.5 text-xs opacity-60 hover:opacity-100 flex-shrink-0">
+            ✕
+          </button>
+        </div>
+      }
+
       <!-- Dynamic CV Tooltip Toast -->
       @if (showCvTooltip()) {
         <div (click)="openChatFromTooltip()"
@@ -72,7 +87,7 @@ import { tablerBrandGithub, tablerBrandLinkedin, tablerMail, tablerCheck, tabler
     </div>
   `
 })
-export class Footer {
+export class Footer implements OnInit, OnDestroy {
   private portfolioService = inject(PortfolioService);
   uiService = inject(UiService);
   langService = inject(LanguageService);
@@ -83,7 +98,28 @@ export class Footer {
 
   isCopied = signal(false);
   showCvTooltip = signal(false);
+  showInvitation = signal(true);
+  invitationIndex = signal(0);
+  
   private tooltipTimeout: any;
+  private rotationInterval: any;
+
+  currentInvitation = computed(() => {
+    const list = this.langService.t().agentInvitations || [];
+    if (!list.length) return '';
+    return list[this.invitationIndex() % list.length];
+  });
+
+  ngOnInit() {
+    this.rotationInterval = setInterval(() => {
+      this.invitationIndex.update(i => i + 1);
+    }, 10000);
+  }
+
+  ngOnDestroy() {
+    if (this.rotationInterval) clearInterval(this.rotationInterval);
+    if (this.tooltipTimeout) clearTimeout(this.tooltipTimeout);
+  }
 
   getProfileUrl(network: string): string | null {
     const profiles = this.portfolio?.basics.profiles || [];
@@ -114,5 +150,16 @@ export class Footer {
     if (!this.uiService.chatOpen()) {
       this.uiService.toggleChat();
     }
+  }
+
+  openChatFromInvitation() {
+    if (!this.uiService.chatOpen()) {
+      this.uiService.toggleChat();
+    }
+  }
+
+  dismissInvitation(event: MouseEvent) {
+    event.stopPropagation();
+    this.showInvitation.set(false);
   }
 }

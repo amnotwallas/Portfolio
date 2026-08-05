@@ -42,7 +42,13 @@ export class LanguageService {
         'Tell me about CaseLens',
         'What is WALTER-AI?'
       ],
-      cvUnavailableTooltip: "CV unavailable. Ask WALTER-AI about Walter's experience!"
+      cvUnavailableTooltip: "CV unavailable. Ask WALTER-AI about Walter's experience!",
+      agentInvitations: [
+        '👋 Hi! Ask WALTER-AI anything about my work & skills',
+        '🚀 Curious about my stack? Chat with WALTER-AI!',
+        '💡 Want to know about CaseLens or IBICARE? Ask WALTER-AI',
+        '⚡ Need a quick summary? Talk to WALTER-AI'
+      ]
     },
     es: {
       nav: { home: 'Inicio', experience: 'Experiencia', skills: 'Habilidades', projects: 'Proyectos', contact: 'Contacto' },
@@ -77,7 +83,13 @@ export class LanguageService {
         'Cuéntame sobre CaseLens',
         '¿Qué es WALTER-AI?'
       ],
-      cvUnavailableTooltip: 'CV no disponible. ¡Pregúntale a WALTER-AI sobre la trayectoria de Walter!'
+      cvUnavailableTooltip: 'CV no disponible. ¡Pregúntale a WALTER-AI sobre la trayectoria de Walter!',
+      agentInvitations: [
+        '👋 ¡Hola! Pregúntale a WALTER-AI sobre mi experiencia y proyectos',
+        '🚀 ¿Curioso sobre mi stack? ¡Chatea con WALTER-AI!',
+        '💡 ¿Quieres saber sobre CaseLens o IBICARE? Pregúntale a WALTER-AI',
+        '⚡ ¿Buscas un resumen rápido? Habla con WALTER-AI'
+      ]
     }
   };
 
