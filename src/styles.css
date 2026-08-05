@@ -243,3 +243,19 @@ h1, h2, h3, h4 { font-family: var(--font-display); }
   animation: shimmer 1.5s infinite linear;
 }
 @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+.text-shimmer {
+  background: linear-gradient(90deg, var(--ink) 40%, var(--color-accent) 50%, var(--ink) 60%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 1.5s infinite linear;
+}
+@media (prefers-reduced-motion: reduce) {
+  .text-shimmer {
+    animation: none;
+    background: none;
+    -webkit-text-fill-color: unset;
+    color: var(--ink);
+  }
+}
