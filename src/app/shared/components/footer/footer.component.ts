@@ -17,13 +17,14 @@ import { tablerBrandGithub, tablerBrandLinkedin, tablerMail, tablerCheck, tabler
       <!-- Dynamic CV Tooltip Toast -->
       @if (showCvTooltip()) {
         <div (click)="openChatFromTooltip()"
-             class="px-4 py-3 rounded-2xl glass-card neo-border neo-shadow cursor-pointer max-w-[320px] animate-spring-up"
-             style="background: var(--ink); color: var(--bg); border: 2px solid var(--ink);">
-          <div class="font-[var(--font-display)] font-bold text-xs leading-relaxed flex items-center gap-2">
+             class="px-4.5 py-3.5 rounded-2xl cursor-pointer max-w-[340px] animate-spring-up flex flex-col gap-1.5 select-none"
+             style="background: #C6FF6B; color: #15151A; border: 2.5px solid #15151A; box-shadow: 5px 5px 0 #15151A; font-family: 'Space Grotesk', sans-serif;">
+          <div class="flex items-center gap-2 font-extrabold text-[13px] leading-snug">
             <span>💡 {{ langService.t().cvUnavailableTooltip }}</span>
           </div>
-          <div class="font-[var(--font-mono)] text-[10.5px] text-[var(--color-lime)] mt-1.5 font-semibold underline">
-            {{ langService.t().chatTitle }} &rarr;
+          <div class="font-[var(--font-mono)] text-[11px] font-bold tracking-wide text-[#15151A] bg-white/80 border border-[#15151A] rounded-lg px-2.5 py-1 w-max flex items-center gap-1.5 mt-1 hover:bg-white transition-colors">
+            <span>✨ {{ langService.t().chatTitle }}</span>
+            <span>&rarr;</span>
           </div>
         </div>
       }
