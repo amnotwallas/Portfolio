@@ -18,10 +18,10 @@ const BENTO_VARS = ['--bento-1', '--bento-2', '--bento-3', '--bento-4', '--bento
       </div>
       <h2 class="font-[var(--font-display)] font-bold mb-8 text-[var(--ink)]" style="font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.02em;">{{ langService.t().skillsTitle }}</h2>
 
-      <div class="grid grid-cols-6 gap-4" style="grid-auto-rows: minmax(120px, auto);">
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-4" style="grid-auto-rows: minmax(120px, auto);">
         @for (cat of categories(); track cat.name) {
-          <div class="p-5.5 rounded-[18px] neo-border flex flex-col gap-3"
-               [style.grid-column]="'span ' + cat.span"
+          <div class="p-5.5 rounded-[18px] neo-border flex flex-col gap-3 col-span-1 sm:col-span-2"
+               [class]="'md:!col-auto md:[grid-column:span_' + cat.span + ']'"
                [style.background]="'var(' + cat.bg + ')'"
                [style.box-shadow]="'4px 4px 0 rgba(0,0,0,0.12)'"
                [style.color]="'var(--bento-text)'">
