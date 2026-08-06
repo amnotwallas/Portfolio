@@ -21,41 +21,18 @@
                 [style.view-transition-name]="'project-title-' + item.slug">{{item.name}}</h1>
             <p class="text-[16px] md:text-[17px] leading-relaxed text-[var(--ink-soft)] max-w-[640px] m-0">{{item.description}}</p>
 
-            <div class="flex items-center gap-4 flex-wrap pt-1">
-              @if (item.links.github) {
-                <a [href]="item.links.github" target="_blank"
-                   class="inline-flex items-center gap-2 font-[var(--font-display)] font-bold text-sm bg-[var(--ink)] text-[var(--bg)] neo-border rounded-full px-5 py-2.5 neo-shadow-lime"
-                   style="transition: transform 0.22s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.18s ease; cursor: pointer;"
-                   onmouseenter="this.style.transform='translateY(-3px)'; this.style.boxShadow='6px 6px 0 var(--color-lime)';"
-                   onmouseleave="this.style.transform=''; this.style.boxShadow='';"
-                   onmousedown="this.style.transform='translateX(4px) translateY(4px)'; this.style.boxShadow='0px 0px 0 var(--color-lime)';"
-                   onmouseup="this.style.transform='translateY(-3px)'; this.style.boxShadow='6px 6px 0 var(--color-lime)';">
-                  <ng-icon name="tablerBrandGithub" size="16"></ng-icon>
-                  <span>View on GitHub</span>
-                </a>
-              }
-              @if (item.links.demo) {
-                <a [href]="item.links.demo" target="_blank"
-                   class="inline-flex items-center gap-2 font-[var(--font-display)] font-bold text-sm glass-card rounded-full px-5 py-2.5 text-[var(--ink)] neo-border"
-                   style="transition: transform 0.22s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.18s ease; cursor: pointer;"
-                   onmouseenter="this.style.transform='translateY(-3px)'; this.style.boxShadow='4px 4px 0 var(--ink)';"
-                   onmouseleave="this.style.transform=''; this.style.boxShadow='';"
-                   onmousedown="this.style.transform='translateX(4px) translateY(4px)'; this.style.boxShadow='0px 0px 0 var(--ink)';"
-                   onmouseup="this.style.transform='translateY(-3px)'; this.style.boxShadow='4px 4px 0 var(--ink)';">
-                  <ng-icon name="tablerExternalLink" size="16"></ng-icon>
-                  <span>Live Demo</span>
-                </a>
-              }
-              <span class="font-[var(--font-mono)] text-[12.5px] text-[var(--ink-soft)]">{{item.period}}</span>
+            <div class="flex items-center gap-3 pt-1">
+              <span class="inline-flex items-center gap-1.5 font-[var(--font-mono)] text-[11.5px] font-semibold px-3.5 py-1.5 rounded-full bg-[var(--chip-bg)] border border-[var(--chip-border)] text-[var(--ink-soft)]">
+                <ng-icon name="tablerCalendar" size="13" class="text-[var(--color-accent)]"></ng-icon>
+                {{item.period}}
+              </span>
             </div>
           </header>
 
-          <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
-
-            <!-- Main Content: Documentation & Overview -->
-            <div class="lg:col-span-7 space-y-10" scrollReveal="fade-up">
-
-              <!-- Project Carousel -->
+          <!-- Top Section: Carousel (left) and Overview (right) -->
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 mb-10">
+            <!-- Project Carousel (left) -->
+            <div class="lg:col-span-7 flex flex-col gap-6" scrollReveal="fade-up">
               <div class="relative group/carousel h-auto aspect-[4/3] overflow-hidden rounded-[22px] neo-border-thick bg-[var(--card-bg)] neo-shadow transform-gpu cursor-zoom-in"
                   (click)="openLightbox()"
                   [style.view-transition-name]="'project-image-' + item.slug">
@@ -115,42 +92,52 @@
                 }
               </div>
 
-              <!-- Overview & Stack -->
-              <div class="space-y-10">
+              <!-- Highlights -->
+              @if (item.highlights?.length) {
                 <div class="space-y-4">
-                  <h2 class="font-[var(--font-display)] text-[22px] font-bold m-0 mb-2 text-[var(--ink)]">{{ langService.t().overviewLabel }}</h2>
-                  <p class="text-[16px] leading-relaxed text-[var(--ink-soft)] m-0">
-                    {{item.long_description}}
-                  </p>
-                </div>
-
-                <div class="space-y-4">
-                  <h2 class="font-[var(--font-display)] text-[22px] font-bold m-0 mb-2 text-[var(--ink)]">{{ langService.t().stackLabel }}</h2>
-                  <div class="flex flex-wrap gap-3">
-                    @for (tech of item.stack; track $index) {
-                      <span class="font-[var(--font-mono)] text-[11px] px-3 py-1.5 rounded-lg bg-[var(--chip-bg)] border border-[var(--chip-border)] text-[var(--ink)] uppercase tracking-wide">
-                        {{tech}}
-                      </span>
+                  <h3 class="font-[var(--font-display)] text-sm font-bold uppercase tracking-wider text-[var(--ink-soft)] m-0">{{ langService.t().highlightsLabel }}</h3>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+                    @for (h of item.highlights; track $index) {
+                      <div class="p-4 rounded-xl neo-border bg-[var(--card-bg)] text-sm leading-relaxed text-[var(--ink-soft)] neo-shadow" scrollReveal="spring-pop" [revealDelay]="$index * 50">{{ h }}</div>
                     }
                   </div>
                 </div>
+              }
+            </div>
 
-                @if (item.highlights?.length) {
-                  <div class="space-y-4">
-                    <h2 class="font-[var(--font-display)] text-[22px] font-bold m-0 mb-2 text-[var(--ink)]">{{ langService.t().highlightsLabel }}</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
-                      @for (h of item.highlights; track $index) {
-                        <div class="p-4.5 rounded-2xl neo-border bg-[var(--card-bg)] text-sm leading-relaxed text-[var(--ink-soft)] neo-shadow" scrollReveal="spring-pop" [revealDelay]="$index * 50">{{ h }}</div>
-                      }
-                    </div>
-                  </div>
-                }
+            <!-- Overview (right) -->
+            <div class="lg:col-span-5 flex flex-col space-y-6" scrollReveal="spring-up" [revealDelay]="100">
+              <div class="space-y-4">
+                <h2 class="font-[var(--font-display)] text-[22px] font-bold m-0 mb-1 text-[var(--ink)]">{{ langService.t().overviewLabel }}</h2>
+                <p class="text-[16px] md:text-[17px] leading-relaxed text-[var(--ink-soft)] m-0">
+                  {{item.long_description}}
+                </p>
+              </div>
 
+              <div class="space-y-4">
+                <h3 class="font-[var(--font-display)] text-sm font-bold uppercase tracking-wider text-[var(--ink-soft)] m-0">{{ langService.t().stackLabel }}</h3>
+                <div class="flex flex-wrap gap-2.5">
+                  @for (tech of item.stack; track $index) {
+                    <span class="font-[var(--font-mono)] text-[10.5px] px-3 py-1.5 rounded-lg bg-[var(--chip-bg)] border border-[var(--chip-border)] text-[var(--ink)] uppercase tracking-wide">
+                      {{tech}}
+                    </span>
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Section: Technical Details (left) and Sidebar Actions (right) -->
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+
+            <!-- Technical Details (left) -->
+            <div class="lg:col-span-7 space-y-10" scrollReveal="fade-up">
+              <div class="space-y-10">
                 @if (item.metadata.challenges || item.metadata.solutions) {
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                     @if (item.metadata.challenges) {
-                      <div class="p-6 rounded-[18px] glass-card space-y-2.5">
-                        <h3 class="font-[var(--font-mono)] text-[11px] font-bold uppercase tracking-widest text-[var(--color-accent)] flex items-center gap-2 m-0">
+                      <div class="p-6 rounded-[18px] glass-card border-l-4 border-l-rose-500 space-y-2.5">
+                        <h3 class="font-[var(--font-mono)] text-[11px] font-bold uppercase tracking-widest flex items-center gap-2 m-0" style="color: #ef4444;">
                           <ng-icon name="tablerAlertTriangle" size="14"></ng-icon>
                           {{ langService.t().challengeLabel }}
                         </h3>
@@ -158,8 +145,8 @@
                       </div>
                     }
                     @if (item.metadata.solutions) {
-                      <div class="p-6 rounded-[18px] glass-card space-y-2.5">
-                        <h3 class="font-[var(--font-mono)] text-[11px] font-bold uppercase tracking-widest text-[var(--color-accent)] flex items-center gap-2 m-0">
+                      <div class="p-6 rounded-[18px] glass-card border-l-4 border-l-emerald-500 space-y-2.5">
+                        <h3 class="font-[var(--font-mono)] text-[11px] font-bold uppercase tracking-widest flex items-center gap-2 m-0" style="color: #10b981;">
                           <ng-icon name="tablerCircleCheck" size="14"></ng-icon>
                           {{ langService.t().solutionLabel }}
                         </h3>
@@ -169,7 +156,6 @@
                   </div>
                 }
               </div>
-
             </div>
 
             <!-- Sidebar: Metrics & Actions -->
