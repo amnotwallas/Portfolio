@@ -22,13 +22,14 @@ import {
 import { Project } from "../../shared/models/portfolio.model";
 import { PortfolioService } from "../../core/services/portfolio.service";
 import { LanguageService } from "../../core/services/language.service";
+import { ScrollRevealDirective } from "../../shared/directives/scroll-reveal.directive";
 import { interval, Subscription } from "rxjs";
 
 @Component({
   standalone: true,
   selector: 'app-project-details-page',
   templateUrl: 'project-details.page.html',
-  imports: [CommonModule, RouterModule, NgIcon],
+  imports: [CommonModule, RouterModule, NgIcon, ScrollRevealDirective],
   providers: [provideIcons({ 
     tablerArrowLeft, 
     tablerBrandGithub, 
