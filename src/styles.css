@@ -53,8 +53,8 @@
   --stripe-a: #232327;
   --stripe-b: #2B2B30;
   --dock-idle: rgba(255,255,255,0.08);
-  --bento-1: #1B2440; --bento-2: #3A311A; --bento-3: #1B3324;
-  --bento-4: #3A1C1C; --bento-5: #2A2140; --bento-6: #1A332C;
+  --bento-1: rgba(255,255,255,0.05); --bento-2: rgba(255,255,255,0.05); --bento-3: rgba(255,255,255,0.05);
+  --bento-4: rgba(255,255,255,0.05); --bento-5: rgba(255,255,255,0.05); --bento-6: rgba(255,255,255,0.05);
   --bento-text: #F2F2F0;
 }
 

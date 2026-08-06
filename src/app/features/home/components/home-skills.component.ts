@@ -25,12 +25,17 @@ const BENTO_VARS = ['--bento-1', '--bento-2', '--bento-3', '--bento-4', '--bento
                scrollReveal="spring-pop" [revealDelay]="i * 60"
                [class]="cat.span === 4 ? 'md:!col-span-4' : cat.span === 3 ? 'md:!col-span-3' : 'md:!col-span-2'"
                [style.background]="'var(' + cat.bg + ')'"
-               [style.box-shadow]="'4px 4px 0 rgba(0,0,0,0.12)'"
-               [style.color]="'var(--bento-text)'">
+               [style.color]="'var(--bento-text)'"
+               style="box-shadow: 4px 4px 0 rgba(0,0,0,0.12); transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s ease; cursor: default;"
+               onmouseenter="this.style.transform='translateY(-4px)'; this.style.boxShadow='7px 7px 0 rgba(0,0,0,0.18)';"
+               onmouseleave="this.style.transform=''; this.style.boxShadow='4px 4px 0 rgba(0,0,0,0.12)';">
             <div class="font-[var(--font-display)] font-bold text-base">{{ cat.name }}</div>
             <div class="flex flex-wrap gap-2">
               @for (item of cat.items; track item) {
-                <span class="font-[var(--font-mono)] text-[11.5px] font-semibold px-2.5 py-1 rounded-[7px] bg-[var(--chip-bg)] text-[var(--chip-text)] border border-[var(--chip-border)] backdrop-blur-xs">{{ item }}</span>
+                <span class="font-[var(--font-mono)] text-[11.5px] font-semibold px-2.5 py-1 rounded-[7px]
+                             bg-[var(--chip-bg)] text-[var(--chip-text)] border border-[var(--chip-border)] backdrop-blur-xs
+                             transition-all duration-200 cursor-default
+                             hover:bg-[var(--color-accent)] hover:text-white hover:border-[var(--color-accent)]">{{ item }}</span>
               }
             </div>
           </div>
