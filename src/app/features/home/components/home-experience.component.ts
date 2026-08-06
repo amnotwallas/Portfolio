@@ -46,7 +46,8 @@ import { tablerChevronDown } from '@ng-icons/tabler-icons';
                   <div class="flex items-center gap-3">
                     <h3 class="font-[var(--font-display)] text-xl font-bold m-0 text-[var(--ink)]">{{ job.role }}</h3>
                     @if ($first) {
-                      <span class="font-[var(--font-mono)] text-[10px] font-bold px-2 py-0.5 rounded-full bg-[var(--color-lime)] text-[#15151A] neo-border">
+                      <span class="inline-flex items-center gap-1.5 font-[var(--font-mono)] text-[10px] font-bold px-2 py-0.5 rounded-full bg-[var(--color-lime)] text-[#15151A] neo-border">
+                        <span class="w-1.5 h-1.5 rounded-full bg-[#15151A] animate-pulse"></span>
                         CURRENT
                       </span>
                     }
@@ -81,7 +82,7 @@ import { tablerChevronDown } from '@ng-icons/tabler-icons';
                   @if (job.highlights?.length) {
                     <div class="flex flex-wrap gap-2">
                       @for (tag of job.highlights; track $index) {
-                        <span class="font-[var(--font-mono)] text-[11px] font-medium px-2.5 py-1 rounded-lg bg-[var(--chip-bg)] border border-[var(--chip-border)] text-[var(--ink)]">{{ tag }}</span>
+                        <span class="font-[var(--font-mono)] text-[11px] font-medium px-2.5 py-1 rounded-lg bg-[var(--chip-bg)] border border-[var(--chip-border)] text-[var(--ink)] transition-all duration-200 cursor-default hover:bg-[var(--color-accent)] hover:text-white hover:border-[var(--color-accent)]">{{ tag }}</span>
                       }
                     </div>
                   }
@@ -89,7 +90,8 @@ import { tablerChevronDown } from '@ng-icons/tabler-icons';
                   @if (job.metrics?.length) {
                     <div class="flex flex-wrap gap-2.5 mt-4">
                       @for (m of job.metrics; track $index) {
-                        <span class="font-[var(--font-display)] text-[13px] font-bold px-3 py-1.5 rounded-full bg-[var(--color-lime)] text-[#15151A] neo-border">{{ m }}</span>
+                        <span class="font-[var(--font-display)] text-[13px] font-bold px-3 py-1.5 rounded-full bg-[var(--color-lime)] text-[#15151A] neo-border cursor-default transition-transform duration-200 hover:scale-[1.05]"
+                              style="box-shadow: 2.5px 2.5px 0 var(--ink);">{{ m }}</span>
                       }
                     </div>
                   }
