@@ -22,7 +22,7 @@ const SCRAMBLE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
               {{ displayName(data.basics.name) }}
             </h1>
             @if (data.basics.open_to_relocate || data.basics.label) {
-              <div class="absolute -top-10 -right-28 rotate-[-8deg] pointer-events-none z-30">
+              <div class="absolute -top-12 right-2 lg:-right-28 lg:-top-10 rotate-[-8deg] pointer-events-none z-30 scale-90 lg:scale-100">
                 <span class="splash-text-mc">
                   OPEN TO WORK!
                 </span>
