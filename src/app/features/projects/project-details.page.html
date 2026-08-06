@@ -15,9 +15,7 @@
         <div class="transform-gpu will-change-transform" [class.opacity-0]="isChanging" class="transition-opacity duration-300">
           <!-- Header -->
           <header class="mb-8 space-y-3.5">
-            <span class="inline-block font-[var(--font-display)] font-bold text-[11.5px] tracking-wide uppercase bg-[var(--color-lime)] text-[#15151A] neo-border rounded-full px-3.5 py-1.5">
-              {{item.metadata.status}}
-            </span>
+
             <h1 class="font-[var(--font-display)] font-bold text-[var(--ink)] tracking-tight m-0"
                 style="font-size: clamp(30px, 5vw, 48px); letter-spacing: -0.02em;"
                 [style.view-transition-name]="'project-title-' + item.slug">{{item.name}}</h1>
@@ -165,21 +163,7 @@
             <!-- Sidebar: Metrics & Actions -->
             <aside class="lg:col-span-5 space-y-6">
 
-              <!-- Quick Metrics Card -->
-              <div class="grid grid-cols-3 gap-3.5">
-                <div class="p-4 rounded-xl glass-card flex flex-col gap-1.5">
-                  <span class="font-[var(--font-mono)] text-[9px] text-[var(--ink-soft)] uppercase tracking-widest">Status</span>
-                  <span class="text-xs font-bold text-[var(--ink)] font-[var(--font-mono)] uppercase">{{item.metadata.status}}</span>
-                </div>
-                <div class="p-4 rounded-xl glass-card flex flex-col gap-1.5">
-                  <span class="font-[var(--font-mono)] text-[9px] text-[var(--ink-soft)] uppercase tracking-widest">Role</span>
-                  <span class="text-xs font-bold text-[var(--ink)] font-[var(--font-mono)] uppercase">{{item.metadata.role}}</span>
-                </div>
-                <div class="p-4 rounded-xl glass-card flex flex-col gap-1.5">
-                  <span class="font-[var(--font-mono)] text-[9px] text-[var(--ink-soft)] uppercase tracking-widest">Tier</span>
-                  <span class="text-xs font-bold text-[var(--ink)] font-[var(--font-mono)] uppercase">{{item.metadata.complexity}}</span>
-                </div>
-              </div>
+
 
               <!-- Action Card -->
               <div class="p-6 md:p-8 rounded-2xl neo-border bg-[var(--card-bg)] neo-shadow space-y-6">
