@@ -5,11 +5,14 @@ import { UiService } from '../../../core/services/ui.service';
 import { LanguageService } from '../../../core/services/language.service';
 import { Subscription } from 'rxjs';
 import { ScrollRevealDirective } from '../../../shared/directives/scroll-reveal.directive';
+import { NgIcon, provideIcons } from '@ng-icons/core';
+import { tablerChevronDown } from '@ng-icons/tabler-icons';
 
 @Component({
   selector: 'app-home-experience',
   standalone: true,
-  imports: [CommonModule, ScrollRevealDirective],
+  imports: [CommonModule, ScrollRevealDirective, NgIcon],
+  providers: [provideIcons({ tablerChevronDown })],
   template: `
     <div id="experience" class="w-full max-w-[900px] mx-auto py-12 px-6">
       <div class="flex items-center gap-3 mb-11" scrollReveal="fade-up">
@@ -28,7 +31,8 @@ import { ScrollRevealDirective } from '../../../shared/directives/scroll-reveal.
                   <img [src]="job.image" [alt]="job.company" class="w-full h-full object-contain p-1.5" />
                 }
               </div>
-              <div class="w-0.5 flex-grow bg-[var(--ink)] opacity-10 mt-2 min-h-[30px]"></div>
+              <div class="w-0.5 flex-grow mt-2 min-h-[30px]"
+                   style="background: linear-gradient(to bottom, var(--color-accent), transparent); opacity: 0.25;"></div>
             </div>
 
             <div class="rounded-[18px] glass-card transition-all duration-300 overflow-hidden"
@@ -36,7 +40,7 @@ import { ScrollRevealDirective } from '../../../shared/directives/scroll-reveal.
                  [class.animate-pulse]="isHighlighted(job.company)">
 
               <!-- Header row: clickable to toggle accordion -->
-              <div class="p-6 cursor-pointer flex flex-wrap items-center justify-between gap-2 select-none"
+              <div class="p-6 cursor-pointer flex flex-wrap items-center justify-between gap-2 select-none rounded-[18px] transition-colors duration-200 hover:bg-[var(--stripe-a)]"
                    (click)="toggleExpand(job.company)">
                 <div>
                   <div class="flex items-center gap-3">
@@ -51,10 +55,10 @@ import { ScrollRevealDirective } from '../../../shared/directives/scroll-reveal.
                 </div>
                 <div class="flex items-center gap-4">
                   <span class="font-[var(--font-mono)] text-xs text-[var(--ink-soft)]">{{ job.period }}</span>
-                  <div class="w-7 h-7 rounded-full border border-[var(--ink)] flex items-center justify-center text-xs font-bold"
+                  <div class="w-7 h-7 rounded-full border border-[var(--ink)] flex items-center justify-center"
                        style="transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1);"
                        [class.rotate-180]="isExpanded(job.company)">
-                    ▼
+                    <ng-icon name="tablerChevronDown" size="14"></ng-icon>
                   </div>
                 </div>
               </div>
