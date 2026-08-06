@@ -7,19 +7,20 @@ import { PortfolioService } from '../../../core/services/portfolio.service';
 import { UiService } from '../../../core/services/ui.service';
 import { LanguageService } from '../../../core/services/language.service';
 import { Subscription } from 'rxjs';
+import { ScrollRevealDirective } from '../../../shared/directives/scroll-reveal.directive';
 
 @Component({
   selector: 'app-home-projects',
   standalone: true,
-  imports: [CommonModule, NgIcon, RouterModule],
+  imports: [CommonModule, NgIcon, RouterModule, ScrollRevealDirective],
   providers: [provideIcons({ tablerChevronLeft, tablerChevronRight })],
   template: `
     <div id="projects" class="w-full max-w-[980px] mx-auto py-5 px-6 pb-28">
-      <div class="flex items-center gap-3 mb-11">
+      <div class="flex items-center gap-3 mb-11" scrollReveal="fade-up">
         <span class="font-[var(--font-mono)] text-[11px] font-bold tracking-[0.2em] uppercase text-[var(--color-accent)]">{{ langService.t().projectsEyebrow }}</span>
         <div class="flex-grow h-0.5 bg-[var(--ink)] opacity-15"></div>
       </div>
-      <div class="flex items-baseline justify-between mb-8 flex-wrap gap-3">
+      <div class="flex items-baseline justify-between mb-8 flex-wrap gap-3" scrollReveal="spring-up" [revealDelay]="80">
         <h2 class="font-[var(--font-display)] font-bold m-0 text-[var(--ink)]" style="font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.02em;">{{ langService.t().projectsTitle }}</h2>
         <div class="flex gap-2.5">
           <button (click)="prev()" class="w-10.5 h-10.5 rounded-full neo-border bg-[var(--card-bg)] flex items-center justify-center hover:scale-110" style="box-shadow: 2px 2px 0 var(--ink); transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1);"><ng-icon name="tablerChevronLeft" size="16"></ng-icon></button>

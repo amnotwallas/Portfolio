@@ -2,16 +2,18 @@ import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/cor
 import { CommonModule } from '@angular/common';
 import { PortfolioService } from '../../../core/services/portfolio.service';
 import { LanguageService } from '../../../core/services/language.service';
+import { ScrollRevealDirective } from '../../../shared/directives/scroll-reveal.directive';
 
 @Component({
   selector: 'app-home-contact',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ScrollRevealDirective],
   template: `
     @if (cv(); as data) {
       <section id="contact" class="relative z-[1] text-center bg-[#15151A] text-[#FAFAF7]"
                style="padding: 90px 24px 160px; border-top: 3px solid #15151A;">
         <h2 class="font-bold m-0 mb-[18px]"
+            scrollReveal="spring-up"
             style="font-size: clamp(30px, 5vw, 54px); letter-spacing: -0.02em; font-family: var(--font-display);">
           {{ langService.t().contactTitle }}
         </h2>
@@ -20,7 +22,7 @@ import { LanguageService } from '../../../core/services/language.service';
             {{ langService.t().footerTag }}
           </p>
         }
-        <div style="display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 50px;">
+        <div style="display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 50px;" scrollReveal="spring-up" [revealDelay]="120">
           @if (data.basics.email) {
             <button (click)="copyEmail(data.basics.email)"
               class="cursor-pointer transition-transform hover:scale-[1.02]"

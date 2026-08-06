@@ -4,22 +4,23 @@ import { PortfolioService } from '../../../core/services/portfolio.service';
 import { UiService } from '../../../core/services/ui.service';
 import { LanguageService } from '../../../core/services/language.service';
 import { Subscription } from 'rxjs';
+import { ScrollRevealDirective } from '../../../shared/directives/scroll-reveal.directive';
 
 @Component({
   selector: 'app-home-experience',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ScrollRevealDirective],
   template: `
     <div id="experience" class="w-full max-w-[900px] mx-auto py-12 px-6">
-      <div class="flex items-center gap-3 mb-11">
+      <div class="flex items-center gap-3 mb-11" scrollReveal="fade-up">
         <span class="font-[var(--font-mono)] text-[11px] font-bold tracking-[0.2em] uppercase text-[var(--color-accent)]">{{ langService.t().experienceEyebrow }}</span>
         <div class="flex-grow h-0.5 bg-[var(--ink)] opacity-15"></div>
       </div>
-      <h2 class="font-[var(--font-display)] font-bold mb-12 text-[var(--ink)]" style="font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.02em;">{{ langService.t().experienceTitle }}</h2>
+      <h2 class="font-[var(--font-display)] font-bold mb-12 text-[var(--ink)]" scrollReveal="spring-up" [revealDelay]="80" style="font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.02em;">{{ langService.t().experienceTitle }}</h2>
 
       @if (cvSignal(); as cv) {
-        @for (job of cv.work; track job.company) {
-          <div [id]="getItemElementId(job.company)" class="grid grid-cols-[64px_1fr] gap-5 mb-7 items-start">
+        @for (job of cv.work; track job.company; let i = $index) {
+          <div [id]="getItemElementId(job.company)" class="grid grid-cols-[64px_1fr] gap-5 mb-7 items-start" scrollReveal="spring-up" [revealDelay]="i * 80">
             <div class="flex flex-col items-center">
               <div class="w-14 h-14 rounded-[14px] neo-border bg-[var(--card-bg)] overflow-hidden flex items-center justify-center neo-shadow flex-shrink-0 cursor-pointer"
                    (click)="toggleExpand(job.company)">

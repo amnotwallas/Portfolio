@@ -2,6 +2,7 @@ import { Component, inject, computed, ChangeDetectionStrategy } from '@angular/c
 import { CommonModule } from '@angular/common';
 import { PortfolioService } from '../../../core/services/portfolio.service';
 import { LanguageService } from '../../../core/services/language.service';
+import { ScrollRevealDirective } from '../../../shared/directives/scroll-reveal.directive';
 
 const SPANS = [3, 3, 2, 2, 2, 4];
 const BENTO_VARS = ['--bento-1', '--bento-2', '--bento-3', '--bento-4', '--bento-5', '--bento-6'];
@@ -9,18 +10,19 @@ const BENTO_VARS = ['--bento-1', '--bento-2', '--bento-3', '--bento-4', '--bento
 @Component({
   selector: 'app-home-skills',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ScrollRevealDirective],
   template: `
     <div id="skills" class="w-full max-w-[980px] mx-auto py-5 px-6 pb-24">
-      <div class="flex items-center gap-3 mb-11">
+      <div class="flex items-center gap-3 mb-11" scrollReveal="fade-up">
         <span class="font-[var(--font-mono)] text-[11px] font-bold tracking-[0.2em] uppercase text-[var(--color-accent)]">{{ langService.t().skillsEyebrow }}</span>
         <div class="flex-grow h-0.5 bg-[var(--ink)] opacity-15"></div>
       </div>
-      <h2 class="font-[var(--font-display)] font-bold mb-8 text-[var(--ink)]" style="font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.02em;">{{ langService.t().skillsTitle }}</h2>
+      <h2 class="font-[var(--font-display)] font-bold mb-8 text-[var(--ink)]" scrollReveal="spring-up" [revealDelay]="80" style="font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.02em;">{{ langService.t().skillsTitle }}</h2>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-4" style="grid-auto-rows: minmax(120px, auto);">
-        @for (cat of categories(); track cat.name) {
+        @for (cat of categories(); track cat.name; let i = $index) {
           <div class="p-5.5 rounded-[18px] neo-border flex flex-col gap-3 col-span-1 sm:col-span-2"
+               scrollReveal="spring-pop" [revealDelay]="i * 60"
                [class]="cat.span === 4 ? 'md:!col-span-4' : cat.span === 3 ? 'md:!col-span-3' : 'md:!col-span-2'"
                [style.background]="'var(' + cat.bg + ')'"
                [style.box-shadow]="'4px 4px 0 rgba(0,0,0,0.12)'"
